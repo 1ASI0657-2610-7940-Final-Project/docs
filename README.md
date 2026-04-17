@@ -363,27 +363,243 @@ Individuos o empresas que requieren servicios especializados sin la necesidad de
 
 ## 2.1. Competidores
 
+En el mercado freelance existen múltiples plataformas consolidadas, pero ninguna está 100% orientada al talento universitario. Por ello, los competidores identificados para GigU son plataformas freelance generalistas que, aunque comparten funcionalidades similares, no cubren a profundidad las necesidades específicas de los estudiantes universitarios que buscan dar sus primeros pasos profesionales.
+
 ### 2.1.1. Análisis competitivo
 
+A continuación se presenta el análisis competitivo comparando a GigU con las principales alternativas del mercado freelance. Se evalúan dimensiones como perfil estratégico, segmento objetivo, propuesta de valor, canales, relaciones con el cliente y ventajas competitivas.
+
+<img src="imgs/Competidores1.png" alt="Competidores1" title="Competidores1"/>
+<img src="imgs/Competidores2.png" alt="Competidores2" title="Competidores2"/>
+<img src="imgs/Competidores3.png" alt="Competidores3" title="Competidores3"/>
+<img src="imgs/Competidores4.png" alt="Competidores4" title="Competidores4"/>
+<img src="imgs/Competidores5.png" alt="Competidores5" title="Competidores5"/>
+<img src="imgs/Competidores6.png" alt="Competidores6" title="Competidores6"/>
+
 ### 2.1.2. Estrategias y tácticas frente a competidores
+
+GigU adopta una estrategia de **diferenciación centrada en el talento universitario**, apoyándose en un enfoque educativo, precios accesibles y alianzas con instituciones académicas. A diferencia de los grandes actores del mercado freelance global, nuestra plataforma se posiciona como una alternativa confiable y de propósito social que conecta clientes con estudiantes verificados académicamente.
+
+Las tácticas principales son:
+
+* **Verificación académica:** Validar que los freelancers sean estudiantes activos para transmitir confianza al cliente.
+* **Soporte regional y en español:** Aprovechar la debilidad de plataformas globales con soporte limitado o genérico.
+* **Personalización:** Recomendaciones de proyectos basadas en carrera, habilidades y disponibilidad del estudiante.
+* **Garantías y filtros de calidad:** Mitigar la percepción de “poca experiencia” con reseñas reales, portafolios y calificaciones.
+* **Pagos seguros y automatizados:** Reducir la fricción e inseguridad de métodos informales (Yape, transferencias directas).
+
+En conjunto, la estrategia busca capitalizar las debilidades de los competidores (poca personalización, fuerte competencia global, comisiones elevadas) y convertirlas en ventajas competitivas para GigU.
 
 ## 2.2. Entrevistas
 
 ### 2.2.1. Diseño de entrevistas
 
+Para el proceso de *needfinding* se diseñaron dos guías de entrevista, una por cada segmento objetivo. El objetivo fue identificar motivaciones, dificultades actuales, comportamientos de búsqueda de trabajo/contratación y requisitos ideales de una plataforma freelance universitaria.
+
+**Segmento objetivo 1: Estudiantes Universitarios Freelancers**
+
+* ¿Cuál es tu nombre completo?
+* ¿Cuál es tu edad?
+* ¿Dónde vives?
+* ¿Has ofrecido tus servicios como freelancer alguna vez? ¿En qué área?
+* ¿Qué te motivó a ofrecer tus servicios de manera independiente?
+* ¿Dónde sueles buscar oportunidades freelance (redes, plataformas, conocidos, etc.)?
+* ¿Qué dificultades has encontrado al intentar conseguir clientes como estudiante?
+* ¿Qué características debería tener una plataforma ideal para ayudarte a encontrar clientes?
+* ¿Qué métodos usas actualmente para cobrar tus servicios? ¿Has tenido problemas con eso?
+* ¿Cuánto tiempo a la semana podrías dedicarle a trabajos freelance?
+* ¿Crees que sería útil tener una app que te sugiera proyectos freelance según tu perfil y habilidades?
+* ¿Qué tan importante es para ti tener una forma segura y automática de cobrar por tu trabajo freelance?
+
+**Segmento objetivo 2: Personas y Emprendimientos que buscan contratar servicios freelance**
+
+* ¿Cuál es tu nombre completo?
+* ¿Cuál es tu edad?
+* ¿Dónde vives?
+* ¿Alguna vez has contratado a un freelancer para un proyecto? ¿Cómo fue tu experiencia?
+* ¿Qué tipo de tareas sueles tercerizar o te gustaría tercerizar?
+* ¿Qué canales usas actualmente para encontrar freelancers (plataformas, conocidos, redes)?
+* ¿Qué te haría confiar en un estudiante universitario como freelancer?
+* ¿Qué tan importante es para ti poder ver recomendaciones o validaciones de otros clientes?
+* ¿Te gustaría una plataforma que se encargue de gestionar los pagos y acuerdos con el freelancer, o prefieres hacerlo tú directamente con la persona?
+* ¿Qué haría que descartes a un freelancer incluso si su precio es atractivo?
+* ¿Qué funcionalidades te gustaría ver en una plataforma para contratar freelancers?
+* ¿Qué tan importante es para ti poder negociar el precio antes de contratar un servicio freelance? ¿Preferirías un precio fijo o la opción de llegar a un acuerdo con el freelancer?
+* ¿Qué factores tomas en cuenta al elegir a un freelancer: precio, portafolio, tiempo de entrega, reputación, otro? ¿Cuál de ellos pesa más para ti al decidir?
+
 ### 2.2.2. Registro de entrevistas
+
+**Segmento objetivo #1: Estudiantes Universitarios Freelancers**
+
+**Entrevistado N°1: Bruno Sebastián Gamarra Torres**
+
+* Sexo: Masculino
+* Edad: 23
+* Ubicación: Surco
+* Instante de inicio: 0:03 min · Duración: 3:44
+
+**Resumen:** Bruno ofrece servicios de diseño gráfico y edición de video desde hace algunos meses, motivado por la necesidad económica y por ganar experiencia. Consigue clientes sobre todo vía Instagram y TikTok, pero lidia con la desconfianza hacia estudiantes. Cobra por Yape, Plin y transferencias, y a veces sufre retrasos. Una plataforma ideal, según él, debería permitir reseñas reales, chat integrado y contratos.
+
+![imgs](imgs/Seg1istaWener.png)
+
+**Entrevistado N°2: Werner Lang**
+
+* Sexo: Masculino
+* Edad: 20
+* Ubicación: San Isidro
+* Instante de inicio: 3:45 min · Duración: 9:57 min
+
+**Resumen:** Werner trabaja en diseño gráfico y desarrollo web como freelancer para aplicar lo aprendido y ganar experiencia antes de egresar. Consigue clientes por conocidos, redes sociales y Workana, pero siente que no lo toman en serio por ser estudiante; además carece de un portafolio sólido. Cobra por Yape o transferencia, con demoras ocasionales. Dedica 8–12 horas semanales. Considera que una plataforma ideal debe facilitar mostrar habilidades, cotizar, asegurar pagos y permitir comunicación fluida, además de sugerirle proyectos alineados a su perfil.
+
+![imgs](imgs/Seg1Entrevista2.png)
+
+**Entrevistado N°3: Mario André Cacho Seminario**
+
+* Sexo: Masculino
+* Edad: 21
+* Ubicación: Surco
+* Link: [YouTube](https://youtu.be/hSg2bZ3Jgbc) · Instante de inicio: 0:10 · Duración: 3:26
+
+**Resumen:** Mario crea videos de marketing para pequeñas empresas. Le motiva ampliar su perspectiva profesional, pero le resulta difícil conseguir clientes porque priorizan la experiencia. Consigue oportunidades por redes sociales y contactos cercanos, y cobra por transferencia bancaria. Dedica 6–8 horas semanales. Valora que una plataforma muestre a perfiles de todos los niveles, sugiera proyectos por habilidades, exhiba un historial de trabajos y cuente con un sistema de cobros seguro.
+
+![imgs](imgs/Seg1Entrevista1.png)
+
+**Segmento objetivo #2: Personas y Emprendimientos que buscan contratar servicios freelance**
+
+**Entrevistada N°1: Yulia Estephania Martinez Martinez**
+
+* Sexo: Femenino
+* Edad: 19
+* Ubicación: Surco
+* Link: [YouTube](https://youtu.be/MFs44DHr8_Q) · Instante de inicio: 0:01 · Duración: 5:46
+
+![imgs](imgs/Seg2Entrevista1a.png)
+
+![imgs](imgs/Seg2Entrevista1b.png)
+
+**Resumen:** Yulia tiene un emprendimiento de cuadros personalizados (*Quack_cuadros*). Aún no ha contratado freelancers pero está interesada en tercerizar marketing digital (reels) y diseño web. Actualmente busca talento por Instagram y contactos, lo cual considera poco confiable.
+
+* **Criterios para confiar:** portafolio visual para trabajos creativos; CV para otros; valora recomendaciones y validaciones.
+* **Pagos:** prefiere que la plataforma gestione pagos y acuerdos.
+* **Motivos de descarte:** mala calidad, falta de responsabilidad, poca puntualidad.
+* **Funciones deseadas:** perfiles detallados, herramientas de negociación, reuniones dentro de la plataforma, chats y acuerdos formales.
+* **Factores de decisión:** el portafolio es lo más determinante, seguido del precio; un trabajo que impacte positivamente la vuelve flexible en el pago.
+
+**Entrevistado N°2: Fabrizio Morales**
+
+* Sexo: Masculino
+* Edad: 22
+* Ubicación: La Molina
+* Instante de inicio: 25:32 min · Duración: 31:17 min
+
+![imgs](imgs/Seg2EntrevistaFabrizio.png)
+
+**Resumen:** Fabrizio dirige un negocio de venta de vapes y contrata freelancers para marketing y ventas, principalmente por Facebook y LinkedIn, apoyándose también en recomendaciones cercanas.
+
+* **Criterios para confiar:** portafolio visual o ejemplos previos para trabajos creativos; CV para otros; testimonios de antiguos clientes.
+* **Pagos:** prefiere que la plataforma gestione acuerdos y pagos para evitar negociaciones directas.
+* **Motivos de descarte:** trabajo deficiente, falta de responsabilidad, retrasos en entregas.
+* **Funciones deseadas:** perfiles completos, herramientas de negociación, reuniones dentro de la plataforma, chats formales con acuerdos visibles.
+* **Factores de decisión:** el portafolio visual es lo más determinante; si un resultado impacta positivamente, acepta pagar más de lo previsto.
+
+Link de entrevista: [SharePoint UPC](https://upcedupe-my.sharepoint.com/:v:/g/personal/u202213241_upc_edu_pe/ERWRYYotMDNKrb9UZXiaV90BczcuHnygJ1UOZNQE1nmmxQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=v3wSIJ)
 
 ### 2.2.3. Análisis de entrevistas
 
+**Segmento 1 — Estudiantes Universitarios Freelancers.** Los tres entrevistados (Bruno, Werner y Mario) coinciden en que la principal motivación es generar ingresos mientras ganan experiencia profesional, y que la mayor barrera es la **desconfianza del cliente hacia los estudiantes**. El insight central es que, más que su nivel de experiencia, el obstáculo real es la percepción del mercado; esto evidencia la necesidad de **mecanismos de validación**: reseñas, calificaciones y contratos formales dentro de la plataforma.
+
+Usan redes sociales y plataformas como Workana, pero obtienen poca visibilidad. Surge así un segundo insight: los freelancers quieren ser emparejados por **habilidades**, no únicamente por historial previo, lo que abre espacio a un sistema de recomendaciones por competencias. En cuanto a pagos, todos usan Yape y transferencias y han sufrido retrasos, lo que refuerza la necesidad de un **sistema de cobros seguro y automatizado**. Además del ingreso, valoran construir reputación profesional y recibir retroalimentación, señal de que la plataforma también debe actuar como un espacio de **desarrollo de carrera**.
+
+**Segmento 2 — Personas y Emprendimientos que buscan freelancers.** Yulia y Fabrizio priorizan **calidad y responsabilidad** por encima del precio. El insight clave es que el **portafolio visual pesa más que el costo**: si un trabajo impacta positivamente, están dispuestos a pagar más. Ambos muestran desconfianza hacia perfiles sin referencias, por lo que las **recomendaciones, testimonios y perfiles detallados** son elementos indispensables.
+
+En la gestión de acuerdos y pagos ambos prefieren no tratar directamente con el freelancer, lo que revela una necesidad de **automatizar negociación, acuerdos y pagos dentro de la plataforma**. Finalmente, el impacto emocional del resultado influye en la disposición a pagar más, lo que asigna un rol estratégico a la **presentación del trabajo** (antes y después de la entrega).
+
+**Conclusión transversal.** Ambos segmentos convergen en la necesidad de una plataforma que ofrezca: (i) perfiles verificados y portafolios, (ii) emparejamiento inteligente por habilidades, (iii) acuerdos y pagos seguros gestionados por la plataforma, (iv) reseñas y reputación, y (v) comunicación fluida dentro del entorno. Estos hallazgos alimentan directamente los *User Personas*, la *User Task Matrix* y los *Empathy Maps* del siguiente apartado.
+
 ## 2.3. Needfinding
+
+En esta sección se presentan los artefactos derivados del análisis de la información recolectada en las entrevistas, sintetizando motivaciones, problemas y requisitos para cada segmento objetivo.
+
+**Segmento objetivo #1: Estudiantes Universitarios Freelancers**
+
+* **Motivaciones principales:**
+  * Desarrollo profesional y aplicación de lo aprendido en la universidad.
+  * Ganar experiencia real antes de egresar.
+  * Explorar distintas áreas del mercado y ampliar su perspectiva profesional.
+* **Problemas identificados:**
+  * Dificultad para conseguir clientes por el prejuicio hacia su condición de estudiante.
+  * Poca visibilidad en plataformas tradicionales y baja confianza hacia perfiles jóvenes.
+  * Problemas con los pagos: demoras, renegociaciones y falta de sistemas seguros.
+* **Requisitos para una plataforma ideal:**
+  * Permitir mostrar habilidades y portafolio aun con experiencia limitada.
+  * Sugerencias de proyectos basadas en habilidades y perfil.
+  * Herramientas de cotización automática y segura.
+  * Historial de trabajos realizados.
+  * Cobros seguros y automatizados.
+  * Comunicación fluida dentro de la plataforma.
+
+**Segmento objetivo #2: Personas y Emprendimientos que buscan contratar servicios freelance**
+
+* **Motivaciones principales:**
+  * Externalizar tareas específicas (diseño, marketing, desarrollo web).
+  * Falta de tiempo o conocimiento técnico para tareas clave del negocio.
+  * Necesidad de soluciones rápidas y flexibles sin contratar personal fijo.
+* **Problemas identificados:**
+  * Desconfianza al contratar freelancers sin referencias.
+  * Miedo a mala calidad, incumplimiento o falta de responsabilidad.
+  * Inseguridad para negociar precios o gestionar pagos.
+* **Requisitos para una plataforma ideal:**
+  * Perfiles detallados con muestras de trabajo previas.
+  * Sistema de calificaciones y opiniones verificadas.
+  * Gestión clara de pagos y acuerdos dentro de la plataforma.
+  * Chat interno, reuniones virtuales y acuerdos escritos.
+  * Negociación dentro de rangos sugeridos.
+  * Visualización clara del costo total del proyecto.
 
 ### 2.3.1. User Personas
 
+A partir del análisis anterior se construyeron dos *User Personas* que representan arquetípicamente a cada segmento. Estos perfiles orientarán las decisiones de diseño y priorización del Product Backlog.
+
+User Persona del Usuario Estudiante Freelancer:
+<img src="imgs/UserPersona1.png" alt="UserPersona1" title="UserPersona1"/>
+
+User Persona del Usuario Persona o Emprendimiento:
+<img src="imgs/UserPersona2.png" alt="UserPersona2" title="UserPersona2"/>
+
 ### 2.3.2. User Task Matrix
+
+La *User Task Matrix* cruza las tareas clave identificadas con la frecuencia e importancia que cada *User Persona* les asigna. Este artefacto nos permite priorizar funcionalidades en las fases de arquitectura e implementación.
+
+| USER TASK                                         | Julio Bernal (Freelancer) |            | Luisa Fuentes (Cliente) |            |
+| :------------------------------------------------ | :-----------------------: | :--------: | :---------------------: | :--------: |
+|                                                   |         Frequency         | Importance |        Frequency        | Importance |
+| Publicar servicios y mostrar habilidades          |           Often           |    High    |        Sometimes        |    High    |
+| Cotizar precios fácilmente según tipo de trabajo  |         Sometimes         |    High    |          Often          |    High    |
+| Encontrar oportunidades mediante una app central  |         Sometimes         |    High    |          Often          |   Medium   |
+| Procesar pagos seguros a través de la plataforma  |           Always          |    High    |          Always         |    High    |
+| Mostrar historial de trabajos realizados          |         Sometimes         |   Medium   |          Often          |   Medium   |
+| Negociar precios dentro de un rango flexible      |         Sometimes         |   Medium   |          Always         |    High    |
+| Establecer acuerdos y comunicación en la plataforma |         Often           |    High    |          Always         |    High    |
 
 ### 2.3.3. Empathy Maps
 
+Los *Empathy Maps* permiten construir una comprensión profunda de la perspectiva y experiencia de cada *User Persona*. Para cada perfil se describe lo que el usuario **ve, escucha, dice, hace y siente**, así como sus *pains* y *gains*, lo que habilita decisiones de diseño centradas en el usuario.
+
+Empathy Map del Estudiante Freelancer:
+<img src="imgs/Empathymap1.png" alt="Empathymap1" title="Empathymap1"/>
+
+Empathy Map de Persona o Empresa:
+<img src="imgs/Empathymap2.png" alt="Empathymap2" title="Empathymap2"/>
+
 ### 2.3.4. As-Is Scenario Mapping
+
+El *As-Is Scenario Mapping* refleja el estado actual de la experiencia de cada segmento **antes** de utilizar GigU. Recorre las fases típicas —desde la búsqueda de oportunidades o de talento, pasando por la contratación, ejecución y cobro— e identifica emociones, acciones y puntos de dolor en cada paso. Este artefacto es la línea base sobre la que, en el Capítulo III, se diseñará el *To-Be Scenario*.
+
+As-Is del Estudiante Freelancer (búsqueda de clientes, negociación informal y cobro mediante Yape/transferencias):
+<img src="imgs/AS-IS1.png" alt="AS-IS1" title="AS-IS1"/>
+
+As-Is de Persona o Emprendimiento (búsqueda de freelancers vía redes, contratación sin contratos formales y coordinación manual de pagos):
+<img src="imgs/AS-IS2.png" alt="AS-IS2" title="AS-IS2"/>
 
 <div style="page-break-before: always;"></div>
 
