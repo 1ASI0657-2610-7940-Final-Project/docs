@@ -231,11 +231,11 @@ Además, con GigU, los estudiantes tienen una forma flexible, accesible y efecti
 | **Carrera:** Ingeniería de Software |                               |
 | **Habilidades:** Estudiante de 20 años de Ingeniería de Software en la UPC. Me caracterizo por mi creatividad, eficacia y capacidad para resolver problemas de manera racional. Apasionado por la programación y el desarrollo de software, busco constantemente innovar y aprender nuevas tecnologías. |          |
 
-| Nombre: Mio Mejia, Andy Alejandro | <img src="imgs/team/andy.png" alt="Andy" title="Foto de Andy" width="320"/> |
+| Nombre: Mio Mejia, Andy Alejandro | <img src="imgs/team/andy.jpg" alt="Andy" title="Foto de Andy" width="320"/> |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------- |
 | **Código:** U202218531  |                               |
 | **Carrera:** Ingeniería de Software |                               |
-| **Habilidades:** Estudiante de ... |          |
+| **Habilidades:** Soy estudiante de 7mo ciclo de Ingeniería de Software con sólidos fundamentos en programación, desarrollo web y análisis de datos. Apasionado por la Inteligencia Artificial, desarrollo Web Robusto, sistemas inteligentes y soluciones tecnológicas escalables. Poseo capacidad para aprender rápidamente y trabajar en entornos ágiles (Scrum). Me gustaría aplicar mis conocimientos técnicos en Python (avanzado), C++ y frameworks modernos para contribuir al desarrollo de software robusto y de alta usabilidad. |          |
 
 ## 1.2. Solution Profile
 
