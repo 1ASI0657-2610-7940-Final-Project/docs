@@ -440,7 +440,7 @@ Para el proceso de *needfinding* se diseñaron dos guías de entrevista, una por
 
 **Resumen:** Bruno ofrece servicios de diseño gráfico y edición de video desde hace algunos meses, motivado por la necesidad económica y por ganar experiencia. Consigue clientes sobre todo vía Instagram y TikTok, pero lidia con la desconfianza hacia estudiantes. Cobra por Yape, Plin y transferencias, y a veces sufre retrasos. Una plataforma ideal, según él, debería permitir reseñas reales, chat integrado y contratos.
 
-![imgs](imgs/Seg1istaWener.png)
+![imgs](imgs/Seg1EntrevistaWener.png)
 
 **Entrevistado N°2: Werner Lang**
 
