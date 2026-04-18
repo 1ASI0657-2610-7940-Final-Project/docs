@@ -623,6 +623,61 @@ El impact map de GigU para las personas y emprendimientos que buscan contratar s
 
 
 ## 3.4. Product Backlog
+Se utilizó la escala Fibonacci para la estimación de los Story Points. En total se tuvieron **197** Story Points.
+
+| # Orden | User Story ID | Título                                                      | Story Points |
+| :-----: | :-----------: | ----------------------------------------------------------- | :----------: |
+|  **1**  |    **US01**   | Navegación intuitiva en la landing page                     |       3      |
+|  **2**  |    **US02**   | Acceso rápido a funcionalidades clave                       |       3      |
+|  **3**  |    **US03**   | Registro con correo y contraseña                            |       3      |
+|  **4**  |    **US04**   | Iniciar sesión como freelancer o cliente                    |       5      |
+|  **5**  |    **US05**   | Registro con Google                                         |       2      |
+|  **6**  |    **US06**   | Solicitar recuperación de contraseña                        |       2      |
+|  **7**  |    **US07**   | Restablecer contraseña vía correo                           |       2      |
+|  **8**  |    **US12**   | Acceso a preguntas frecuentes (FAQ)                         |       3      |
+|  **9**  |    **US13**   | Búsqueda dentro de preguntas frecuentes                     |       3      |
+|  **10** |    **US14**   | Envío de ticket de soporte                                  |       3      |
+|  **11** |    **US08**   | Conocer los beneficios de GigU                              |       1      |
+|  **12** |    **US11**   | Detalles sobre tipos de servicios                           |       5      |
+|  **13** |    **US10**   | Experiencias de otros usuarios                              |       5      |
+|  **14** |    **US09**   | Diferencias entre roles (Freelancer / Cliente)              |       8      |
+|  **15** |    **US25**   | Buscar freelancers por palabra clave                        |       3      |
+|  **16** |    **US26**   | Filtrar freelancers por habilidad                           |       3      |
+|  **17** |    **US29**   | Ordenar resultados por relevancia o calificación            |       3      |
+|  **18** |    **US27**   | Filtrar por rango de precios                                |       5      |
+|  **19** |    **US28**   | Filtrar por nivel de experiencia                            |       5      |
+|  **20** |    **US30**   | Contratar desde el perfil del freelancer                    |       5      |
+|  **21** |    **US31**   | Confirmación de contratación exitosa                        |       3      |
+|  **22** |    **US24**   | Añadir imágenes o archivos al servicio (previo a contratar) |       3      |
+|  **23** |    **US33**   | Historial de contrataciones realizadas                      |       2      |
+|  **24** |    **US34**   | Visualizar proyectos activos                                |       5      |
+|  **25** |    **US37**   | Seguimiento del estado del proyecto                         |       5      |
+|  **26** |    **US32**   | Aceptar o rechazar una solicitud de contrato                |       3      |
+|  **27** |    **US35**   | Gestionar solicitudes recibidas                             |       3      |
+|  **28** |    **US36**   | Marcar proyecto como finalizado                             |       3      |
+|  **29** |    **US38**   | Calificar al freelancer al finalizar el proyecto            |       3      |
+|  **30** |    **US39**   | Ver calificaciones en perfil de freelancer                  |       5      |
+|  **31** |    **US41**   | Calificar al cliente                                        |       5      |
+|  **32** |    **US40**   | Editar calificación después del proyecto                    |       5      |
+|  **33** |    **US42**   | Enviar mensaje a usuario desde perfil                       |       3      |
+|  **34** |    **US43**   | Ver historial de conversaciones                             |       2      |
+|  **35** |    **US44**   | Notificaciones de nuevos mensajes                           |       1      |
+|  **36** |    **US45**   | Bloquear o reportar usuario desde chat                      |       2      |
+|  **37** |    **US15**   | Creación de perfil freelance                                |       5      |
+|  **38** |    **US16**   | Añadir habilidades y descripción personal                   |       8      |
+|  **39** |    **US17**   | Establecer tarifas por servicio                             |       8      |
+|  **40** |    **US18**   | Subir portafolio de proyectos                               |       5      |
+|  **41** |    **US19**   | Editar y actualizar perfil en cualquier momento             |       3      |
+|  **42** |    **US20**   | Publicar un servicio personalizado                          |       5      |
+|  **43** |    **US21**   | Establecer plazos de entrega                                |       5      |
+|  **44** |    **US22**   | Editar servicios publicados                                 |       5      |
+|  **45** |    **US23**   | Pausar o eliminar servicios publicados                      |       5      |
+|  **46** |    **US46**   | Sugerencia de precio inteligente                            |       8      |
+|  **47** |    **US47**   | Ajuste manual sobre precio sugerido                         |       5      |
+|  **48** |    **US48**   | Detalle del cálculo del precio sugerido                     |       5      |
+|  **49** |    **US49**   | Comparación entre propuesta y oferta                        |       3      |
+|  **50** |    **US50**   | Historial de precios de servicios similares                 |       2      |
+
 
 <div style="page-break-before: always;"></div>
 
