@@ -39,12 +39,15 @@
 
 # Tabla de Contenidos
 
+* [Student Outcome](#student-outcome)
+
 * [Capítulo I: Introducción](#capítulo-i-introducción)
 
   * [1.1. Startup Profile](#11-startup-profile)
 
     * [1.1.1. Descripción de la Startup](#111-descripción-de-la-startup)
     * [1.1.2. Perfiles de integrantes del equipo](#112-perfiles-de-integrantes-del-equipo)
+
   * [1.2. Solution Profile](#12-solution-profile)
 
     * [1.2.1. Nombre del producto](#121-nombre-del-producto)
@@ -55,6 +58,7 @@
       * [1.2.3.2. Lean UX Assumptions](#1232-lean-ux-assumptions)
       * [1.2.3.3. Lean UX Hypothesis Statements](#1233-lean-ux-hypothesis-statements)
       * [1.2.3.4. Lean UX Canvas](#1234-lean-ux-canvas)
+
   * [1.3. Segmentos objetivo](#13-segmentos-objetivo)
 
 * [Capítulo II: Requirements & Analysis](#capítulo-ii-requirements--analysis)
@@ -63,11 +67,13 @@
 
     * [2.1.1. Análisis competitivo](#211-análisis-competitivo)
     * [2.1.2. Estrategias y tácticas frente a competidores](#212-estrategias-y-tácticas-frente-a-competidores)
+
   * [2.2. Entrevistas](#22-entrevistas)
 
     * [2.2.1. Diseño de entrevistas](#221-diseño-de-entrevistas)
     * [2.2.2. Registro de entrevistas](#222-registro-de-entrevistas)
     * [2.2.3. Análisis de entrevistas](#223-análisis-de-entrevistas)
+
   * [2.3. Needfinding](#23-needfinding)
 
     * [2.3.1. User Personas](#231-user-personas)
@@ -85,32 +91,44 @@
 * [Capítulo IV: Product Architecture Design](#capítulo-iv-product-architecture-design)
 
   * [4.1. Design Concepts, ViewPoints & ER Diagrams](#41-design-concepts-viewpoints--er-diagrams)
-  * [4.2. Principles Statements](#42-principles-statements)
-  * [4.3. Approaches Statements](#43-approaches-statements)
-  * [4.4. Architectural Styles & Patterns](#44-architectural-styles--patterns)
-  * [4.5. Context Diagram](#45-context-diagram)
-  * [4.6. Approach Driven ViewPoints Diagrams](#46-approach-driven-viewpoints-diagrams)
-  * [4.7. Relational/Non Relational Database Diagram](#47-relationalnon-relational-database-diagram)
-  * [4.8. Design Patterns](#48-design-patterns)
-  * [4.9. Tactics](#49-tactics)
-  * [4.10. Architectural Drivers](#410-architectural-drivers)
 
-    * [4.10.1. Design Purpose](#4101-design-purpose)
-    * [4.10.2. Primary Functionality (Primary User Stories)](#4102-primary-functionality-primary-user-stories)
-    * [4.10.3. Quality Attribute Scenarios](#4103-quality-attribute-scenarios)
-    * [4.10.4. Constraints](#4104-constraints)
-    * [4.10.5. Architectural Concerns](#4105-architectural-concerns)
-  * [4.11. ADD Iterations](#411-add-iterations)
+    * [4.1.1. Principles Statements](#411-principles-statements)
+    * [4.1.2. Approaches Statements: Architectural Styles & Patterns](#412-approaches-statements-architectural-styles--patterns)
+    * [4.1.3. Context Diagram](#413-context-diagram)
+    * [4.1.4. Approach-driven ViewPoints Diagrams](#414-approach-driven-viewpoints-diagrams)
+    * [4.1.5. Relational/Non-Relational Database Diagram](#415-relationalnon-relational-database-diagram)
+    * [4.1.6. Design Patterns](#416-design-patterns)
+    * [4.1.7. Tactics](#417-tactics)
 
-    * [4.11.1. Iteration 1](#4111-iteration-1)
+  * [4.2. Architectural Drivers](#42-architectural-drivers)
 
-      * [4.11.1.1. Architectural Design Backlog 1](#41111-architectural-design-backlog-1)
-      * [4.11.1.2. Establish Iteration Goal by Selecting Drivers](#41112-establish-iteration-goal-by-selecting-drivers)
-      * [4.11.1.3. Choose One or More Elements of the System to Refine](#41113-choose-one-or-more-elements-of-the-system-to-refine)
-      * [4.11.1.4. Choose One or More Design Concepts That Satisfy the Selected Drivers](#41114-choose-one-or-more-design-concepts-that-satisfy-the-selected-drivers)
-      * [4.11.1.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces](#41115-instantiate-architectural-elements-allocate-responsibilities-and-define-interfaces)
-      * [4.11.1.6. Sketch Views (C4 & UML) and Record Design Decisions](#41116-sketch-views-c4--uml-and-record-design-decisions)
-      * [4.11.1.7. Analysis of Current Design and Review Iteration Goal](#41117-analysis-of-current-design-and-review-iteration-goal)
+    * [4.2.1. Design Purpose](#421-design-purpose)
+    * [4.2.2. Primary Functionality: Primary User Stories](#422-primary-functionality-primary-user-stories)
+    * [4.2.3. Quality Attribute Scenarios](#423-quality-attribute-scenarios)
+    * [4.2.4. Constraints](#424-constraints)
+    * [4.2.5. Architectural Concerns](#425-architectural-concerns)
+
+  * [4.3. ADD Iterations](#43-add-iterations)
+
+    * [4.3.1. Iteration 1: Core Marketplace & Engagement Flow](#431-iteration-1-core-marketplace--engagement-flow)
+
+      * [4.3.1.1. Architectural Design Backlog 1](#4311-architectural-design-backlog-1)
+      * [4.3.1.2. Establish Iteration Goal by Selecting Drivers](#4312-establish-iteration-goal-by-selecting-drivers)
+      * [4.3.1.3. Choose One or More Elements of the System to Refine](#4313-choose-one-or-more-elements-of-the-system-to-refine)
+      * [4.3.1.4. Choose One or More Design Concepts That Satisfy the Selected Drivers](#4314-choose-one-or-more-design-concepts-that-satisfy-the-selected-drivers)
+      * [4.3.1.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces](#4315-instantiate-architectural-elements-allocate-responsibilities-and-define-interfaces)
+      * [4.3.1.6. Sketch Views: C4 & UML, and Record Design Decisions](#4316-sketch-views-c4--uml-and-record-design-decisions)
+      * [4.3.1.7. Analysis of Current Design and Review Iteration Goal: Kanban Board](#4317-analysis-of-current-design-and-review-iteration-goal-kanban-board)
+
+    * [4.3.2. Iteration 2: Communication, Security & Deployment Readiness](#432-iteration-2-communication-security--deployment-readiness)
+
+      * [4.3.2.1. Architectural Design Backlog 2](#4321-architectural-design-backlog-2)
+      * [4.3.2.2. Establish Iteration Goal by Selecting Drivers](#4322-establish-iteration-goal-by-selecting-drivers)
+      * [4.3.2.3. Choose One or More Elements of the System to Refine](#4323-choose-one-or-more-elements-of-the-system-to-refine)
+      * [4.3.2.4. Choose One or More Design Concepts That Satisfy the Selected Drivers](#4324-choose-one-or-more-design-concepts-that-satisfy-the-selected-drivers)
+      * [4.3.2.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces](#4325-instantiate-architectural-elements-allocate-responsibilities-and-define-interfaces)
+      * [4.3.2.6. Sketch Views: C4 & UML, and Record Design Decisions](#4326-sketch-views-c4--uml-and-record-design-decisions)
+      * [4.3.2.7. Analysis of Current Design and Review Iteration Goal: Kanban Board](#4327-analysis-of-current-design-and-review-iteration-goal-kanban-board)
 
 * [Capítulo V: Product Implementation, Validation & Deployment](#capítulo-v-product-implementation-validation--deployment)
 
@@ -120,12 +138,14 @@
     * [5.1.2. Pattern Based Backend Application(s)](#512-pattern-based-backend-applications)
     * [5.1.3. Pattern Based Custom Software Library](#513-pattern-based-custom-software-library)
     * [5.1.4. Framework Pattern Driven Refactoring Report](#514-framework-pattern-driven-refactoring-report)
+
   * [5.2. Software Configuration Management](#52-software-configuration-management)
 
     * [5.2.1. Software Development Environment Configuration](#521-software-development-environment-configuration)
     * [5.2.2. Source Code Management](#522-source-code-management)
     * [5.2.3. Source Code Style Guide & Conventions](#523-source-code-style-guide--conventions)
     * [5.2.4. Software Deployment Configuration](#524-software-deployment-configuration)
+
   * [5.3. Microservices Implementation](#53-microservices-implementation)
 
     * [5.3.1. Sprint 1](#531-sprint-1)
@@ -138,6 +158,7 @@
       * [5.3.1.6. Software Deployment Evidence for Sprint Review](#5316-software-deployment-evidence-for-sprint-review)
       * [5.3.1.7. Team Collaboration Insights during Sprint](#5317-team-collaboration-insights-during-sprint)
       * [5.3.1.8. Kanban Board](#5318-kanban-board)
+
     * [5.3.2. Sprint 2](#532-sprint-2)
 
       * [5.3.2.1. Sprint Backlog 2](#5321-sprint-backlog-2)
@@ -148,6 +169,7 @@
       * [5.3.2.6. Software Deployment Evidence for Sprint Review](#5326-software-deployment-evidence-for-sprint-review)
       * [5.3.2.7. Team Collaboration Insights during Sprint](#5327-team-collaboration-insights-during-sprint)
       * [5.3.2.8. Kanban Board](#5328-kanban-board)
+
     * [5.3.3. Sprint 3](#533-sprint-3)
 
       * [5.3.3.1. Sprint Backlog 3](#5331-sprint-backlog-3)
@@ -158,6 +180,7 @@
       * [5.3.3.6. Software Deployment Evidence for Sprint Review](#5336-software-deployment-evidence-for-sprint-review)
       * [5.3.3.7. Team Collaboration Insights during Sprint](#5337-team-collaboration-insights-during-sprint)
       * [5.3.3.8. Kanban Board](#5338-kanban-board)
+
     * [5.3.4. Sprint 4](#534-sprint-4)
 
       * [5.3.4.1. Sprint Backlog 4](#5341-sprint-backlog-4)
@@ -168,6 +191,7 @@
       * [5.3.4.6. Software Deployment Evidence for Sprint Review](#5346-software-deployment-evidence-for-sprint-review)
       * [5.3.4.7. Team Collaboration Insights during Sprint](#5347-team-collaboration-insights-during-sprint)
       * [5.3.4.8. Kanban Board](#5348-kanban-board)
+
   * [5.4. Microservices Deployment](#54-microservices-deployment)
 
     * [5.4.1. Cloud Architecture Diagram](#541-cloud-architecture-diagram)
@@ -182,8 +206,6 @@
 * [Anexos](#anexos)
 
 * [Links](#links)
-
-<div style="page-break-before: always;"></div>
 
 # Student Outcome
 
@@ -216,6 +238,7 @@ GigU no solo ayuda a los estudiantes a generar ingresos mientras estudian, sino 
 
 Además, con GigU, los estudiantes tienen una forma flexible, accesible y efectiva de adquirir experiencia laboral y construir una red de clientes y contactos profesionales desde el inicio de su carrera.
 
+
 ### 1.1.2. Perfiles de integrantes del equipo
 
 | Nombre                             | Detalle                                                                                                                                                                                                                                                                                                                                                       |
@@ -240,7 +263,6 @@ Además, con GigU, los estudiantes tienen una forma flexible, accesible y efecti
 ## 1.2. Solution Profile
 
 ### 1.2.1. Nombre del producto
-
 GigU
 
 ### 1.2.2. Antecedentes y problemática
@@ -249,37 +271,58 @@ GigU
 
 Muchos estudiantes universitarios enfrentan serias dificultades para generar ingresos y adquirir experiencia profesional mientras cursan sus estudios. Esta carencia de oportunidades laborales adecuadas no solo limita su independencia económica, sino también el desarrollo temprano de habilidades prácticas y su inserción competitiva en el mercado laboral. Según datos del Ministerio de Educación del Perú, una parte importante de los estudiantes universitarios combina estudios y trabajo de manera simultánea, reflejando que la necesidad de generar ingresos aparece incluso antes del egreso. Sin embargo, a pesar de contar con talentos y conocimientos valiosos, la mayoría no dispone de una plataforma accesible, segura y adaptada que les permita ofrecer sus servicios de forma organizada y profesional, especialmente bajo la modalidad freelance.
 
+Como antecedente, el Ministerio de Educación aplicó la Encuesta Nacional de Estudiantes de Educación Superior Universitaria 2019 a 63,412 estudiantes de 18 universidades públicas. En dicha encuesta, el 28.5% de los estudiantes que interrumpieron sus estudios señaló como razón principal la falta de recursos económicos, lo que evidencia que la presión financiera puede afectar directamente la continuidad académica (Ministerio de Educación del Perú, 2021).
+
+Además, el sistema universitario peruano concentra una población joven altamente expuesta a esta problemática. El Ministerio de Educación reporta que el 65% de los estudiantes universitarios tiene entre 18 y 25 años, y que el 24% pertenece a hogares en situación de pobreza o pobreza extrema. Por ello, la necesidad de generar ingresos durante la etapa universitaria no es un caso aislado, sino una condición relevante para una parte importante de la población estudiantil (Ministerio de Educación del Perú, 2023).
+
 ##### **¿Cuándo ocurre el problema?**
 
-El problema se presenta a lo largo de toda la etapa universitaria, con mayor énfasis a partir del segundo o tercer año de carrera, cuando los estudiantes ya han adquirido capacidades técnicas, académicas o creativas que podrían ser aplicadas en el ámbito laboral. La necesidad de generar ingresos se intensifica en periodos críticos como matrículas, proyectos finales o gastos personales, momentos en los que la presión financiera se convierte en un factor determinante para su permanencia y rendimiento académico.
+El problema se presenta a lo largo de toda la etapa universitaria, con mayor énfasis a partir del 2.º o 3.º año de carrera, cuando los estudiantes ya han adquirido capacidades técnicas, académicas o creativas que podrían ser aplicadas en el ámbito laboral. La necesidad de generar ingresos se intensifica en periodos críticos como matrículas, proyectos finales o gastos personales, momentos en los que la presión financiera se convierte en un factor determinante para su permanencia y rendimiento académico.
+
+Este problema también se vuelve más evidente en la transición entre la formación académica y la empleabilidad temprana. La universidad peruana exige progresivamente que los estudiantes desarrollen competencias profesionales, portafolios, prácticas y experiencia demostrable; sin embargo, el acceso a oportunidades compatibles con horarios académicos sigue siendo limitado. Aunque la Ley Universitaria reconoce mecanismos orientados a mejorar la formación y empleabilidad, como bolsas de trabajo y promoción de iniciativas estudiantiles, estos mecanismos suelen estar más orientados al egreso, las prácticas o la empleabilidad institucional, no necesariamente a servicios freelance flexibles durante la etapa formativa (Ministerio de Educación del Perú, 2024).
 
 ##### **¿Dónde ocurre el problema?**
 
 Esta problemática es evidente en el contexto universitario peruano y latinoamericano, especialmente en instituciones donde las políticas de empleabilidad son limitadas o inexistentes, y donde los programas de prácticas preprofesionales o los vínculos con el mercado freelance son insuficientes o inaccesibles. Asimismo, en el entorno digital persiste la falta de una plataforma centralizada y especializada que facilite a los estudiantes la oferta de servicios freelance de manera organizada, validada y segura.
 
+En América Latina y el Caribe, la Organización Internacional del Trabajo advierte que las personas jóvenes enfrentan tasas de desocupación 3 veces superiores a las de los adultos, y que la informalidad afecta al 60% de los jóvenes que trabajan. Este contexto regional refuerza la necesidad de soluciones que no solo conecten oferta y demanda, sino que también reduzcan la informalidad, aumenten la confianza entre estudiantes y clientes, y permitan que el trabajo independiente se realice bajo condiciones más transparentes (Organización Internacional del Trabajo, 2025).
+
 ##### **¿A quién afecta el problema?**
 
 El problema impacta directamente a estudiantes universitarios que buscan generar ingresos, adquirir experiencia laboral temprana y construir un portafolio real antes de egresar. Esta situación también afecta a microempresas, emprendedores y particulares que requieren servicios profesionales accesibles, confiables y de calidad, y que a menudo no logran encontrar talento joven disponible y verificado en su entorno inmediato.
+
+El impacto sobre los estudiantes es especialmente relevante porque se trata de una población que combina necesidades económicas, restricciones de horario y baja experiencia laboral acumulada. Al mismo tiempo, las microempresas y emprendimientos suelen requerir servicios puntuales de diseño, desarrollo web, edición, marketing, traducción, soporte tecnológico, asistencia académica o producción de contenido, pero no siempre cuentan con presupuesto para contratar agencias o personal permanente. El Banco Mundial señala que las plataformas de trabajo digital pueden facilitar la conexión entre trabajadores independientes y empresas que requieren servicios específicos, aunque también advierte que estos mercados necesitan mecanismos de confianza, acceso y protección para ser sostenibles (Banco Mundial, 2023).
 
 ##### **¿Por qué sucede el problema?**
 
 El problema radica en la falta de plataformas diseñadas específicamente para conectar estudiantes con clientes potenciales, considerando sus limitaciones de tiempo, experiencia y recursos. Las plataformas freelance tradicionales imponen barreras de entrada significativas, como comisiones elevadas, competencia global desproporcionada y escasa validación académica de perfiles, lo que desalienta la participación de estudiantes y perpetúa su informalidad laboral.
 
+Las plataformas globales de trabajo independiente permiten acceder a mercados amplios, pero no siempre son adecuadas para estudiantes que recién comienzan. El Banco Mundial identifica que las plataformas locales o regionales pueden reducir barreras para jóvenes y trabajadores primerizos, debido a una menor competencia global, mayor cercanía con clientes locales y menor dependencia de idiomas extranjeros. También advierte que las plataformas globales pueden generar barreras de entrada más altas para nuevos trabajadores. Por ello, una solución especializada para universitarios puede aportar valor si incorpora validación académica, reputación inicial, categorías alineadas a carreras, pagos seguros y reglas claras de contratación (Banco Mundial, 2024).
+
 ##### **¿Cómo sucede el problema?**
 
 En ausencia de alternativas formales y especializadas, los estudiantes optan por ofrecer sus servicios a través de redes sociales, contactos personales o plataformas genéricas que no garantizan seguridad, visibilidad ni condiciones laborales justas. Esta informalidad expone a los estudiantes a malas prácticas, incumplimientos de pago, sobreexplotación de tiempo y escaso reconocimiento de sus capacidades, lo que frecuentemente deriva en frustración, desmotivación y experiencias laborales negativas.
+
+Este proceso ocurre porque el estudiante suele iniciar su búsqueda laboral desde redes informales, sin mecanismos claros de verificación, contratos simples, protección frente a incumplimientos, gestión de entregables o calificación del cliente. La Organización Internacional del Trabajo señala que el trabajo mediante plataformas digitales puede ampliar oportunidades, pero también plantea riesgos vinculados a condiciones de trabajo, ingresos variables y ausencia de protección suficiente si no existen reglas claras. En el mismo sentido, el Banco Mundial advierte que el trabajo digital puede ofrecer flexibilidad, pero también generar tareas esporádicas, dificultad para progresar profesionalmente y altos tiempos de búsqueda de encargos (Organización Internacional del Trabajo, 2021; Banco Mundial, 2023).
 
 ##### **¿Cuán grande es el impacto de este problema?**
 
 El impacto es considerable tanto en el plano individual como en el social. En el Perú, una alta proporción de jóvenes trabaja en condiciones de informalidad, lo que evidencia una fuerte precarización del empleo juvenil y una limitada protección social. Además, la tasa de desempleo juvenil supera al promedio nacional, posicionando a este grupo como uno de los más vulnerables del mercado laboral. Esta realidad afecta directamente su desarrollo personal y profesional, retrasa su independencia económica y limita su proyección laboral futura.
 
+Los indicadores laborales recientes refuerzan esta situación. Según el Instituto Nacional de Estadística e Informática, en el 1.er trimestre de 2025 la tasa de desempleo nacional fue de 5.5%, mientras que en jóvenes de 14 a 24 años alcanzó 11.3%. En el mismo periodo, el desempleo afectó al 8.0% de la población con educación superior universitaria, y el subempleo afectó al 58.2% de la población económicamente activa ocupada joven (Instituto Nacional de Estadística e Informática, 2025a).
+
+En el 2.º trimestre de 2025, el INEI reportó que la tasa de desempleo nacional fue de 5.9%, mientras que en jóvenes de 14 a 24 años alcanzó 13.0%. Además, la tasa de desempleo entre personas con educación superior universitaria fue de 7.0%. Estos datos no corresponden exclusivamente a estudiantes universitarios, pero sí describen el entorno laboral del grupo etario y educativo al que pertenece gran parte de ellos (Instituto Nacional de Estadística e Informática, 2025b).
+
 ### 1.2.3. Lean UX Process
+
 
 #### 1.2.3.1. Lean UX Problem Statement
 
-En el contexto universitario peruano, los estudiantes enfrentan grandes desafíos para insertarse en el mercado laboral mientras cursan sus estudios. La mayoría se enfrenta a condiciones de informalidad o desempleo, lo cual limita su desarrollo profesional desde una etapa temprana.
+En el contexto universitario peruano, los estudiantes enfrentan grandes desafíos para insertarse en el mercado laboral mientras cursan sus estudios. Esta situación se relaciona con factores económicos, académicos y laborales: el 65% de los estudiantes universitarios tiene entre 18 y 25 años, el 24% pertenece a hogares en situación de pobreza o pobreza extrema, y la falta de recursos económicos aparece como una causa relevante de interrupción de estudios universitarios (Ministerio de Educación del Perú, 2023).
 
-Hemos observado que no existen plataformas efectivas y especializadas que conecten directamente a estudiantes universitarios con oportunidades laborales formales, flexibles y alineadas a sus carreras, lo cual perpetúa la falta de experiencia profesional al egresar.
+Hemos observado que no existen plataformas efectivas y especializadas que conecten directamente a estudiantes universitarios con oportunidades laborales formales, flexibles y alineadas a sus carreras, lo cual perpetúa la falta de experiencia profesional al egresar. Aunque existen plataformas freelance globales, estas no resuelven completamente el problema para estudiantes que recién comienzan, debido a barreras como alta competencia, dificultad para construir reputación inicial, posibles comisiones, baja validación académica y menor adaptación al mercado local (Banco Mundial, 2024).
+
+Este problema afecta principalmente a estudiantes universitarios que necesitan generar ingresos, adquirir experiencia práctica y construir un portafolio profesional antes de egresar. También afecta a emprendedores, microempresas y particulares que requieren servicios accesibles y confiables, pero no cuentan con un canal especializado para encontrar talento universitario verificado.
 
 ¿Cómo podemos ayudar a los estudiantes universitarios en el Perú a insertarse en el mercado laboral de forma formal, flexible y segura durante su etapa académica, permitiéndoles desarrollar habilidades prácticas, generar ingresos y mejorar su empleabilidad desde los primeros ciclos?
 
@@ -1311,51 +1354,389 @@ Se utilizó la escala Fibonacci para la estimación de los Story Points. En tota
 
 ## 4.1. Design Concepts, ViewPoints & ER Diagrams
 
-## 4.2. Principles Statements
+Esta sección presenta los conceptos de diseño, principios, estilos arquitectónicos, patrones, vistas y tácticas que guían la arquitectura de GigU. La propuesta se alinea con el objetivo del curso de construir una arquitectura empresarial basada en microservicios, Domain-Driven Design y arquitectura cloud native, aplicando decisiones de diseño justificables mediante ADD v3.
 
-## 4.3. Approaches Statements
+GigU es una plataforma que conecta estudiantes universitarios freelancers con clientes o emprendimientos que requieren contratar servicios. La solución permite publicar servicios, definir tarifas, gestionar solicitudes de contratación, coordinar proyectos, comunicarse dentro de la plataforma y consultar calificaciones para aumentar la confianza entre las partes (GigU, 2026).
 
-## 4.4. Architectural Styles & Patterns
+### 4.1.1. Principles Statements
 
-## 4.5. Context Diagram
+#### Domain-Driven Design como principio rector
 
-## 4.6. Approach Driven ViewPoints Diagrams
+La arquitectura de GigU se organizará alrededor de las capacidades centrales del dominio freelance universitario. Cada microservicio representará un límite funcional coherente del negocio, evitando dividir el sistema por capas técnicas aisladas. Esta decisión permite que el modelo de software refleje conceptos propios del dominio, tales como perfil freelance, servicio publicado, solicitud de contratación, proyecto, conversación, calificación y sugerencia de precio.
 
-## 4.7. Relational/Non Relational Database Diagram
+| Principio                   | Aplicación en GigU                                                                                                                                                |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lenguaje ubicuo             | El equipo utilizará términos consistentes como freelancer, cliente, servicio, solicitud, acuerdo, proyecto, tarifa, reseña, conversación y portafolio.            |
+| Bounded contexts            | El sistema se dividirá en contextos delimitados: acceso/perfiles, marketplace, contratación/proyectos y chat/notificaciones.                                      |
+| Modelo de dominio explícito | Las reglas principales no estarán dispersas en controladores o consultas SQL, sino encapsuladas en entidades, value objects, servicios de dominio y casos de uso. |
+| Alta cohesión               | Cada microservicio concentrará reglas relacionadas con una capacidad de negocio específica.                                                                       |
 
-## 4.8. Design Patterns
+#### Clean Architecture por microservicio
 
-## 4.9. Tactics
+Cada microservicio de GigU aplicará Clean Architecture para separar reglas de negocio, casos de uso, adaptadores de entrada/salida e infraestructura. El objetivo es que el dominio no dependa del framework, de la base de datos, del gateway, del broker de mensajería ni de servicios externos.
 
-## 4.10. Architectural Drivers
+| Capa                 | Responsabilidad                                                                                          |
+| -------------------- | -------------------------------------------------------------------------------------------------------- |
+| Domain Layer         | Define entidades, value objects, reglas de negocio, invariantes y eventos de dominio.                    |
+| Application Layer    | Orquesta casos de uso, comandos, consultas y puertos.                                                    |
+| Interface Layer      | Expone controladores REST, DTOs de entrada/salida y validaciones de contrato.                            |
+| Infrastructure Layer | Implementa persistencia, integración con Supabase, RabbitMQ, Caddy, almacenamiento y servicios externos. |
 
-### 4.10.1. Design Purpose
+#### API First y contratos explícitos
 
-### 4.10.2. Primary Functionality (Primary User Stories)
+Las APIs REST de GigU se diseñarán con contratos claros, versionados y documentados. Cada microservicio expondrá endpoints bajo `/api/v1`, utilizando DTOs específicos para evitar exponer directamente entidades del dominio. OpenAPI se utilizará para documentar formalmente la superficie de las APIs HTTP, facilitando comprensión, pruebas y consumo por parte del frontend (OpenAPI Initiative, s. f.).
 
-### 4.10.3. Quality Attribute Scenarios
+| Principio             | Aplicación en GigU                                                                        |
+| --------------------- | ----------------------------------------------------------------------------------------- |
+| Contratos versionados | Los endpoints públicos se publicarán bajo `/api/v1`.                                      |
+| DTOs explícitos       | Los modelos internos no serán expuestos directamente en la API.                           |
+| Documentación viva    | Cada microservicio tendrá documentación OpenAPI/Swagger.                                  |
+| Compatibilidad        | Los cambios incompatibles deberán manejarse mediante nuevos DTOs o versiones de endpoint. |
 
-### 4.10.4. Constraints
+#### Autonomía de servicios y ownership de datos
 
-### 4.10.5. Architectural Concerns
+Cada microservicio será responsable de sus propios datos y reglas. Aunque Supabase PostgreSQL será la base de datos administrada utilizada por el proyecto, la propiedad lógica de los datos se mantendrá separada por esquemas y por límites de microservicio. El enfoque de microservicios propone servicios pequeños, ejecutados en procesos independientes, organizados alrededor de capacidades de negocio y comunicados mediante mecanismos ligeros, usualmente APIs HTTP (Lewis & Fowler, 2014).
 
-## 4.11. ADD Iterations
+| Microservicio           | Ownership principal                                                                       |
+| ----------------------- | ----------------------------------------------------------------------------------------- |
+| AccessProfileService    | Usuarios, roles, perfiles, habilidades, portafolio y verificación académica.              |
+| GigMarketplaceService   | Servicios publicados, categorías, filtros, tarifas base y archivos asociados al servicio. |
+| PullEngagementService   | Solicitudes, acuerdos, proyectos, estados, reseñas y sugerencias de precio.               |
+| ChatNotificationService | Conversaciones, mensajes, notificaciones, reportes y tickets.                             |
 
-### 4.11.1. Iteration 1
+#### Seguridad por diseño
 
-#### 4.11.1.1. Architectural Design Backlog 1
+GigU gestionará información de usuarios, perfiles públicos, conversaciones, solicitudes y acuerdos. Por ello, la seguridad se incorporará desde la arquitectura y no como una extensión posterior. Spring Security se utilizará para autenticación, autorización y protección de endpoints en los microservicios Spring Boot (Spring, s. f.-a).
 
-#### 4.11.1.2. Establish Iteration Goal by Selecting Drivers
+| Principio     | Aplicación en GigU                                                                    |
+| ------------- | ------------------------------------------------------------------------------------- |
+| Autenticación | Inicio de sesión con JWT emitido por el backend.                                      |
+| Autorización  | Control de acceso por roles: visitante, freelancer, cliente y administrador.          |
+| Ownership     | Un usuario solo podrá modificar recursos de su propiedad.                             |
+| Auditoría     | Los cambios relevantes de contratación, proyecto, reseña y bloqueo serán registrados. |
+| Validación    | Las entradas serán validadas en API y en casos de uso.                                |
 
-#### 4.11.1.3. Choose One or More Elements of the System to Refine
+#### Comunicación asíncrona para eventos secundarios
 
-#### 4.11.1.4. Choose One or More Design Concepts That Satisfy the Selected Drivers
+Las operaciones críticas se resolverán mediante REST cuando el usuario requiera respuesta inmediata. Las operaciones secundarias, como notificaciones internas, eventos de cambio de estado o avisos de nuevos mensajes, se manejarán mediante RabbitMQ. RabbitMQ es un broker de mensajería open source orientado a comunicación eficiente y confiable entre aplicaciones distribuidas (RabbitMQ, s. f.).
 
-#### 4.11.1.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
+| Evento                     | Publicador              | Consumidor              |
+| -------------------------- | ----------------------- | ----------------------- |
+| `UserRegistered`           | AccessProfileService    | ChatNotificationService |
+| `FreelancerProfileUpdated` | AccessProfileService    | GigMarketplaceService   |
+| `ServicePublished`         | GigMarketplaceService   | ChatNotificationService |
+| `ProjectRequestCreated`    | PullEngagementService   | ChatNotificationService |
+| `ProjectStatusChanged`     | PullEngagementService   | ChatNotificationService |
+| `MessageSent`              | ChatNotificationService | ChatNotificationService |
+| `ReviewCreated`            | PullEngagementService   | GigMarketplaceService   |
 
-#### 4.11.1.6. Sketch Views (C4 & UML) and Record Design Decisions
+#### Despliegue reproducible
 
-#### 4.11.1.7. Analysis of Current Design and Review Iteration Goal
+Los servicios backend se desplegarán mediante contenedores administrados con Docker Compose en Oracle Cloud Always Free. Docker Compose permite definir y ejecutar aplicaciones multi-contenedor mediante un archivo YAML, lo que permite levantar microservicios, gateway y broker de forma reproducible (Docker, s. f.).
+
+### 4.1.2. Approaches Statements: Architectural Styles & Patterns
+
+#### Approaches Statements
+
+| Enfoque                  | Aplicación en GigU                                                                                                                                                                                                                                                                                    |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain-Driven Design     | Se utilizará para definir bounded contexts alineados con capacidades de negocio.                                                                                                                                                                                                                      |
+| Clean Architecture       | Se aplicará dentro de cada microservicio para separar dominio, casos de uso, interfaces e infraestructura.                                                                                                                                                                                            |
+| API First                | Se diseñarán contratos REST claros y versionados antes de acoplar el frontend al backend.                                                                                                                                                                                                             |
+| Event-Driven Integration | Se utilizarán eventos asíncronos para notificaciones, cambios de estado y actualización de vistas derivadas.                                                                                                                                                                                          |
+| Cloud Native Deployment  | El frontend se alojará en Vercel, mientras que los microservicios backend se desplegarán en Oracle Cloud Always Free mediante contenedores. Oracle Cloud Always Free incluye recursos Ampere A1 equivalentes a 4 OCPU y 24 GB de memoria dentro de sus límites gratuitos (Oracle, s. f.). |
+
+#### Architectural Styles
+
+| Estilo arquitectónico        | Aplicación en GigU                                                                                              | Justificación                                                                |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Microservices Architecture   | El backend se divide en servicios independientes por capacidad de negocio.                                      | Permite modularidad, despliegue separado, testabilidad y alineación con DDD. |
+| Client-Server                | El frontend Vue consume APIs REST expuestas por el backend.                                                     | Separa experiencia de usuario de lógica de negocio.                          |
+| Layered / Clean Architecture | Cada microservicio se organiza en capas internas con dependencias hacia el dominio.                             | Reduce acoplamiento y facilita pruebas.                                      |
+| Event-Driven Architecture    | RabbitMQ soporta eventos secundarios entre microservicios.                                                      | Reduce dependencia temporal entre servicios.                                 |
+| Cloud Native Deployment      | La solución se despliega con frontend, backend, almacenamiento y base de datos distribuidos en servicios cloud. | Permite acceso público, evidencias de despliegue y validación incremental.   |
+
+#### Architectural Patterns
+
+| Patrón arquitectónico        | Aplicación en GigU                                                                                                                                                                                                                                                   |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lightweight API Gateway      | Caddy actuará como reverse proxy y gateway liviano, enrutando `/api/access`, `/api/marketplace`, `/api/engagement` y `/api/chat` hacia los microservicios correspondientes. Caddy soporta HTTPS automático y renovación de certificados TLS (Caddy, s. f.). |
+| Database per Service lógico  | Supabase PostgreSQL contendrá esquemas separados por microservicio.                                                                                                                                                                                                  |
+| Message Broker               | RabbitMQ desacoplará eventos de dominio y notificaciones.                                                                                                                                                                                                            |
+| Containerized Deployment     | Docker Compose ejecutará Caddy, microservicios y RabbitMQ en la VM de Oracle Cloud.                                                                                                                                                                                  |
+| Backend for Frontend parcial | El gateway expondrá rutas estables para el frontend sin exponer la topología interna.                                                                                                                                                                                |
+| RESTful API                  | Los microservicios expondrán recursos mediante APIs HTTP documentadas con OpenAPI.                                                                                                                                                                                   |
+| Domain Events                | Cambios relevantes del negocio serán publicados como eventos internos.                                                                                                                                                                                               |
+
+#### Bounded Contexts y microservicios
+
+| Bounded Context     | Microservicio           | Responsabilidades principales                                                                           |
+| ------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------- |
+| Access & Profile    | AccessProfileService    | Registro, autenticación, roles, perfiles freelance, habilidades, portafolio y verificación académica.   |
+| Gig Marketplace     | GigMarketplaceService   | Publicación de servicios, edición, búsqueda, filtros, categorías, tarifas base y archivos de servicios. |
+| Pull & Engagement   | PullEngagementService   | Solicitudes de contratación, acuerdos, proyectos, estados, entrega, reseñas y sugerencias de precio.    |
+| Chat & Notification | ChatNotificationService | Conversaciones, mensajes, notificaciones internas, reportes, bloqueos y tickets de soporte.             |
+
+#### Servicios externos de soporte
+
+| Servicio externo         | Uso arquitectónico                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Vercel                   | Alojamiento del frontend Vue + Vite. El plan Hobby está orientado a proyectos personales y aplicaciones pequeñas (Vercel, s. f.).     |
+| Oracle Cloud Always Free | Alojamiento de backend, Caddy, microservicios y RabbitMQ.                                                                             |
+| Supabase PostgreSQL      | Base de datos relacional administrada. Supabase se define como una plataforma de desarrollo basada en PostgreSQL (Supabase, s. f.-a). |
+| Supabase Storage         | Almacenamiento de archivos de portafolio, imágenes y adjuntos.                                                                        |
+| GitHub Actions           | Automatización de build, pruebas y evidencias de integración continua.                                                                |
+| Resend                   | Servicio opcional para correos de recuperación y notificaciones.                                                                      |
+
+### 4.1.3. Context Diagram
+
+El diagrama de contexto representa a GigU como sistema de software y muestra su relación con los usuarios principales y servicios externos. El proyecto identifica como actores principales al estudiante universitario freelancer, al cliente o emprendimiento que contrata servicios y al administrador de plataforma. Las funcionalidades principales incluyen creación de perfil, publicación de servicios, búsqueda, contratación, gestión de proyectos, calificaciones, mensajería y sugerencia de precios (GigU, 2026).
+
+![4.1.3.ContextDiagram](imgs/add/4.1.3.ContextDiagram.png)
+
+### 4.1.4. Approach-driven ViewPoints Diagrams
+
+Para comunicar la arquitectura de GigU se utilizarán vistas C4 y UML. El C4 Model permite representar el sistema en distintos niveles de abstracción: contexto, contenedores, componentes y código. Para este punto se incluyen vistas de contexto, contenedores, componentes, actividad, estado y clases, coherentes con la estructura solicitada para el capítulo.
+
+#### Viewpoint 01: Container View
+
+La vista de contenedores muestra los elementos ejecutables principales de GigU: frontend, gateway, microservicios backend, broker de eventos, base de datos y almacenamiento. Esta vista permite observar la distribución de responsabilidades en tiempo de ejecución.
+
+![4.1.4 ApproachdrivenViewPointsDiagrams1](<imgs/add/4.1.4 ApproachdrivenViewPointsDiagrams1.png>)
+
+#### Viewpoint 02: Component View - PullEngagementService
+
+El PullEngagementService concentra las reglas transaccionales más relevantes de GigU: solicitudes de contratación, acuerdos, proyectos, cambios de estado, reseñas y sugerencias de precio. Este servicio refleja historias críticas del producto, como contratar desde el perfil del freelancer, aceptar o rechazar solicitudes, visualizar proyectos activos, marcar proyectos como finalizados y registrar calificaciones (GigU, 2026).
+
+![4.1.4 ApproachdrivenViewPointsDiagrams2](<imgs/add/4.1.4 ApproachdrivenViewPointsDiagrams2.png>)
+
+#### Viewpoint 03: Activity Diagram - contratación de servicio
+
+![4.1.4 ApproachdrivenViewPointsDiagrams3](<imgs/add/4.1.4 ApproachdrivenViewPointsDiagrams3.png>)
+
+#### Viewpoint 04: State Diagram - ciclo de vida de proyecto
+
+![4.1.4 ApproachdrivenViewPointsDiagrams4](<imgs/add/4.1.4 ApproachdrivenViewPointsDiagrams4.png>)
+
+#### Viewpoint 05: Domain Class Diagram
+
+![4.1.4 ApproachdrivenViewPointsDiagrams5](<imgs/add/4.1.4 ApproachdrivenViewPointsDiagrams5.png>)
+
+### 4.1.5. Relational/Non-Relational Database Diagram
+
+GigU utilizará una base de datos relacional administrada con PostgreSQL en Supabase. La separación lógica se realizará mediante esquemas por microservicio para preservar ownership de datos y evitar acoplamiento directo entre contextos. Las relaciones internas de cada esquema se podrán implementar con claves foráneas, mientras que las referencias hacia datos de otros microservicios se representarán mediante identificadores externos controlados por contrato.
+
+| Esquema                    | Microservicio propietario | Tablas principales                                                                                           |
+| -------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `access_profile_schema`    | AccessProfileService      | `users`, `roles`, `user_roles`, `freelancer_profiles`, `skills`, `freelancer_skills`, `portfolio_items`      |
+| `marketplace_schema`       | GigMarketplaceService     | `service_categories`, `service_offerings`, `service_media`                                                   |
+| `engagement_schema`        | PullEngagementService     | `project_requests`, `agreements`, `projects`, `project_status_history`, `reviews`, `price_suggestions`       |
+| `chat_notification_schema` | ChatNotificationService   | `conversations`, `conversation_participants`, `messages`, `notifications`, `user_reports`, `support_tickets` |
+
+![4.1.5.RelationalNonRelationalDatabaseDiagram](imgs/add/4.1.5.RelationalNonRelationalDatabaseDiagram.png)
+
+### 4.1.6. Design Patterns
+
+| Design Pattern        | Aplicación en GigU                                                                                                                                  | Beneficio arquitectónico                                                     |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Repository Pattern    | Cada microservicio tendrá repositorios para abstraer acceso a PostgreSQL.                                                                           | Reduce acoplamiento con persistencia y facilita pruebas.                     |
+| DTO Pattern           | Los controllers recibirán y devolverán DTOs, no entidades de dominio.                                                                               | Protege el modelo interno y estabiliza contratos.                            |
+| Mapper Pattern        | Se convertirán DTOs, comandos, entidades y respuestas mediante mappers.                                                                             | Evita lógica de transformación dispersa.                                     |
+| Factory Method        | Se crearán objetos complejos como `ProjectRequest`, `Agreement`, `Project` y `ServiceOffering` mediante fábricas o métodos de creación controlados. | Centraliza invariantes de construcción.                                      |
+| Strategy Pattern      | La sugerencia de precios podrá usar estrategias por tipo de servicio, complejidad, urgencia o experiencia.                                          | Permite extender reglas de pricing sin modificar el caso de uso principal.   |
+| Specification Pattern | Los filtros de búsqueda podrán componerse por habilidad, categoría, precio, disponibilidad y reputación.                                            | Evita consultas rígidas y mejora mantenibilidad.                             |
+| Domain Events         | Eventos como `ProjectRequestCreated`, `ProjectStatusChanged`, `ReviewCreated` y `MessageSent` representarán cambios relevantes del dominio.         | Desacopla microservicios y facilita reacciones asíncronas.                   |
+| Outbox Pattern        | Los eventos críticos podrán registrarse junto con la transacción local antes de publicarse en RabbitMQ.                                             | Reduce riesgo de pérdida de eventos.                                         |
+| Adapter Pattern       | Integraciones con Supabase Storage, RabbitMQ, Resend y persistencia se encapsularán como adaptadores.                                               | Mantiene el dominio independiente de proveedores externos.                   |
+| Dependency Injection  | Los casos de uso dependerán de interfaces y no de implementaciones concretas.                                                                       | Facilita pruebas unitarias y sustitución de infraestructura.                 |
+| API Gateway Pattern   | Caddy centralizará el ingreso HTTP y enrutará hacia microservicios.                                                                                 | Oculta la topología interna y simplifica el consumo del frontend.            |
+| CQRS Lite             | Se separarán comandos y queries en casos de uso relevantes, como búsqueda, contratación y mensajería.                                               | Mejora claridad de responsabilidades sin introducir complejidad innecesaria. |
+
+### 4.1.7. Tactics
+
+Las tácticas seleccionadas responden a los atributos de calidad más relevantes para GigU: seguridad, modificabilidad, interoperabilidad, disponibilidad, performance y capacidad de prueba. El material del curso clasifica tácticas para disponibilidad, interoperabilidad, modificabilidad, performance, seguridad, capacidad de prueba y usabilidad; por ello, la selección se mantiene enfocada en los atributos que más influyen en la arquitectura del sistema.
+
+| Atributo de calidad | Táctica                         | Aplicación en GigU                                                                                                                                                                                                             |
+| ------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Seguridad           | Authenticate Actors             | Los usuarios se autentican mediante Spring Security y JWT.                                                                                                                                                                     |
+| Seguridad           | Authorize Actors                | Los endpoints validan roles y ownership antes de permitir operaciones sobre perfiles, servicios, solicitudes, proyectos, reseñas o conversaciones.                                                                             |
+| Seguridad           | Maintain Audit Trail            | Se registran acciones relevantes: creación de solicitud, aceptación/rechazo, cambio de estado de proyecto, calificación, bloqueo y reporte.                                                                                    |
+| Seguridad           | Validate Inputs                 | Los DTOs y casos de uso validan entradas antes de ejecutar reglas de negocio.                                                                                                                                                  |
+| Modificabilidad     | Increase Semantic Coherence     | Cada microservicio agrupa responsabilidades de un bounded context específico.                                                                                                                                                  |
+| Modificabilidad     | Encapsulate                     | Reglas de perfil, marketplace, contratación y chat se encapsulan en sus respectivos servicios.                                                                                                                                 |
+| Modificabilidad     | Restrict Dependencies           | Los microservicios no consultan directamente tablas de otros contextos; usan IDs externos, APIs o eventos.                                                                                                                     |
+| Modificabilidad     | Use an Intermediary             | RabbitMQ desacopla eventos secundarios entre microservicios.                                                                                                                                                                   |
+| Interoperabilidad   | Tailor Interface                | Cada microservicio expone contratos REST específicos para su contexto.                                                                                                                                                         |
+| Interoperabilidad   | Orchestrate                     | PullEngagementService coordina el flujo de solicitud, acuerdo, proyecto, entrega y reseña.                                                                                                                                     |
+| Interoperabilidad   | Maintain Contract Documentation | OpenAPI documenta endpoints, requests, responses y errores esperados.                                                                                                                                                          |
+| Disponibilidad      | Ping/Echo                       | Cada microservicio expondrá endpoint de health check para validar disponibilidad.                                                                                                                                              |
+| Disponibilidad      | Exception Handling              | Fallas de notificación, correo o evento no deben interrumpir la operación principal de contratación.                                                                                                                           |
+| Disponibilidad      | Retry                           | Publicación de eventos y envío de notificaciones podrán reintentarse de forma controlada.                                                                                                                                      |
+| Disponibilidad      | Graceful Degradation            | Si falla la notificación externa, el proyecto y la contratación seguirán funcionando y se mantendrá notificación interna.                                                                                                      |
+| Performance         | Manage Resources                | Las búsquedas usarán paginación, filtros e índices en campos como habilidad, categoría, estado, precio y fecha.                                                                                                                |
+| Performance         | Reduce Overhead                 | El frontend consumirá DTOs ligeros en listados de servicios, perfiles y conversaciones.                                                                                                                                        |
+| Performance         | Asynchronous Processing         | Notificaciones y eventos secundarios se procesarán fuera del flujo principal.                                                                                                                                                  |
+| Capacidad de prueba | Specialized Interfaces          | Los casos de uso dependerán de interfaces, permitiendo mocks en pruebas unitarias.                                                                                                                                             |
+| Capacidad de prueba | Record/Playback                 | Los eventos y respuestas externas podrán simularse en pruebas automatizadas.                                                                                                                                                   |
+| Capacidad de prueba | Test with Real Dependencies     | Testcontainers permitirá ejecutar pruebas de integración con servicios reales en contenedores. Spring Boot documenta Testcontainers como mecanismo para levantar servicios reales durante pruebas de integración (Spring, s. f.-b). |
+| Usabilidad          | Feedback                        | El sistema mostrará confirmaciones para registro, publicación, contratación, envío de mensaje, cambio de estado y calificación.                                                                                                |
+| Usabilidad          | Maintain Task Model             | Los flujos del sistema seguirán las tareas reales identificadas: publicar servicios, cotizar precios, negociar, establecer acuerdos y comunicarse dentro de la plataforma (GigU, 2026).                                       |
+
+## 4.2. Architectural Drivers
+
+La arquitectura de GigU se diseña siguiendo el método Attribute-Driven Design, debido a que el Product Architecture Design del proyecto exige aplicar ADD v3 para relacionar el propósito de diseño, la funcionalidad principal, los atributos de calidad, las restricciones y las preocupaciones arquitectónicas con decisiones concretas de arquitectura. El project statement establece que la solución debe evidenciar una arquitectura empresarial basada en microservicios, Domain-Driven Design y cloud native architecture, además de un RESTful API accesible desde internet.
+
+ADD considera como entradas principales del diseño el design purpose, primary functionality, quality attributes, architectural concerns y constraints. A partir de estas entradas, el diseño se ejecuta mediante iteraciones donde se seleccionan drivers, se refinan elementos del sistema, se eligen conceptos de diseño, se asignan responsabilidades, se definen interfaces y se registran decisiones arquitectónicas.
+
+| Driver            | Prioridad  | Justificación                                                                                                                                               |
+| ----------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Modificabilidad   | Alta       | GigU debe poder evolucionar por nuevas categorías de servicios, reglas de contratación, flujos de proyectos, reputación, pricing y funcionalidades de chat. |
+| Seguridad         | Alta       | La plataforma gestiona cuentas, perfiles, portafolios, conversaciones, solicitudes, acuerdos, reseñas y reportes.                                           |
+| Testabilidad      | Alta       | El curso exige evidencias de testing, implementación de microservicios y validación técnica por sprint.                                                     |
+| Interoperabilidad | Media-Alta | El sistema integra frontend, gateway, microservicios, base de datos administrada, storage y mensajería asíncrona.                                           |
+| Disponibilidad    | Media      | La plataforma debe estar accesible durante la validación académica, considerando las limitaciones de servicios gratuitos.                                   |
+| Performance       | Media      | La búsqueda de servicios, perfiles, mensajes y proyectos debe responder de forma fluida para el volumen esperado de validación académica.                   |
+
+### 4.2.1. Design Purpose
+
+El propósito del diseño arquitectónico de GigU es definir una estructura técnica coherente, modular y verificable para implementar una plataforma web que conecte estudiantes universitarios freelancers con clientes y emprendimientos. La arquitectura debe permitir que los estudiantes publiquen servicios, construyan reputación profesional, gestionen proyectos y se comuniquen con clientes dentro de un entorno formal, seguro y alineado a sus habilidades.
+
+GigU será diseñado como una aplicación empresarial basada en microservicios, aplicando Domain-Driven Design para separar capacidades de negocio y Clean Architecture dentro de cada microservicio. El frontend será desplegado en Vercel, el backend se ejecutará en una VM de Oracle Cloud Always Free mediante Docker Compose, la base de datos será Supabase PostgreSQL, el almacenamiento de archivos se realizará con Supabase Storage y la comunicación asíncrona entre servicios se gestionará con RabbitMQ. Caddy funcionará como gateway liviano y reverse proxy para exponer las rutas públicas de la API.
+
+| Categoría                   | Detalle                                                                                                                                                               |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tipo de sistema             | Plataforma web de servicios freelance universitarios.                                                                                                                 |
+| Propósito de negocio        | Facilitar que estudiantes universitarios consigan experiencia profesional e ingresos mediante servicios freelance formales y verificables.                            |
+| Propósito arquitectónico    | Definir una arquitectura modular, desplegable, testeable y preparada para evolución incremental mediante microservicios.                                              |
+| Enfoque de arquitectura     | Microservices Architecture, Domain-Driven Design y Clean Architecture.                                                                                                |
+| Modelo de despliegue        | Frontend en Vercel; backend, Caddy y RabbitMQ en Oracle Cloud Always Free; base de datos y storage en Supabase.                                                       |
+| Alcance funcional principal | Perfiles, portafolios, publicación de servicios, búsqueda, solicitudes, acuerdos, proyectos, chat, notificaciones y reseñas.                                          |
+| Alcance técnico principal   | RESTful API documentada, microservicios independientes, persistencia relacional por ownership lógico, mensajería asíncrona y testing automatizado.                    |
+| Limitación inicial          | El sistema modelará acuerdos y estados de pago para validación académica; la integración con una pasarela de pagos real queda fuera del primer alcance implementable. |
+
+La decisión de utilizar Docker Compose responde a la necesidad de ejecutar varios contenedores de forma reproducible, debido a que permite definir y administrar aplicaciones multi-contenedor mediante un archivo de configuración centralizado (Docker, s. f.). Oracle Cloud Always Free se selecciona para el backend porque ofrece recursos gratuitos Ampere A1 equivalentes a 4 OCPU y 24 GB de memoria dentro de sus límites Always Free (Oracle, s. f.). Caddy se utilizará como gateway liviano porque permite implementar un reverse proxy de forma directa y soporta HTTPS automático con renovación de certificados TLS (Caddy, s. f.).
+
+### 4.2.2. Primary Functionality: Primary User Stories
+
+Las funcionalidades primarias seleccionadas son aquellas que afectan directamente la estructura de la aplicación, la asignación de responsabilidades entre microservicios y los principales escenarios de calidad. No se listan todas las historias del Product Backlog, sino las que influyen de forma significativa en la arquitectura.
+
+| ID    | Primary User Story               | Descripción                                                                                                                                  | Impacto arquitectónico                                                                                          | Microservicio principal |
+| ----- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| PUS-01 | Gestión de cuenta y acceso       | Como usuario, deseo registrarme e iniciar sesión para acceder de forma segura a las funcionalidades de GigU.                                 | Requiere autenticación, autorización, roles, JWT y control de ownership.                                        | AccessProfileService    |
+| PUS-02 | Gestión de perfil freelancer     | Como estudiante freelancer, deseo crear y actualizar mi perfil profesional para mostrar mi información académica, habilidades y experiencia. | Define el bounded context de perfiles, habilidades y verificación académica.                                    | AccessProfileService    |
+| PUS-03 | Gestión de portafolio            | Como estudiante freelancer, deseo publicar evidencias de trabajos previos para generar confianza ante clientes potenciales.                  | Requiere integración con storage y relación entre perfil, archivos y experiencia.                               | AccessProfileService    |
+| PUS-04 | Publicación de servicios         | Como estudiante freelancer, deseo publicar servicios con descripción, categoría, tarifa y tiempo estimado para ofrecerlos en la plataforma.  | Define el núcleo del marketplace y su persistencia.                                                             | GigMarketplaceService   |
+| PUS-05 | Búsqueda y filtrado de servicios | Como cliente, deseo buscar servicios por categoría, habilidades, precio y reputación para encontrar freelancers adecuados.                   | Requiere consultas optimizadas, filtros, paginación e índices.                                                  | GigMarketplaceService   |
+| PUS-06 | Solicitud de contratación        | Como cliente, deseo enviar una solicitud de contratación a un freelancer para iniciar un posible proyecto.                                   | Inicia el flujo transaccional de engagement y eventos de notificación.                                          | PullEngagementService   |
+| PUS-07 | Negociación y acuerdo            | Como cliente y freelancer, deseamos acordar condiciones de trabajo para formalizar el inicio del proyecto.                                   | Requiere modelar solicitud, acuerdo, precio, plazo y estados.                                                   | PullEngagementService   |
+| PUS-08 | Gestión de proyecto              | Como freelancer, deseo actualizar el estado del proyecto para informar avances, entrega y finalización del servicio.                         | Requiere ciclo de vida de proyecto, historial de estados y reglas de transición.                                | PullEngagementService   |
+| PUS-09 | Chat de coordinación             | Como cliente o freelancer, deseo comunicarme dentro de la plataforma para coordinar detalles del servicio de forma formal.                   | Requiere conversación, mensajes, eventos y comunicación en tiempo real mediante WebSocket o Server-Sent Events. | ChatNotificationService |
+| PUS-10 | Calificaciones y reseñas         | Como cliente, deseo calificar el trabajo recibido para ayudar a otros usuarios a evaluar la confiabilidad del freelancer.                    | Requiere reputación, reseñas, vínculo con proyecto finalizado y actualización de métricas visibles.             | PullEngagementService   |
+| PUS-11 | Reportes y soporte               | Como usuario, deseo reportar problemas o conductas inadecuadas para que la plataforma pueda revisar incidentes.                              | Requiere tickets, reportes, moderación y rol administrador.                                                     | ChatNotificationService |
+| PUS-12 | Sugerencia de precio             | Como freelancer, deseo recibir una sugerencia de precio basada en complejidad, tiempo y categoría para cotizar de forma más consistente.     | Requiere reglas de pricing desacopladas y extensibles.                                                          | PullEngagementService   |
+
+### 4.2.3. Quality Attribute Scenarios
+
+Los escenarios de atributos de calidad se redactan como requisitos medibles. El project statement indica que un escenario de atributo de calidad debe considerar fuente de estímulo, estímulo, medioambiente, artefacto, respuesta y medida de respuesta.
+
+| ID    | Atributo de calidad | Fuente del estímulo                           | Estímulo                                                                                   | Ambiente                                            | Artefacto                                                            | Respuesta                                                                                                                                       | Medida de respuesta                                                                                                                                                         |
+| ----- | ------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| QA-01 | Seguridad           | Usuario no autenticado o usuario sin permisos | Intenta crear, modificar o consultar un recurso protegido                                  | Operación normal del sistema                        | Caddy Gateway, microservicio correspondiente, endpoints REST         | El sistema valida JWT, rol y ownership antes de ejecutar el caso de uso; si la solicitud no cumple, la rechaza y registra el intento relevante. | El 100% de endpoints protegidos rechaza solicitudes sin token válido o sin permisos; las operaciones críticas quedan registradas en auditoría.                              |
+| QA-02 | Modificabilidad     | Equipo de desarrollo                          | Solicita agregar una nueva categoría de servicio o una nueva regla de sugerencia de precio | Sprint de evolución funcional                       | GigMarketplaceService y PullEngagementService                        | El cambio se implementa dentro del microservicio dueño del contexto sin modificar otros microservicios ni romper contratos existentes.          | El cambio afecta como máximo un microservicio principal y sus pruebas asociadas; las APIs existentes mantienen compatibilidad.                                              |
+| QA-03 | Testabilidad        | Desarrollador backend                         | Agrega o modifica una regla de negocio de solicitud, acuerdo, proyecto o reseña            | Desarrollo local o pipeline de integración continua | Domain Layer y Application Layer del microservicio afectado          | El sistema permite probar la regla mediante pruebas unitarias y pruebas de integración del endpoint correspondiente.                            | Las reglas críticas del dominio tienen pruebas unitarias; los endpoints principales tienen pruebas de integración automatizadas.                                            |
+| QA-04 | Interoperabilidad   | Frontend web o consumidor API                 | Consume funcionalidades de perfil, marketplace, engagement o chat                          | Operación normal desde navegador                    | RESTful API, Caddy Gateway y microservicios backend                  | El sistema expone contratos HTTP consistentes, versionados y documentados con OpenAPI.                                                          | El 100% de endpoints públicos principales se documenta con OpenAPI y responde usando DTOs JSON estandarizados.                                                              |
+| QA-05 | Disponibilidad      | Usuario final o sistema de monitoreo          | Un microservicio o componente secundario falla temporalmente                               | Validación académica en infraestructura gratuita    | Contenedores backend, RabbitMQ o ChatNotificationService             | El sistema mantiene disponibles las funcionalidades no dependientes del componente fallido y permite reinicio del contenedor afectado.          | Los health checks identifican el componente fallido; las operaciones críticas de perfil, marketplace y engagement no dependen del envío exitoso de notificaciones externas. |
+| QA-06 | Performance         | Cliente o freelancer                          | Realiza búsqueda de servicios, perfiles o conversaciones                                   | Dataset de validación académica y operación normal  | GigMarketplaceService, ChatNotificationService y Supabase PostgreSQL | El sistema responde con paginación, filtros e índices en campos de búsqueda frecuentes.                                                         | Las consultas principales devuelven resultados paginados y evitan cargar datasets completos en una sola respuesta.                                                          |
+| QA-07 | Usabilidad          | Cliente o freelancer                          | Completa un flujo de publicación, solicitud, acuerdo, chat o calificación                  | Uso normal desde navegador web                      | Frontend Web App y API backend                                       | El sistema entrega confirmaciones claras y mantiene el estado visible de servicios, solicitudes, proyectos y mensajes.                          | Cada operación principal retorna estado explícito de éxito, error o pendiente; el usuario puede reconocer el estado actual de sus proyectos y conversaciones.               |
+
+### 4.2.4. Constraints
+
+Las restricciones representan decisiones con bajo o nulo grado de libertad para la arquitectura. Estas limitan las opciones de implementación y deben ser consideradas como drivers arquitectónicos.
+
+| ID     | Restricción                                                                                                                                                  | Tipo                              | Impacto arquitectónico                                                                                                        |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| CON-01 | El frontend se desarrollará con Vue + Vite y se desplegará en Vercel.                                                                                        | Tecnológica / despliegue          | Se separa el frontend del backend y se consume la API mediante HTTPS.                                                         |
+| CON-02 | El backend se desarrollará con Java y Spring Boot.                                                                                                           | Tecnológica                       | Los microservicios, controladores REST, seguridad y pruebas backend se implementan en el ecosistema Spring.                   |
+| CON-03 | Cada microservicio aplicará Clean Architecture.                                                                                                              | Arquitectónica                    | Las reglas de dominio no dependerán de frameworks, persistencia, gateway o servicios externos.                                |
+| CON-04 | El backend se organizará en cuatro microservicios principales: AccessProfileService, GigMarketplaceService, PullEngagementService y ChatNotificationService. | Arquitectónica                    | Se evita sobredimensionar la arquitectura y se mantiene una separación coherente por bounded context.                         |
+| CON-05 | Caddy funcionará como gateway liviano y reverse proxy.                                                                                                       | Infraestructura                   | Las rutas públicas de la API se centralizan sin introducir un microservicio adicional de gateway.                             |
+| CON-06 | Los microservicios, Caddy y RabbitMQ se ejecutarán con Docker Compose en Oracle Cloud Always Free.                                                           | Despliegue                        | La arquitectura backend será reproducible y ejecutable como aplicación multi-contenedor.                                      |
+| CON-07 | La persistencia principal se realizará con Supabase PostgreSQL.                                                                                              | Datos                             | Se adopta una base relacional administrada con esquemas lógicos por microservicio.                                            |
+| CON-08 | Los archivos de portafolio, imágenes y adjuntos se almacenarán en Supabase Storage.                                                                          | Datos / almacenamiento            | Los binarios no se guardan directamente en la base de datos relacional.                                                       |
+| CON-09 | La autenticación y autorización se implementarán con Spring Security y JWT.                                                                                  | Seguridad                         | Cada microservicio validará acceso a operaciones protegidas y ownership de recursos.                                          |
+| CON-10 | La mensajería asíncrona se implementará con RabbitMQ para eventos internos relevantes.                                                                       | Integración                       | Las notificaciones, cambios de estado y eventos secundarios se desacoplan del flujo principal.                                |
+| CON-11 | Las APIs REST serán documentadas con OpenAPI/Swagger.                                                                                                        | Documentación / interoperabilidad | Se asegura trazabilidad de contratos, endpoints y DTOs.                                                                       |
+| CON-12 | El proyecto deberá mantenerse en servicios gratuitos o free tier durante la validación académica.                                                            | Económica / despliegue            | Se priorizan Vercel, Oracle Cloud Always Free, Supabase y herramientas open source.                                           |
+| CON-13 | No se integrará una pasarela de pagos real en la primera versión implementable.                                                                              | Alcance                           | El sistema modelará acuerdos y estados relacionados al pago, pero la integración financiera real queda como extensión futura. |
+| CON-14 | El equipo deberá producir evidencias de implementación, testing, documentación de microservicios y despliegue.                                               | Académica                         | La arquitectura debe ser demostrable mediante repositorio, pruebas, Swagger, CI/CD y ejecución cloud.                         |
+
+Supabase se mantiene como plataforma administrada de PostgreSQL y storage para reducir carga operativa en el equipo; su plan gratuito permite usar PostgreSQL y almacenamiento dentro de límites de validación (Supabase, s. f.-b). Docker Compose se mantiene como restricción de despliegue porque permite definir, ejecutar y mantener aplicaciones multi-contenedor desde una configuración centralizada (Docker, s. f.).
+
+### 4.2.5. Architectural Concerns
+
+| ID     | Architectural Concern                     | Descripción                                                                                                                                          | Decisión relacionada                                                                                           |
+| ------ | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| CRN-01 | Delimitación correcta de bounded contexts | Existe riesgo de mezclar responsabilidades de perfil, marketplace, contratación y chat en un mismo módulo.                                           | Separar el backend en cuatro microservicios alineados al dominio.                                              |
+| CRN-02 | Evitar sobrearquitectura                  | Una cantidad excesiva de microservicios aumentaría la complejidad operativa y reduciría la probabilidad de completar el proyecto.                    | Mantener cuatro microservicios principales y evitar servicios adicionales no esenciales.                       |
+| CRN-03 | Consistencia entre servicios              | Las solicitudes, proyectos, reseñas y notificaciones cruzan límites de microservicios.                                                               | Usar identificadores externos, contratos REST y eventos RabbitMQ para sincronización eventual.                 |
+| CRN-04 | Seguridad y ownership                     | Los usuarios deben acceder solo a recursos propios o permitidos por rol.                                                                             | Implementar Spring Security, JWT, roles y validación de ownership en casos de uso.                             |
+| CRN-05 | Gestión del chat                          | El chat debe funcionar sin depender de servicios externos pagos ni introducir complejidad excesiva.                                                  | Implementar ChatNotificationService con REST para historial y WebSocket/SSE para actualización en tiempo real. |
+| CRN-06 | Persistencia relacional por microservicio | Usar una sola base administrada podría generar acoplamiento si los servicios comparten tablas indiscriminadamente.                                   | Separar esquemas y ownership lógico por microservicio en Supabase PostgreSQL.                                  |
+| CRN-07 | Despliegue gratuito sostenible            | El backend debe estar disponible para validación sin depender de plataformas que duermen servicios o expiran bases de datos rápidamente.             | Alojar backend en Oracle Cloud Always Free y delegar base de datos a Supabase.                                 |
+| CRN-08 | Testabilidad de reglas de negocio         | Las reglas de contratación, estados, reseñas y pricing deben ser comprobables sin levantar todo el sistema.                                          | Aplicar Clean Architecture, interfaces, mocks, pruebas unitarias y pruebas de integración.                     |
+| CRN-09 | Trazabilidad para evaluación académica    | El curso exige evidencias de arquitectura, testing, microservicios, despliegue y documentación.                                                      | Usar GitHub, GitHub Actions, Swagger, commits por microservicio y documentación técnica por sprint.            |
+| CRN-10 | Evolución hacia pagos reales              | La solución contempla acuerdos y pagos seguros como parte del dominio, pero la integración con pasarelas reales puede aumentar riesgo y complejidad. | Modelar estados de acuerdo/pago en la primera versión y dejar pasarela real como extensión posterior.          |
+| CRN-11 | Dependencia de proveedores externos       | Vercel, Oracle Cloud y Supabase facilitan el despliegue, pero no deben contaminar el dominio.                                                        | Encapsular integraciones en Infrastructure Layer mediante adapters.                                            |
+| CRN-12 | Performance en búsquedas                  | La búsqueda de servicios y freelancers puede degradarse al crecer el catálogo.                                                                       | Usar paginación, filtros, índices y DTOs ligeros en GigMarketplaceService.                                     |
+
+#### Resumen de drivers por decisión arquitectónica
+
+| Decisión arquitectónica                       | Drivers que satisface                                                         |
+| --------------------------------------------- | ----------------------------------------------------------------------------- |
+| Microservicios por bounded context            | Modificabilidad, testabilidad, escalabilidad organizacional y mantenibilidad. |
+| Clean Architecture por microservicio          | Testabilidad, modificabilidad e independencia tecnológica.                    |
+| Caddy como gateway liviano                    | Interoperabilidad, simplicidad operativa y disponibilidad.                    |
+| Supabase PostgreSQL con esquemas por servicio | Persistencia relacional, ownership de datos y mantenibilidad.                 |
+| RabbitMQ para eventos internos                | Modificabilidad, disponibilidad parcial y desacoplamiento.                    |
+| Spring Security + JWT                         | Seguridad, control de acceso y auditoría.                                     |
+| Docker Compose en Oracle Cloud                | Despliegue reproducible, evidencia cloud y control operativo.                 |
+| OpenAPI/Swagger                               | Interoperabilidad, documentación, pruebas manuales y automatizadas.           |
+| GitHub Actions                                | Testabilidad, trazabilidad y evidencia de calidad.                            |
+
+## 4.3. ADD Iterations
+
+### 4.3.1. Iteration 1: Core Marketplace & Engagement Flow
+
+#### 4.3.1.1. Architectural Design Backlog 1
+
+#### 4.3.1.2. Establish Iteration Goal by Selecting Drivers
+
+#### 4.3.1.3. Choose One or More Elements of the System to Refine
+
+#### 4.3.1.4. Choose One or More Design Concepts That Satisfy the Selected Drivers
+
+#### 4.3.1.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
+
+#### 4.3.1.6. Sketch Views: C4 & UML, and Record Design Decisions
+
+#### 4.3.1.7. Analysis of Current Design and Review Iteration Goal: Kanban Board
+
+### 4.3.2. Iteration 2: Communication, Security & Deployment Readiness
+
+#### 4.3.2.1. Architectural Design Backlog 2
+
+#### 4.3.2.2. Establish Iteration Goal by Selecting Drivers
+
+#### 4.3.2.3. Choose One or More Elements of the System to Refine
+
+#### 4.3.2.4. Choose One or More Design Concepts That Satisfy the Selected Drivers
+
+#### 4.3.2.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
+
+#### 4.3.2.6. Sketch Views: C4 & UML, and Record Design Decisions
+
+#### 4.3.2.7. Analysis of Current Design and Review Iteration Goal: Kanban Board
+
 
 <div style="page-break-before: always;"></div>
 
@@ -1473,7 +1854,57 @@ Se utilizó la escala Fibonacci para la estimación de los Story Points. En tota
 
 # Referencias bibliográficas
 
-<div style="page-break-before: always;"></div>
+Banco Mundial. (2023). *Working without borders: The promise and peril of online gig work*. World Bank. https://openknowledge.worldbank.org/entities/publication/ebc4a7e2-85c6-467b-8713-e2d77e954c6c
+
+Banco Mundial. (2024). *Four ways local online gig platforms connect young people to jobs*. World Bank Blogs. https://blogs.worldbank.org/en/jobs/four-ways-local-online-gig-platforms-connect-young-people-jobs
+
+Caddy. (s. f.-a). *Automatic HTTPS*. Caddy. https://caddyserver.com/docs/automatic-https
+
+Caddy. (s. f.-b). *Reverse proxy quick-start*. Caddy. https://caddyserver.com/docs/quick-starts/reverse-proxy
+
+Docker. (s. f.). *Defining and running multi-container applications with Docker Compose*. Docker Docs. https://docs.docker.com/guides/docker-compose/
+
+GigU. (2026). *Documentación del proyecto GigU*. GitHub. https://github.com/1ASI0657-2610-7940-Final-Project/docs
+
+Instituto Nacional de Estadística e Informática. (2025a). *Perú: Comportamiento de los indicadores del mercado laboral a nivel nacional y en 27 ciudades. Primer trimestre 2025*. INEI. https://www.inei.gob.pe/media/MenuRecursivo/boletines/informe-tecnico_empleonacional_1.pdf
+
+Instituto Nacional de Estadística e Informática. (2025b). *Perú: Comportamiento de los indicadores del mercado laboral a nivel nacional y en 27 ciudades. Segundo trimestre 2025*. INEI. https://m.inei.gob.pe/media/MenuRecursivo/boletines/informe-tecnico_empleonacional_2.pdf
+
+Lewis, J., & Fowler, M. (2014). *Microservices: A definition of this new architectural term*. Martin Fowler. https://martinfowler.com/articles/microservices.html
+
+Ministerio de Educación del Perú. (2021). *Encuesta Nacional de Estudiantes de Educación Superior Universitaria 2019: principales resultados*. MINEDU. https://repositorio.minedu.gob.pe/handle/20.500.12799/7745
+
+Ministerio de Educación del Perú. (2023). *La universidad en cifras*. MINEDU. https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9077/La%20Universidad%20en%20Cifras.pdf
+
+Ministerio de Educación del Perú. (2024). *Reporte nacional de seguimiento al Proyecto Educativo Nacional: Análisis de indicadores al 2023*. MINEDU. https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/10653/Reporte%20nacional%20de%20seguimiento%20al%20Proyecto%20Educativo%20Nacional%20an%C3%A1lisis%20de%20indicadores%20al%202023.pdf
+
+OpenAPI Initiative. (s. f.). *OpenAPI Specification*. Swagger. https://swagger.io/specification/
+
+Oracle. (s. f.). *Oracle Cloud Free Tier*. Oracle. https://www.oracle.com/cloud/free/
+
+Oracle. (s. f.). *Always Free Resources*. Oracle Documentation. https://docs.oracle.com/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm
+
+Organización Internacional del Trabajo. (2021). *World Employment and Social Outlook 2021: The role of digital labour platforms in transforming the world of work*. OIT. https://www.ilo.org/publications/flagship-reports/role-digital-labour-platforms-transforming-world-work
+
+Organización Internacional del Trabajo. (2025). *Jóvenes en el mercado laboral: entre la informalidad y la falta de oportunidades*. OIT. https://www.ilo.org/es/resource/news/jovenes-entre-informalidad-y-falta-de-oportunidades
+
+RabbitMQ. (s. f.). *RabbitMQ: One broker to queue them all*. RabbitMQ. https://www.rabbitmq.com/
+
+Spring. (s. f.-a). *Spring Security reference*. Spring. https://docs.spring.io/spring-security/reference/index.html
+
+Spring. (s. f.-b). *Testcontainers support in Spring Boot*. Spring. https://docs.spring.io/spring-boot/reference/testing/testcontainers.html
+
+Supabase. (s. f.-a). *The Postgres development platform*. Supabase. https://supabase.com/
+
+Supabase. (s. f.-b). *Pricing & Fees*. Supabase. https://supabase.com/pricing
+
+Supabase. (s. f.-c). *About billing on Supabase*. Supabase. https://supabase.com/docs/guides/platform/billing-on-supabase
+
+Universidad Peruana de Ciencias Aplicadas. (2025a). *Attribute-Driven Design: SI657 Fundamentos de Arquitectura de Software*. Material del curso.
+
+Universidad Peruana de Ciencias Aplicadas. (2025b). *Final Project Statement: Fundamentos de Arquitectura de Software*. Material del curso.
+
+Vercel. (s. f.). *Vercel Hobby Plan*. Vercel. https://vercel.com/docs/plans/hobby
 
 # Anexos
 
