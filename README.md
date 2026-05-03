@@ -1742,6 +1742,13 @@ Se han seleccionado las siguientes tácticas y patrones:
 - **Estructura Interna:** Clean Architecture dentro de cada microservicio para aislar las reglas de negocio de la infraestructura.
 
 #### 4.3.1.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
+| Elemento | Responsabilidad | Interfaz / Contrato |
+| :--- | :--- | :--- |
+| **API Gateway (Caddy)** | Ruteo de peticiones, terminación TLS y seguridad inicial. | HTTPS / Puerto 443 |
+| **GigMarketplaceService** | Gestión de Gigs, categorías y cálculo inteligente de precios. | REST API (`/api/v1/gigs`) |
+| **PullEngagementService** | Creación de contratos, gestión de estados del proyecto y acuerdos. | REST API (`/api/v1/contracts`) |
+| **RabbitMQ** | Bus de eventos para desacoplar notificaciones de nuevos contratos. | AMQP |
+| **Supabase (PostgreSQL)** | Persistencia aislada de datos por contexto (Marketplace y Engagement). | SQL / JDBC |
 
 #### 4.3.1.6. Sketch Views: C4 & UML, and Record Design Decisions
 
