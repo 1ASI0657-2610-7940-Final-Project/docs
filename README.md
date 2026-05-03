@@ -1706,6 +1706,7 @@ Supabase se mantiene como plataforma administrada de PostgreSQL y storage para r
 ## 4.3. ADD Iterations
 
 ### 4.3.1. Iteration 1: Core Marketplace & Engagement Flow
+En esta primera iteración, el objetivo es establecer la estructura base de la plataforma, centrándose en el flujo principal: la publicación de servicios (Gigs) por parte de estudiantes y la creación de acuerdos/contratos por parte de los clientes. Se prioriza la descomposición del sistema para asegurar la escalabilidad y la modificabilidad.
 
 #### 4.3.1.1. Architectural Design Backlog 1
 
