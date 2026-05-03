@@ -1721,6 +1721,11 @@ Se han seleccionado los requerimientos más críticos que definen el "corazón" 
 | **CON-01** | Restricción | El sistema debe seguir una arquitectura de microservicios y Clean Architecture. |
 
 #### 4.3.1.2. Establish Iteration Goal by Selecting Drivers
+**Objetivo:** Diseñar la estructura fundamental de microservicios y la estrategia de comunicación para el Marketplace y el flujo de contratos.
+
+**Drivers seleccionados:**
+- **Atributos de Calidad:** Modificabilidad (mediante desacoplamiento) y Disponibilidad.
+- **Drivers Técnicos:** Adopción de Domain-Driven Design (DDD) y segregación de bases de datos.
 
 #### 4.3.1.3. Choose One or More Elements of the System to Refine
 
