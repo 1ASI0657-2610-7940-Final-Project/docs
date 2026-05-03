@@ -1728,6 +1728,10 @@ Se han seleccionado los requerimientos más críticos que definen el "corazón" 
 - **Drivers Técnicos:** Adopción de Domain-Driven Design (DDD) y segregación de bases de datos.
 
 #### 4.3.1.3. Choose One or More Elements of the System to Refine
+En esta iteración se refina el **Sistema Global (GigU System)**, descomponiéndolo en sus contenedores principales:
+1.  **GigMarketplaceService:** Encargado de la oferta educativa y profesional.
+2.  **PullEngagementService:** Encargado de la lógica de negocio de los contratos.
+3.  **API Gateway (Caddy):** Punto de entrada único para las aplicaciones cliente.
 
 #### 4.3.1.4. Choose One or More Design Concepts That Satisfy the Selected Drivers
 
