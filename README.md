@@ -1709,6 +1709,16 @@ Supabase se mantiene como plataforma administrada de PostgreSQL y storage para r
 En esta primera iteración, el objetivo es establecer la estructura base de la plataforma, centrándose en el flujo principal: la publicación de servicios (Gigs) por parte de estudiantes y la creación de acuerdos/contratos por parte de los clientes. Se prioriza la descomposición del sistema para asegurar la escalabilidad y la modificabilidad.
 
 #### 4.3.1.1. Architectural Design Backlog 1
+Se han seleccionado los requerimientos más críticos que definen el "corazón" de GigU:
+
+| ID | Tipo | Descripción |
+| :--- | :--- | :--- |
+| **US17** | Funcional | El estudiante debe poder establecer tarifas por sus servicios (Gigs). |
+| **US46** | Funcional | El sistema debe sugerir precios inteligentes basados en la experiencia y mercado. |
+| **EP13** | Funcional | Gestión del flujo de contratos y acuerdos (Engagement). |
+| **QA-01** | Atributo Calidad | **Disponibilidad:** El flujo de contratación debe estar activo el 99.9% del tiempo. |
+| **QA-02** | Atributo Calidad | **Modificabilidad:** El servicio de Marketplace debe poder actualizarse sin afectar al sistema de Contratos. |
+| **CON-01** | Restricción | El sistema debe seguir una arquitectura de microservicios y Clean Architecture. |
 
 #### 4.3.1.2. Establish Iteration Goal by Selecting Drivers
 
