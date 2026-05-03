@@ -1734,6 +1734,12 @@ En esta iteración se refina el **Sistema Global (GigU System)**, descomponiénd
 3.  **API Gateway (Caddy):** Punto de entrada único para las aplicaciones cliente.
 
 #### 4.3.1.4. Choose One or More Design Concepts That Satisfy the Selected Drivers
+Se han seleccionado las siguientes tácticas y patrones:
+- **Estilo Arquitectónico:** Microservicios para permitir despliegues independientes.
+- **Patrón de Comunicación:** - **Síncrono (REST):** Para consultas directas de catálogo y creación de contratos.
+    - **Asíncrono (RabbitMQ):** Para notificaciones y eventos internos que no deben bloquear el flujo principal.
+- **Estrategia de Datos:** *Database per Service* utilizando Supabase para garantizar la independencia de los datos.
+- **Estructura Interna:** Clean Architecture dentro de cada microservicio para aislar las reglas de negocio de la infraestructura.
 
 #### 4.3.1.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
 
