@@ -1619,20 +1619,20 @@ La decisión de utilizar Docker Compose responde a la necesidad de ejecutar vari
 
 Las funcionalidades primarias seleccionadas son aquellas que afectan directamente la estructura de la aplicación, la asignación de responsabilidades entre microservicios y los principales escenarios de calidad. No se listan todas las historias del Product Backlog, sino las que influyen de forma significativa en la arquitectura.
 
-| ID    | Primary User Story               | Descripción                                                                                                                                  | Impacto arquitectónico                                                                                          | Microservicio principal |
-| ----- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| PUS-01 | Gestión de cuenta y acceso       | Como usuario, deseo registrarme e iniciar sesión para acceder de forma segura a las funcionalidades de GigU.                                 | Requiere autenticación, autorización, roles, JWT y control de ownership.                                        | AccessProfileService    |
-| PUS-02 | Gestión de perfil freelancer     | Como estudiante freelancer, deseo crear y actualizar mi perfil profesional para mostrar mi información académica, habilidades y experiencia. | Define el bounded context de perfiles, habilidades y verificación académica.                                    | AccessProfileService    |
-| PUS-03 | Gestión de portafolio            | Como estudiante freelancer, deseo publicar evidencias de trabajos previos para generar confianza ante clientes potenciales.                  | Requiere integración con storage y relación entre perfil, archivos y experiencia.                               | AccessProfileService    |
-| PUS-04 | Publicación de servicios         | Como estudiante freelancer, deseo publicar servicios con descripción, categoría, tarifa y tiempo estimado para ofrecerlos en la plataforma.  | Define el núcleo del marketplace y su persistencia.                                                             | GigMarketplaceService   |
-| PUS-05 | Búsqueda y filtrado de servicios | Como cliente, deseo buscar servicios por categoría, habilidades, precio y reputación para encontrar freelancers adecuados.                   | Requiere consultas optimizadas, filtros, paginación e índices.                                                  | GigMarketplaceService   |
-| PUS-06 | Solicitud de contratación        | Como cliente, deseo enviar una solicitud de contratación a un freelancer para iniciar un posible proyecto.                                   | Inicia el flujo transaccional de engagement y eventos de notificación.                                          | PullEngagementService   |
-| PUS-07 | Negociación y acuerdo            | Como cliente y freelancer, deseamos acordar condiciones de trabajo para formalizar el inicio del proyecto.                                   | Requiere modelar solicitud, acuerdo, precio, plazo y estados.                                                   | PullEngagementService   |
-| PUS-08 | Gestión de proyecto              | Como freelancer, deseo actualizar el estado del proyecto para informar avances, entrega y finalización del servicio.                         | Requiere ciclo de vida de proyecto, historial de estados y reglas de transición.                                | PullEngagementService   |
-| PUS-09 | Chat de coordinación             | Como cliente o freelancer, deseo comunicarme dentro de la plataforma para coordinar detalles del servicio de forma formal.                   | Requiere conversación, mensajes, eventos y comunicación en tiempo real mediante WebSocket o Server-Sent Events. | ChatNotificationService |
-| PUS-10 | Calificaciones y reseñas         | Como cliente, deseo calificar el trabajo recibido para ayudar a otros usuarios a evaluar la confiabilidad del freelancer.                    | Requiere reputación, reseñas, vínculo con proyecto finalizado y actualización de métricas visibles.             | PullEngagementService   |
-| PUS-11 | Reportes y soporte               | Como usuario, deseo reportar problemas o conductas inadecuadas para que la plataforma pueda revisar incidentes.                              | Requiere tickets, reportes, moderación y rol administrador.                                                     | ChatNotificationService |
-| PUS-12 | Sugerencia de precio             | Como freelancer, deseo recibir una sugerencia de precio basada en complejidad, tiempo y categoría para cotizar de forma más consistente.     | Requiere reglas de pricing desacopladas y extensibles.                                                          | PullEngagementService   |
+| ID     | Primary User Story               | Descripción                                                                                                                                  | User Stories relacionadas        | Impacto arquitectónico                                                                                          | Microservicio principal |
+| ------ | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| PUS-01 | Gestión de cuenta y acceso       | Como usuario, deseo registrarme e iniciar sesión para acceder de forma segura a las funcionalidades de GigU.                                 | US03, US04, US05, US06, US07     | Requiere autenticación, autorización, roles, JWT y control de ownership.                                        | AccessProfileService    |
+| PUS-02 | Gestión de perfil freelancer     | Como estudiante freelancer, deseo crear y actualizar mi perfil profesional para mostrar mi información académica, habilidades y experiencia. | US15, US16, US17, US19           | Define el bounded context de perfiles, habilidades y verificación académica.                                    | AccessProfileService    |
+| PUS-03 | Gestión de portafolio            | Como estudiante freelancer, deseo publicar evidencias de trabajos previos para generar confianza ante clientes potenciales.                  | US18                             | Requiere integración con storage y relación entre perfil, archivos y experiencia.                               | AccessProfileService    |
+| PUS-04 | Publicación de servicios         | Como estudiante freelancer, deseo publicar servicios con descripción, categoría, tarifa y tiempo estimado para ofrecerlos en la plataforma.  | US20, US21, US22, US23, US24     | Define el núcleo del marketplace y su persistencia, incluyendo media asociada al servicio publicado.            | GigMarketplaceService   |
+| PUS-05 | Búsqueda y filtrado de servicios | Como cliente, deseo buscar servicios por categoría, habilidades, precio y reputación para encontrar freelancers adecuados.                   | US25, US26, US27, US28, US29     | Requiere consultas optimizadas, filtros, paginación e índices.                                                  | GigMarketplaceService   |
+| PUS-06 | Solicitud de contratación        | Como cliente, deseo enviar una solicitud de contratación a un freelancer para iniciar un posible proyecto.                                   | US30, US31                       | Inicia el flujo transaccional de engagement y eventos de notificación.                                          | PullEngagementService   |
+| PUS-07 | Negociación y acuerdo            | Como cliente y freelancer, deseamos acordar condiciones de trabajo para formalizar el inicio del proyecto.                                   | US32, US35                       | Requiere modelar solicitud, acuerdo, precio, plazo y estados.                                                   | PullEngagementService   |
+| PUS-08 | Gestión de proyecto              | Como freelancer, deseo actualizar el estado del proyecto para informar avances, entrega y finalización del servicio.                         | US33, US34, US36, US37           | Requiere ciclo de vida de proyecto, historial de estados y reglas de transición.                                | PullEngagementService   |
+| PUS-09 | Chat de coordinación             | Como cliente o freelancer, deseo comunicarme dentro de la plataforma para coordinar detalles del servicio de forma formal.                   | US42, US43, US44, US45           | Requiere conversación, mensajes, eventos y comunicación en tiempo real mediante WebSocket o Server-Sent Events. | ChatNotificationService |
+| PUS-10 | Calificaciones y reseñas         | Como cliente, deseo calificar el trabajo recibido para ayudar a otros usuarios a evaluar la confiabilidad del freelancer.                    | US38, US39, US40, US41           | Requiere reputación, reseñas, vínculo con proyecto finalizado y actualización de métricas visibles.             | PullEngagementService   |
+| PUS-11 | Reportes y soporte               | Como usuario, deseo reportar problemas o conductas inadecuadas para que la plataforma pueda revisar incidentes.                              | US12, US13, US14                 | Requiere tickets, reportes, moderación y rol administrador.                                                     | ChatNotificationService |
+| PUS-12 | Sugerencia de precio             | Como freelancer, deseo recibir una sugerencia de precio basada en complejidad, tiempo y categoría para cotizar de forma más consistente.     | US46, US47, US48, US49, US50     | Requiere reglas de pricing desacopladas y extensibles.                                                          | PullEngagementService   |
 
 ### 4.2.3. Quality Attribute Scenarios
 
@@ -1704,7 +1704,7 @@ Supabase se mantiene como plataforma administrada de PostgreSQL y storage para r
 
 ## 4.3. ADD Iterations
 
-El diseño arquitectónico de GigU se desarrolla aplicando ADD v3 sobre los dos microservicios de mayor impacto del backend: `PullEngagementService` (Iteración 1) y `GigMarketplaceService` (Iteración 2). Cada iteración aplica los siete pasos del método sobre un foco acotado del sistema y se gestiona como un Kanban de diseño en Jira, en el que cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir. El siguiente cronograma resume los siete Epics de producto cubiertos por ambas iteraciones, importados al proyecto Jira `GigU Architecture Design`.
+El diseño arquitectónico de GigU se desarrolla aplicando ADD v3 sobre los dos microservicios de mayor impacto del backend: `PullEngagementService` (Iteración 1) y `GigMarketplaceService` (Iteración 2). Cada iteración aplica los siete pasos del método sobre un foco acotado del sistema y se gestiona como un Kanban de diseño en Jira, en el que cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir. El siguiente cronograma resume los seis Epics de producto cubiertos por ambas iteraciones (EP05–EP10), importados al proyecto Jira `GigU Architecture Design`. EP04 (Portafolio del Freelancer) pertenece a `AccessProfileService` y no es refinado en este capítulo, por lo que no aparece en este cronograma de diseño.
 
 ![4.3.CronogramaEpics](imgs/add/4.3.CronogramaEpics.png)
 
@@ -1713,7 +1713,7 @@ El diseño arquitectónico de GigU se desarrolla aplicando ADD v3 sobre los dos 
 Esta primera iteración aplica el método ADD v3 sobre el microservicio que concentra el mayor riesgo arquitectónico de GigU: `PullEngagementService`. Este servicio gestiona el flujo transaccional completo entre un cliente y un freelancer (solicitud, acuerdo, proyecto, entrega y calificación) y por tanto integra a los otros tres microservicios mediante referencias por identificador y eventos asíncronos. El project statement establece que la solución debe ser implementada como una arquitectura empresarial basada en microservicios con Domain-Driven Design, lo cual exige resolver primero el bounded context con mayor cohesión transaccional.
 
 La selección de `PullEngagementService` como foco inicial responde a tres razones objetivas:
-- Es el bounded context que aloja el mayor número de Primary User Stories (5 de 12: PUS-06 a PUS-08, PUS-10 y PUS-12).
+- Es el bounded context que aloja el mayor número de Primary User Stories (5 de 12: PUS-06, PUS-07, PUS-08, PUS-10 y PUS-12).
 - Es el microservicio cuya máquina de estados (ciclo de vida del proyecto) tiene mayor probabilidad de inducir refactors costosos si se diseña tarde.
 - Es el integrador natural entre `AccessProfileService`, `GigMarketplaceService` y `ChatNotificationService`, por lo que sus contratos deben quedar congelados antes de iterar sobre los demás.
 
@@ -1750,7 +1750,7 @@ El backlog de diseño selecciona los drivers funcionales, de calidad y restricci
 | QA-02 Modificabilidad             | El pricing y las reglas de transición de estado son los puntos del dominio con mayor probabilidad de cambio durante los sprints siguientes.            |
 | QA-03 Testabilidad                | El ciclo de vida del proyecto contiene invariantes que deben ser verificables sin infraestructura levantada.                                           |
 | QA-01 Seguridad                   | Cada operación expone recursos transaccionales sensibles (acuerdos económicos, calificaciones) y exige validación de ownership.                        |
-| PUS-06, 07, 08, 10                | Estas cuatro historias definen el flujo end-to-end que la iteración debe soportar.                                                                     |
+| PUS-06, PUS-07, PUS-08, PUS-10, PUS-12 | Estas cinco historias definen el flujo end-to-end (solicitud → acuerdo → proyecto → reseña) y la sugerencia de precio que la iteración debe soportar. |
 | CON-03, CON-09, CON-10            | Restricciones tecnológicas que enmarcan toda decisión de implementación.                                                                               |
 
 Quedan fuera del foco de esta iteración: el dominio interno de Marketplace (que se aborda en la Iteración 2), la mensajería en tiempo real del chat y la operación administrativa.
@@ -1782,7 +1782,7 @@ Las decisiones de diseño se seleccionan a partir del catálogo definido en 4.1 
 | QA-01 Seguridad       | Maintain Audit Trail mediante tabla `project_status_history`.                                            | Toda transición queda registrada con autor y timestamp, atendiendo trazabilidad académica y de negocio.                         |
 | QA-05 Disponibilidad  | Outbox Pattern para `ProjectRequestCreated`, `ProjectStatusChanged` y `ReviewCreated`.                   | El evento se persiste en la misma transacción que la operación de dominio; el envío a RabbitMQ se reintenta de forma controlada.|
 | QA-05 Disponibilidad  | Exception Handling + Graceful Degradation en el publisher de eventos.                                    | Una falla de RabbitMQ no rompe la operación principal; el outbox la recupera más tarde.                                         |
-| PUS-06–10             | Domain Events (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`).     | Modela el flujo end-to-end como cambios significativos del dominio que otros servicios pueden consumir asíncronamente.          |
+| PUS-06, PUS-07, PUS-08, PUS-10 | Domain Events (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`).     | Modela el flujo end-to-end como cambios significativos del dominio que otros servicios pueden consumir asíncronamente.          |
 
 #### 4.3.1.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
 
@@ -1872,7 +1872,7 @@ El tablero Kanban de la Iteración 1 se gestiona en Jira sobre el proyecto `GigU
 | QA-03 Testabilidad     | Resuelto vía Clean Architecture en cuatro capas (ADR-001) y puertos especializados para repositorios y publisher de eventos.          |
 | QA-01 Seguridad        | Resuelto vía Spring Security + JWT y validación de ownership en cada caso de uso (ADR-003); auditoría en `project_status_history`.   |
 | QA-05 Disponibilidad   | Resuelto vía Outbox Pattern (ADR-004); el envío de eventos no bloquea las operaciones principales de contratación.                   |
-| PUS-06, 07, 08, 10, 12 | Cubiertos por contratos REST `/api/v1/engagement/*` y por las cuatro vistas C4/UML producidas en 4.3.1.6.                            |
+| PUS-06, PUS-07, PUS-08, PUS-10, PUS-12 | Cubiertos por contratos REST `/api/v1/engagement/*` y por las cuatro vistas C4/UML producidas en 4.3.1.6.                            |
 
 Los pendientes identificados durante la iteración (políticas de pricing adicionales más allá de Strategy básica, integración con pasarela de pagos real, métricas avanzadas de reputación) se consideran fuera del alcance académico actual y quedan documentados como extensiones futuras.
 
@@ -1889,9 +1889,8 @@ Esta segunda iteración aplica ADD v3 sobre el segundo microservicio de mayor im
 
 | ID      | Tipo                | Descripción                                                                                                                              | Prioridad |
 | ------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| PUS-04  | Funcional           | Como estudiante freelancer, deseo publicar servicios con descripción, categoría, tarifa y tiempo estimado para ofrecerlos en la plataforma. | Alta      |
+| PUS-04  | Funcional           | Como estudiante freelancer, deseo publicar servicios con descripción, categoría, tarifa, tiempo estimado y media asociada (imágenes/archivos) para ofrecerlos en la plataforma. | Alta      |
 | PUS-05  | Funcional           | Como cliente, deseo buscar servicios por categoría, habilidades, precio y reputación para encontrar freelancers adecuados.               | Alta      |
-| PUS-03  | Funcional           | Como estudiante freelancer, deseo publicar evidencias de trabajos previos (asociadas al servicio) para generar confianza.                | Media     |
 | QA-02   | Atributo de calidad | Modificabilidad: agregar una nueva categoría de servicio o un nuevo atributo no debe forzar cambios en otros microservicios.             | Alta      |
 | QA-04   | Atributo de calidad | Interoperabilidad: el catálogo se consume por el frontend mediante REST documentado con OpenAPI y DTOs estables.                         | Alta      |
 | QA-06   | Atributo de calidad | Performance: la búsqueda paginada de servicios responde de forma fluida sobre el dataset de validación académica.                        | Alta      |
@@ -1915,7 +1914,7 @@ Esta segunda iteración aplica ADD v3 sobre el segundo microservicio de mayor im
 | QA-02 Modificabilidad             | La taxonomía de categorías y los criterios de búsqueda evolucionarán durante los sprints siguientes.                                   |
 | QA-04 Interoperabilidad           | El frontend consume directamente este microservicio: los contratos deben quedar estables y documentados antes de iniciar la UI.        |
 | QA-01 Seguridad                   | Endpoints públicos para visitantes coexisten con endpoints protegidos para el dueño del servicio: requiere segregación clara.          |
-| PUS-04, 05, 03                    | Estas tres historias definen el ciclo crear → buscar → enriquecer con portafolio del catálogo.                                         |
+| PUS-04, PUS-05                    | Estas dos historias definen el ciclo crear (con media) → buscar del catálogo. PUS-03 (portafolio del freelancer) queda fuera de foco: el Marketplace solo consume referencias y no es dueño del portafolio. |
 | CON-07, CON-08                    | Restricciones que definen dónde vive cada tipo de dato (relacional vs storage).                                                        |
 
 Quedan fuera del foco: la lógica transaccional de contratación (resuelta en Iteración 1), el chat en tiempo real y la operación administrativa.
@@ -1940,7 +1939,7 @@ Quedan fuera del foco: la lógica transaccional de contratación (resuelta en It
 | QA-02 Modificabilidad     | Encapsulate (táctica): la taxonomía de categorías es un agregado independiente de `ServiceOffering`.        | Permite agregar/renombrar categorías sin modificar la entidad principal.                                                        |
 | QA-04 Interoperabilidad   | API First + DTOs explícitos + OpenAPI/Swagger.                                                              | El frontend consume contratos versionados y validables; la entidad de dominio nunca se expone directamente.                      |
 | QA-01 Seguridad           | Authorize Actors: endpoints `GET` públicos, endpoints `POST/PATCH/DELETE` protegidos por JWT + ownership.   | Visitantes pueden navegar el catálogo; solo el dueño del servicio puede modificarlo.                                            |
-| PUS-03                    | Adapter Pattern para `MediaStoragePort` → `SupabaseStorageAdapter`.                                         | Mantiene el dominio agnóstico al proveedor de storage; permite cambiar a S3 u otro sin tocar reglas de negocio.                 |
+| PUS-04                    | Adapter Pattern para `MediaStoragePort` → `SupabaseStorageAdapter`.                                         | Mantiene el dominio agnóstico al proveedor de storage; permite cambiar a S3 u otro sin tocar reglas de negocio.                 |
 | ReviewCreated consumer    | Event Handler + Materialized Read Model `freelancer_reputation`.                                            | Calcular el promedio de reseñas en cada lectura sería costoso; mantener una proyección actualizada por evento sirve a QA-06.    |
 | CRN-11                    | Hexagonal ports/adapters dentro del microservicio.                                                          | Separa Supabase Storage, Postgres y RabbitMQ del dominio.                                                                       |
 
@@ -1976,7 +1975,7 @@ Quedan fuera del foco: la lógica transaccional de contratación (resuelta en It
 | `POST /api/v1/marketplace/services`                       | POST    | PUS-04, QA-01         | JWT      | Freelancer publica un nuevo servicio.                             |
 | `PATCH /api/v1/marketplace/services/{id}`                 | PATCH   | PUS-04, QA-01         | JWT      | Edita un servicio propio.                                        |
 | `DELETE /api/v1/marketplace/services/{id}`                | DELETE  | PUS-04, QA-01         | JWT      | Despublica un servicio (soft delete).                            |
-| `POST /api/v1/marketplace/services/{id}/media`            | POST    | PUS-03, QA-01         | JWT      | Sube archivo asociado al servicio (delegado a Supabase Storage). |
+| `POST /api/v1/marketplace/services/{id}/media`            | POST    | PUS-04, QA-01         | JWT      | Sube archivo asociado al servicio publicado (delegado a Supabase Storage). |
 | `GET /api/v1/marketplace/categories`                      | GET     | QA-02, QA-04          | Pública  | Lista la taxonomía de categorías para alimentar filtros del front.|
 
 ##### Eventos consumidos
@@ -2016,7 +2015,7 @@ Quedan fuera del foco: la lógica transaccional de contratación (resuelta en It
 
 #### 4.3.2.7. Analysis of Current Design and Review Iteration Goal: Kanban Board
 
-El tablero Kanban de la Iteración 2 se gestiona en el mismo proyecto Jira `GigU Architecture Design`, filtrado para mostrar las 28 tarjetas correspondientes a `GigMarketplaceService`. Cada tarjeta se agrupa bajo el Epic de producto al que afecta (EP04, EP05 o EP06).
+El tablero Kanban de la Iteración 2 se gestiona en el mismo proyecto Jira `GigU Architecture Design`, filtrado para mostrar las 27 tarjetas correspondientes a `GigMarketplaceService`. Cada tarjeta se agrupa bajo el Epic de producto al que afecta (EP05 o EP06).
 
 ![4.3.2.7.KanbanBoardIteration2](imgs/add/4.3.2.7.KanbanBoardIteration2.png)
 
@@ -2029,7 +2028,7 @@ El tablero Kanban de la Iteración 2 se gestiona en el mismo proyecto Jira `GigU
 | QA-04 Interoperabilidad   | Resuelto vía contratos REST `/api/v1/marketplace/*` documentados con OpenAPI y DTOs estables (`ServiceCardDTO`, `ServiceDetailDTO`).                |
 | QA-01 Seguridad           | Resuelto vía endpoints públicos `GET` y endpoints protegidos `POST/PATCH/DELETE` con JWT + ownership (ADR-011).                                     |
 | Consistencia eventual     | Resuelto vía read model materializado `freelancer_reputation` actualizado por `ReviewCreated` (ADR-009), con idempotencia mediante `applied_reviews`.|
-| PUS-04, 05, 03            | Cubiertos por contratos REST, esquema `marketplace_schema` con índices y las cuatro vistas C4/UML producidas en 4.3.2.6.                            |
+| PUS-04, PUS-05            | Cubiertos por contratos REST (incluyendo el endpoint de media bajo PUS-04), esquema `marketplace_schema` con índices y las cuatro vistas C4/UML producidas en 4.3.2.6. |
 
 Los pendientes identificados durante la iteración (recomendación de servicios por similitud, métricas de tendencia del catálogo, búsqueda full-text avanzada) se consideran fuera del alcance académico actual y quedan documentados como extensiones para futuras iteraciones de ADD.
 
