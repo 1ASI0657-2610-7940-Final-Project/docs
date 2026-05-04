@@ -1617,22 +1617,23 @@ La decisión de utilizar Docker Compose responde a la necesidad de ejecutar vari
 
 ### 4.2.2. Primary Functionality: Primary User Stories
 
-Las funcionalidades primarias seleccionadas son aquellas que afectan directamente la estructura de la aplicación, la asignación de responsabilidades entre microservicios y los principales escenarios de calidad. No se listan todas las historias del Product Backlog, sino las que influyen de forma significativa en la arquitectura.
+Las funcionalidades primarias seleccionadas son aquellas que afectan directamente la estructura de la aplicación, la asignación de responsabilidades entre microservicios y los principales escenarios de calidad. No se listan todas las historias del Product Backlog, sino aquellas que influyen de forma significativa en las decisiones arquitectónicas del sistema.
 
-| ID     | Primary User Story               | Descripción                                                                                                                                  | User Stories relacionadas        | Impacto arquitectónico                                                                                          | Microservicio principal |
+Para mantener trazabilidad entre los drivers arquitectónicos y el Product Backlog, cada Primary User Story se relaciona con las User Stories originales del Capítulo III. Asimismo, la funcionalidad de portafolio se integra dentro de la gestión del perfil freelancer, debido a que no constituye un flujo arquitectónico independiente, sino una extensión natural del perfil público del estudiante.
+
+| ID | Primary User Story | Descripción | User Stories relacionadas | Impacto arquitectónico | Microservicio principal |
 | ------ | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| PUS-01 | Gestión de cuenta y acceso       | Como usuario, deseo registrarme e iniciar sesión para acceder de forma segura a las funcionalidades de GigU.                                 | US03, US04, US05, US06, US07     | Requiere autenticación, autorización, roles, JWT y control de ownership.                                        | AccessProfileService    |
-| PUS-02 | Gestión de perfil freelancer     | Como estudiante freelancer, deseo crear y actualizar mi perfil profesional para mostrar mi información académica, habilidades y experiencia. | US15, US16, US17, US19           | Define el bounded context de perfiles, habilidades y verificación académica.                                    | AccessProfileService    |
-| PUS-03 | Gestión de portafolio            | Como estudiante freelancer, deseo publicar evidencias de trabajos previos para generar confianza ante clientes potenciales.                  | US18                             | Requiere integración con storage y relación entre perfil, archivos y experiencia.                               | AccessProfileService    |
-| PUS-04 | Publicación de servicios         | Como estudiante freelancer, deseo publicar servicios con descripción, categoría, tarifa y tiempo estimado para ofrecerlos en la plataforma.  | US20, US21, US22, US23, US24     | Define el núcleo del marketplace y su persistencia, incluyendo media asociada al servicio publicado.            | GigMarketplaceService   |
-| PUS-05 | Búsqueda y filtrado de servicios | Como cliente, deseo buscar servicios por categoría, habilidades, precio y reputación para encontrar freelancers adecuados.                   | US25, US26, US27, US28, US29     | Requiere consultas optimizadas, filtros, paginación e índices.                                                  | GigMarketplaceService   |
-| PUS-06 | Solicitud de contratación        | Como cliente, deseo enviar una solicitud de contratación a un freelancer para iniciar un posible proyecto.                                   | US30, US31                       | Inicia el flujo transaccional de engagement y eventos de notificación.                                          | PullEngagementService   |
-| PUS-07 | Negociación y acuerdo            | Como cliente y freelancer, deseamos acordar condiciones de trabajo para formalizar el inicio del proyecto.                                   | US32, US35                       | Requiere modelar solicitud, acuerdo, precio, plazo y estados.                                                   | PullEngagementService   |
-| PUS-08 | Gestión de proyecto              | Como freelancer, deseo actualizar el estado del proyecto para informar avances, entrega y finalización del servicio.                         | US33, US34, US36, US37           | Requiere ciclo de vida de proyecto, historial de estados y reglas de transición.                                | PullEngagementService   |
-| PUS-09 | Chat de coordinación             | Como cliente o freelancer, deseo comunicarme dentro de la plataforma para coordinar detalles del servicio de forma formal.                   | US42, US43, US44, US45           | Requiere conversación, mensajes, eventos y comunicación en tiempo real mediante WebSocket o Server-Sent Events. | ChatNotificationService |
-| PUS-10 | Calificaciones y reseñas         | Como cliente, deseo calificar el trabajo recibido para ayudar a otros usuarios a evaluar la confiabilidad del freelancer.                    | US38, US39, US40, US41           | Requiere reputación, reseñas, vínculo con proyecto finalizado y actualización de métricas visibles.             | PullEngagementService   |
-| PUS-11 | Reportes y soporte               | Como usuario, deseo reportar problemas o conductas inadecuadas para que la plataforma pueda revisar incidentes.                              | US12, US13, US14                 | Requiere tickets, reportes, moderación y rol administrador.                                                     | ChatNotificationService |
-| PUS-12 | Sugerencia de precio             | Como freelancer, deseo recibir una sugerencia de precio basada en complejidad, tiempo y categoría para cotizar de forma más consistente.     | US46, US47, US48, US49, US50     | Requiere reglas de pricing desacopladas y extensibles.                                                          | PullEngagementService   |
+| PUS-01 | Gestión de cuenta y acceso | Como usuario, deseo registrarme, iniciar sesión y recuperar mi acceso para utilizar de forma segura las funcionalidades de GigU. | US03, US04, US05, US06, US07 | Requiere autenticación, autorización, roles, JWT, recuperación de credenciales y control de ownership. | AccessProfileService |
+| PUS-02 | Gestión de perfil y portafolio freelancer | Como estudiante freelancer, deseo crear y actualizar mi perfil profesional, registrar habilidades y mostrar evidencias de trabajos previos para generar confianza ante clientes potenciales. | US15, US16, US18, US19 | Define el bounded context de perfiles, habilidades, descripción profesional, actualización de información pública e integración con storage para evidencias de portafolio. | AccessProfileService |
+| PUS-03 | Publicación de servicios | Como estudiante freelancer, deseo publicar servicios con descripción, categoría, tarifa, archivos y tiempo estimado para ofrecerlos en la plataforma. | US17, US20, US21, US22, US23, US24 | Define el núcleo del marketplace, la persistencia de servicios publicados, la gestión de tarifas, plazos, archivos asociados y estados de publicación. | GigMarketplaceService |
+| PUS-04 | Búsqueda y filtrado de servicios | Como cliente, deseo buscar servicios por palabra clave, habilidad, precio, experiencia, relevancia o calificación para encontrar freelancers adecuados. | US25, US26, US27, US28, US29 | Requiere consultas optimizadas, filtros combinables, paginación, ordenamiento e índices sobre campos frecuentes de búsqueda. | GigMarketplaceService |
+| PUS-05 | Solicitud de contratación | Como cliente, deseo enviar una solicitud de contratación a un freelancer y consultar el historial de contrataciones realizadas para iniciar y revisar posibles proyectos. | US30, US31, US33 | Inicia el flujo transaccional de engagement, registra solicitudes, confirma contrataciones y genera eventos de notificación. | PullEngagementService |
+| PUS-06 | Negociación y acuerdo | Como cliente y freelancer, deseamos aceptar, rechazar o gestionar solicitudes de contrato para formalizar condiciones de trabajo. | US32, US35 | Requiere modelar solicitud, aceptación, rechazo, acuerdo, precio, plazo, estados y reglas de transición entre las partes. | PullEngagementService |
+| PUS-07 | Gestión de proyecto | Como freelancer o cliente, deseo visualizar proyectos activos, actualizar su estado y marcar proyectos como finalizados. | US34, US36, US37 | Requiere ciclo de vida de proyecto, historial de estados, reglas de transición, control de finalización y visibilidad del avance. | PullEngagementService |
+| PUS-08 | Chat de coordinación | Como cliente o freelancer, deseo comunicarme dentro de la plataforma, consultar conversaciones, recibir notificaciones y reportar problemas desde el chat. | US42, US43, US44, US45 | Requiere conversaciones, mensajes, historial, notificaciones, reportes y comunicación en tiempo real mediante WebSocket o Server-Sent Events. | ChatNotificationService |
+| PUS-09 | Calificaciones y reseñas | Como cliente o freelancer, deseo calificar a la contraparte, editar calificaciones permitidas y consultar reputación visible en perfiles. | US38, US39, US40, US41 | Requiere reseñas vinculadas a proyectos finalizados, reglas de edición, cálculo de reputación y actualización de métricas visibles. | PullEngagementService |
+| PUS-10 | Reportes y soporte | Como usuario, deseo consultar ayuda, buscar preguntas frecuentes, enviar tickets de soporte y reportar conductas inadecuadas. | US12, US13, US14, US45 | Requiere FAQ, búsqueda de ayuda, tickets, reportes, moderación y soporte administrativo. | ChatNotificationService |
+| PUS-11 | Sugerencia de precio | Como freelancer, deseo recibir una sugerencia de precio, ajustarla manualmente, revisar su cálculo y compararla con servicios similares. | US46, US47, US48, US49, US50 | Requiere reglas de pricing desacopladas, historial de precios, explicación del cálculo y capacidad de evolución del algoritmo. | PullEngagementService |
 
 ### 4.2.3. Quality Attribute Scenarios
 
@@ -1704,67 +1705,76 @@ Supabase se mantiene como plataforma administrada de PostgreSQL y storage para r
 
 ## 4.3. ADD Iterations
 
-El diseño arquitectónico de GigU se desarrolla aplicando ADD v3 sobre los dos microservicios de mayor impacto del backend: `PullEngagementService` (Iteración 1) y `GigMarketplaceService` (Iteración 2). Cada iteración aplica los siete pasos del método sobre un foco acotado del sistema y se gestiona como un Kanban de diseño en Jira, en el que cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir. El siguiente cronograma resume los seis Epics de producto cubiertos por ambas iteraciones (EP05–EP10), importados al proyecto Jira `GigU Architecture Design`. EP04 (Portafolio del Freelancer) pertenece a `AccessProfileService` y no es refinado en este capítulo, por lo que no aparece en este cronograma de diseño.
+El diseño arquitectónico de GigU se desarrolla aplicando ADD v3 sobre los dos microservicios de mayor impacto del backend: `PullEngagementService` (Iteración 1) y `GigMarketplaceService` (Iteración 2).
+
+Cada iteración aplica los siete pasos del método sobre un foco acotado del sistema y se gestiona como un Kanban de diseño en Jira, en el que cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir. El siguiente cronograma resume los Epics de producto cubiertos por ambas iteraciones, importados al proyecto Jira `GigU Architecture Design`.
+
+La funcionalidad de portafolio ya no se modela como un Epic independiente dentro de este capítulo, porque fue integrada dentro de la gestión del perfil freelancer en `AccessProfileService`. Por ello, no se refina como una iteración separada de ADD.
 
 ![4.3.CronogramaEpics](imgs/add/4.3.CronogramaEpics.png)
 
 ### 4.3.1. Iteration 1: PullEngagementService — Transactional Core
 
-Esta primera iteración aplica el método ADD v3 sobre el microservicio que concentra el mayor riesgo arquitectónico de GigU: `PullEngagementService`. Este servicio gestiona el flujo transaccional completo entre un cliente y un freelancer (solicitud, acuerdo, proyecto, entrega y calificación) y por tanto integra a los otros tres microservicios mediante referencias por identificador y eventos asíncronos. El project statement establece que la solución debe ser implementada como una arquitectura empresarial basada en microservicios con Domain-Driven Design, lo cual exige resolver primero el bounded context con mayor cohesión transaccional.
+Esta primera iteración aplica el método ADD v3 sobre el microservicio que concentra el mayor riesgo arquitectónico de GigU: `PullEngagementService`.
+
+Este servicio gestiona el flujo transaccional completo entre un cliente y un freelancer, incluyendo solicitud, acuerdo, proyecto, entrega, finalización, calificación y sugerencia de precio. Además, integra a los otros microservicios mediante referencias por identificador y eventos asíncronos. El project statement establece que la solución debe ser implementada como una arquitectura empresarial basada en microservicios con Domain-Driven Design, lo cual exige resolver primero el bounded context con mayor cohesión transaccional.
 
 La selección de `PullEngagementService` como foco inicial responde a tres razones objetivas:
-- Es el bounded context que aloja el mayor número de Primary User Stories (5 de 12: PUS-06, PUS-07, PUS-08, PUS-10 y PUS-12).
-- Es el microservicio cuya máquina de estados (ciclo de vida del proyecto) tiene mayor probabilidad de inducir refactors costosos si se diseña tarde.
-- Es el integrador natural entre `AccessProfileService`, `GigMarketplaceService` y `ChatNotificationService`, por lo que sus contratos deben quedar congelados antes de iterar sobre los demás.
+
+- Es el bounded context que aloja el mayor número de Primary User Stories (5 de 11: PUS-05, PUS-06, PUS-07, PUS-09 y PUS-11).
+- Es el microservicio cuya máquina de estados, relacionada con solicitudes, acuerdos, proyectos, finalización, reseñas y pricing, tiene mayor probabilidad de inducir refactors costosos si se diseña tarde.
+- Es el integrador natural entre `AccessProfileService`, `GigMarketplaceService` y `ChatNotificationService`, por lo que sus contratos deben quedar definidos antes de iterar sobre los demás.
 
 #### 4.3.1.1. Architectural Design Backlog 1
 
 El backlog de diseño selecciona los drivers funcionales, de calidad y restricciones que afectan directamente a la estructura interna de `PullEngagementService` y a sus interfaces con el resto de la plataforma.
 
-| ID      | Tipo                | Descripción                                                                                                                              | Prioridad |
+| ID | Tipo | Descripción | Prioridad |
 | ------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| PUS-06  | Funcional           | Como cliente, deseo enviar una solicitud de contratación a un freelancer para iniciar un posible proyecto.                               | Alta      |
-| PUS-07  | Funcional           | Como cliente y freelancer, deseamos acordar condiciones de trabajo para formalizar el inicio del proyecto.                               | Alta      |
-| PUS-08  | Funcional           | Como freelancer, deseo actualizar el estado del proyecto para informar avances, entrega y finalización del servicio.                     | Alta      |
-| PUS-10  | Funcional           | Como cliente, deseo calificar el trabajo recibido para ayudar a otros usuarios a evaluar la confiabilidad del freelancer.                | Alta      |
-| PUS-12  | Funcional           | Como freelancer, deseo recibir una sugerencia de precio basada en complejidad, tiempo y categoría para cotizar de forma más consistente. | Media     |
-| QA-01   | Atributo de calidad | Seguridad: solo el cliente o freelancer dueño del proyecto puede modificar su estado o registrar reseñas.                                | Alta      |
-| QA-02   | Atributo de calidad | Modificabilidad: nuevas estrategias de pricing o reglas de transición de estado se agregan sin modificar otros microservicios.           | Alta      |
-| QA-03   | Atributo de calidad | Testabilidad: las reglas del ciclo de vida del proyecto se prueban unitariamente sin levantar persistencia, gateway ni broker.           | Alta      |
-| QA-05   | Atributo de calidad | Disponibilidad: una falla del envío de notificación no debe bloquear la creación de la solicitud o la actualización del proyecto.        | Media     |
-| CON-02  | Restricción         | El microservicio se implementa con Java + Spring Boot.                                                                                   | Fija      |
-| CON-03  | Restricción         | Aplica Clean Architecture (Domain → Application → Interface → Infrastructure).                                                           | Fija      |
-| CON-09  | Restricción         | Autenticación con Spring Security + JWT y validación de ownership en cada caso de uso.                                                   | Fija      |
-| CON-10  | Restricción         | Eventos relevantes (`ProjectRequestCreated`, `ProjectStatusChanged`, `ReviewCreated`) se publican en RabbitMQ.                           | Fija      |
-| CRN-03  | Concern             | Consistencia entre microservicios: las referencias a usuario y servicio publicado son IDs externos, no joins.                            | Alta      |
-| CRN-08  | Concern             | Testabilidad de reglas de negocio sin levantar todo el sistema.                                                                          | Alta      |
+| PUS-05 | Funcional | Como cliente, deseo enviar una solicitud de contratación a un freelancer y consultar el historial de contrataciones realizadas para iniciar y revisar posibles proyectos. | Alta |
+| PUS-06 | Funcional | Como cliente y freelancer, deseamos aceptar, rechazar o gestionar solicitudes de contrato para formalizar condiciones de trabajo. | Alta |
+| PUS-07 | Funcional | Como freelancer o cliente, deseo visualizar proyectos activos, actualizar su estado y marcar proyectos como finalizados. | Alta |
+| PUS-09 | Funcional | Como cliente o freelancer, deseo calificar a la contraparte, editar calificaciones permitidas y consultar reputación visible en perfiles. | Alta |
+| PUS-11 | Funcional | Como freelancer, deseo recibir una sugerencia de precio, ajustarla manualmente, revisar su cálculo y compararla con servicios similares. | Media |
+| QA-01 | Atributo de calidad | Seguridad: solo el cliente o freelancer dueño del proyecto puede modificar su estado o registrar reseñas. | Alta |
+| QA-02 | Atributo de calidad | Modificabilidad: nuevas estrategias de pricing o reglas de transición de estado se agregan sin modificar otros microservicios. | Alta |
+| QA-03 | Atributo de calidad | Testabilidad: las reglas del ciclo de vida del proyecto se prueban unitariamente sin levantar persistencia, gateway ni broker. | Alta |
+| QA-05 | Atributo de calidad | Disponibilidad: una falla del envío de notificación no debe bloquear la creación de la solicitud o la actualización del proyecto. | Media |
+| CON-02 | Restricción | El microservicio se implementa con Java + Spring Boot. | Fija |
+| CON-03 | Restricción | Aplica Clean Architecture (Domain → Application → Interface → Infrastructure). | Fija |
+| CON-09 | Restricción | Autenticación con Spring Security + JWT y validación de ownership en cada caso de uso. | Fija |
+| CON-10 | Restricción | Eventos relevantes (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`) se publican en RabbitMQ. | Fija |
+| CRN-03 | Concern | Consistencia entre microservicios: las referencias a usuario y servicio publicado son IDs externos, no joins. | Alta |
+| CRN-08 | Concern | Testabilidad de reglas de negocio sin levantar todo el sistema. | Alta |
 
 #### 4.3.1.2. Establish Iteration Goal by Selecting Drivers
 
-**Meta de la iteración:** definir la estructura interna de `PullEngagementService` y sus contratos de entrada/salida de modo que el flujo solicitud → acuerdo → proyecto → reseña pueda implementarse, probarse y desplegarse de forma independiente del resto de microservicios.
+**Meta de la iteración:** definir la estructura interna de `PullEngagementService` y sus contratos de entrada/salida de modo que el flujo solicitud → acuerdo → proyecto → reseña, junto con la sugerencia de precio, pueda implementarse, probarse y desplegarse de forma independiente del resto de microservicios.
 
 **Drivers seleccionados como guía principal de las decisiones:**
 
-| Driver                            | Por qué guía esta iteración                                                                                                                            |
+| Driver | Por qué guía esta iteración |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| QA-02 Modificabilidad             | El pricing y las reglas de transición de estado son los puntos del dominio con mayor probabilidad de cambio durante los sprints siguientes.            |
-| QA-03 Testabilidad                | El ciclo de vida del proyecto contiene invariantes que deben ser verificables sin infraestructura levantada.                                           |
-| QA-01 Seguridad                   | Cada operación expone recursos transaccionales sensibles (acuerdos económicos, calificaciones) y exige validación de ownership.                        |
-| PUS-06, PUS-07, PUS-08, PUS-10, PUS-12 | Estas cinco historias definen el flujo end-to-end (solicitud → acuerdo → proyecto → reseña) y la sugerencia de precio que la iteración debe soportar. |
-| CON-03, CON-09, CON-10            | Restricciones tecnológicas que enmarcan toda decisión de implementación.                                                                               |
+| QA-02 Modificabilidad | El pricing y las reglas de transición de estado son los puntos del dominio con mayor probabilidad de cambio durante los sprints siguientes. |
+| QA-03 Testabilidad | El ciclo de vida del proyecto contiene invariantes que deben ser verificables sin infraestructura levantada. |
+| QA-01 Seguridad | Cada operación expone recursos transaccionales sensibles, como solicitudes, acuerdos, proyectos, calificaciones y sugerencias de precio. |
+| PUS-05, PUS-06, PUS-07, PUS-09, PUS-11 | Estas cinco historias definen el flujo end-to-end de contratación, gestión del proyecto, reputación y pricing que la iteración debe soportar. |
+| CON-03, CON-09, CON-10 | Restricciones tecnológicas que enmarcan toda decisión de implementación. |
 
-Quedan fuera del foco de esta iteración: el dominio interno de Marketplace (que se aborda en la Iteración 2), la mensajería en tiempo real del chat y la operación administrativa.
+Quedan fuera del foco de esta iteración: el dominio interno de Marketplace, que se aborda en la Iteración 2; la mensajería en tiempo real del chat; la operación administrativa; y la gestión de perfil y portafolio, que pertenece a `AccessProfileService`.
 
 #### 4.3.1.3. Choose One or More Elements of the System to Refine
 
-Partiendo del Container Diagram presentado en 4.1.4, el elemento a refinar en esta iteración es el contenedor `PullEngagementService`. La iteración descompone este contenedor en sus componentes internos siguiendo Clean Architecture y formaliza las interfaces que lo conectan con el resto del sistema.
+Partiendo del Container Diagram presentado en 4.1.4, el elemento a refinar en esta iteración es el contenedor `PullEngagementService`.
 
-| Elemento a refinar       | Tipo                | Razón                                                                                                                              |
+La iteración descompone este contenedor en sus componentes internos siguiendo Clean Architecture y formaliza las interfaces que lo conectan con el resto del sistema.
+
+| Elemento a refinar | Tipo | Razón |
 | ------------------------ | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `PullEngagementService`  | Contenedor          | Centro transaccional del dominio, mayor concentración de drivers seleccionados.                                                    |
-| Esquema `engagement_schema` | Componente de datos | Soporta el modelo agregado de solicitud, acuerdo, proyecto, historial y reseña.                                                    |
-| Contrato REST `/api/v1/engagement/*` | Interfaz pública | Punto de acoplamiento para el frontend Vue y para el gateway Caddy.                                                                |
-| Eventos publicados en RabbitMQ | Interfaz asíncrona | Punto de acoplamiento eventual hacia `ChatNotificationService` y `GigMarketplaceService`.                                          |
+| `PullEngagementService` | Contenedor | Centro transaccional del dominio y mayor concentración de drivers seleccionados. |
+| Esquema `engagement_schema` | Componente de datos | Soporta el modelo agregado de solicitud, acuerdo, proyecto, historial, reseña y sugerencia de precio. |
+| Contrato REST `/api/v1/engagement/*` | Interfaz pública | Punto de acoplamiento para el frontend Vue y para el gateway Caddy. |
+| Eventos publicados en RabbitMQ | Interfaz asíncrona | Punto de acoplamiento eventual hacia `ChatNotificationService` y `GigMarketplaceService`. |
 
 No se refinan en esta iteración los componentes internos de los otros microservicios: solo se acuerda la forma de los contratos que `PullEngagementService` consume o produce.
 
@@ -1772,60 +1782,60 @@ No se refinan en esta iteración los componentes internos de los otros microserv
 
 Las decisiones de diseño se seleccionan a partir del catálogo definido en 4.1 (Approaches, Patterns y Tactics) y se justifican contra los drivers de la iteración.
 
-| Driver atendido       | Concepto de diseño seleccionado                                                                          | Justificación contra el driver                                                                                                  |
-| --------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| QA-02 Modificabilidad | Strategy Pattern para `PriceSuggestionPolicy` y para reglas de transición del agregado `Project`.        | Permite agregar políticas nuevas (por categoría, por urgencia) sin modificar los casos de uso ni los controladores existentes.  |
-| QA-02 Modificabilidad | Encapsulate (táctica) por bounded context: el dominio de engagement no consulta tablas de otros esquemas.| Aísla cambios y reduce el blast radius de cualquier evolución posterior.                                                        |
-| QA-03 Testabilidad    | Clean Architecture con interfaces de repositorio y de gateway externo en la Application Layer.           | Habilita pruebas unitarias sin Spring, sin Postgres y sin RabbitMQ; integración con Testcontainers para los flujos completos.   |
-| QA-03 Testabilidad    | Specialized Interfaces (táctica) sobre `ProjectRepository`, `EventPublisher`, `ProfileLookupClient`.     | Permite mockear cada dependencia externa por separado y enfocar pruebas por regla de negocio.                                   |
-| QA-01 Seguridad       | Authenticate Actors + Authorize Actors mediante Spring Security y filtro JWT por endpoint.               | Cada controller exige token válido; cada caso de uso valida que el `userId` extraído sea propietario del recurso solicitado.    |
-| QA-01 Seguridad       | Maintain Audit Trail mediante tabla `project_status_history`.                                            | Toda transición queda registrada con autor y timestamp, atendiendo trazabilidad académica y de negocio.                         |
-| QA-05 Disponibilidad  | Outbox Pattern para `ProjectRequestCreated`, `ProjectStatusChanged` y `ReviewCreated`.                   | El evento se persiste en la misma transacción que la operación de dominio; el envío a RabbitMQ se reintenta de forma controlada.|
-| QA-05 Disponibilidad  | Exception Handling + Graceful Degradation en el publisher de eventos.                                    | Una falla de RabbitMQ no rompe la operación principal; el outbox la recupera más tarde.                                         |
-| PUS-06, PUS-07, PUS-08, PUS-10 | Domain Events (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`).     | Modela el flujo end-to-end como cambios significativos del dominio que otros servicios pueden consumir asíncronamente.          |
+| Driver atendido | Concepto de diseño seleccionado | Justificación contra el driver |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| QA-02 Modificabilidad | Clean Architecture con separación Domain, Application, Interface e Infrastructure. | Aísla reglas de negocio de frameworks, persistencia, gateway y broker, reduciendo impacto ante cambios funcionales. |
+| QA-02 Modificabilidad | Strategy Pattern para `PriceSuggestionPolicy` y `ProjectStatusPolicy`. | Permite agregar nuevas reglas de pricing o transición de estados sin modificar los casos de uso principales. |
+| QA-03 Testabilidad | Puertos explícitos para repositorios, clientes externos y publicador de eventos. | Habilita pruebas unitarias sin Spring, sin Postgres y sin RabbitMQ. |
+| QA-03 Testabilidad | Specialized Interfaces sobre `ProjectRepository`, `EventPublisher`, `ProfileLookupClient` y `ServiceLookupClient`. | Permite mockear cada dependencia externa por separado y enfocar pruebas por regla de negocio. |
+| QA-01 Seguridad | Authenticate Actors + Authorize Actors mediante Spring Security y filtro JWT por endpoint. | Cada controller exige token válido y cada caso de uso valida que el `userId` autenticado sea propietario o participante del recurso solicitado. |
+| QA-01 Seguridad | Maintain Audit Trail mediante tabla `project_status_history`. | Toda transición queda registrada con autor y timestamp, atendiendo trazabilidad académica y de negocio. |
+| QA-05 Disponibilidad | Outbox Pattern para `ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged` y `ReviewCreated`. | El evento se persiste en la misma transacción que la operación de dominio; el envío a RabbitMQ se reintenta de forma controlada. |
+| QA-05 Disponibilidad | Exception Handling + Graceful Degradation en el publisher de eventos. | Una falla de RabbitMQ no rompe la operación principal; el outbox la recupera más tarde. |
+| PUS-05, PUS-06, PUS-07, PUS-09 | Domain Events (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`). | Modela el flujo end-to-end como cambios significativos del dominio que otros servicios pueden consumir asíncronamente. |
+| PUS-11 | Strategy Pattern para `PriceSuggestionPolicy`. | Desacopla las reglas de sugerencia de precio y permite evolucionar el algoritmo sin afectar contratación, proyectos o reseñas. |
 
 #### 4.3.1.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
 
 ##### Componentes internos de `PullEngagementService`
 
-| Componente                       | Capa Clean Architecture | Responsabilidad                                                                                  |
+| Componente | Capa Clean Architecture | Responsabilidad |
 | -------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------ |
-| `EngagementController`           | Interface               | Expone REST `/api/v1/engagement/*`, valida DTOs de entrada y mapea a comandos.                   |
-| `JwtAuthenticationFilter`        | Interface               | Valida el token emitido por `AccessProfileService` e inyecta el `userId` autenticado.             |
-| `RequestProjectUseCase`          | Application             | Orquesta la creación de `ProjectRequest` y la publicación del evento `ProjectRequestCreated`.    |
-| `RespondProjectRequestUseCase`   | Application             | Aplica la transición aceptado/rechazado y emite `AgreementSigned` cuando corresponde.             |
-| `UpdateProjectStatusUseCase`     | Application             | Aplica la regla de transición sobre `Project` y emite `ProjectStatusChanged`.                    |
-| `SubmitReviewUseCase`            | Application             | Crea la reseña sobre un proyecto finalizado y emite `ReviewCreated`.                              |
-| `SuggestPriceUseCase`            | Application             | Coordina `PriceSuggestionPolicy` para devolver el precio sugerido.                                |
-| `ProjectRequest`, `Agreement`, `Project`, `Review`, `PriceSuggestion` | Domain | Entidades agregadas con invariantes y eventos de dominio.                                         |
-| `ProjectStatusPolicy`            | Domain                  | Implementa la máquina de estados del proyecto.                                                   |
-| `PriceSuggestionPolicy` (Strategy) | Domain                | Encapsula reglas de pricing intercambiables.                                                     |
-| `ProjectRepository`, `RequestRepository`, `ReviewRepository` | Application (puerto) | Abstracciones para persistencia.                                                                  |
-| `EventPublisher`                 | Application (puerto)    | Abstracción para publicar eventos de dominio.                                                    |
-| `ProfileLookupClient`, `ServiceLookupClient` | Application (puerto) | Abstracciones para validar existencia de freelancer y servicio antes de iniciar engagement.       |
-| `JpaProjectRepository`, `JpaRequestRepository`, `JpaReviewRepository` | Infrastructure | Implementan los puertos sobre Supabase PostgreSQL.                                                |
-| `RabbitEventPublisher` + `OutboxScheduler` | Infrastructure | Implementan el patrón Outbox sobre RabbitMQ.                                                      |
-| `RestProfileLookupClient`, `RestServiceLookupClient` | Infrastructure | Adaptadores HTTP hacia los otros microservicios.                                                  |
+| `EngagementController` | Interface | Expone REST `/api/v1/engagement/*`, valida DTOs de entrada y mapea a comandos. |
+| `JwtAuthenticationFilter` | Interface | Valida el token emitido por `AccessProfileService` e inyecta el `userId` autenticado. |
+| `RequestProjectUseCase` | Application | Orquesta la creación de `ProjectRequest` y la publicación del evento `ProjectRequestCreated`. |
+| `RespondProjectRequestUseCase` | Application | Aplica la transición aceptado/rechazado y emite `AgreementSigned` cuando corresponde. |
+| `UpdateProjectStatusUseCase` | Application | Aplica la regla de transición sobre `Project` y emite `ProjectStatusChanged`. |
+| `SubmitReviewUseCase` | Application | Crea la reseña sobre un proyecto finalizado y emite `ReviewCreated`. |
+| `SuggestPriceUseCase` | Application | Coordina `PriceSuggestionPolicy` para devolver el precio sugerido. |
+| `ProjectRequest`, `Agreement`, `Project`, `Review`, `PriceSuggestion` | Domain | Entidades agregadas con invariantes y eventos de dominio. |
+| `ProjectStatusPolicy`, `PriceSuggestionPolicy` | Domain | Estrategias de transición de estado y cálculo de sugerencia de precio. |
+| `ProjectRepository`, `RequestRepository`, `ReviewRepository` | Application (puerto) | Abstracciones para persistencia. |
+| `EventPublisher` | Application (puerto) | Abstracción para publicar eventos de dominio. |
+| `ProfileLookupClient`, `ServiceLookupClient` | Application (puerto) | Abstracciones para validar existencia de freelancer y servicio antes de iniciar engagement. |
+| `JpaProjectRepository`, `JpaRequestRepository`, `JpaReviewRepository` | Infrastructure | Implementan los puertos sobre Supabase PostgreSQL. |
+| `RabbitEventPublisher` + `OutboxScheduler` | Infrastructure | Implementan el patrón Outbox sobre RabbitMQ. |
+| `RestProfileLookupClient`, `RestServiceLookupClient` | Infrastructure | Adaptadores HTTP hacia los otros microservicios. |
 
 ##### Interfaces (contratos REST principales)
 
-| Endpoint                                                          | Método | Driver atendido          | Descripción                                                          |
+| Endpoint | Método | Driver atendido | Descripción |
 | ----------------------------------------------------------------- | ------ | ------------------------ | -------------------------------------------------------------------- |
-| `POST /api/v1/engagement/requests`                                | POST   | PUS-06, QA-01            | Cliente crea una solicitud sobre un servicio publicado.              |
-| `PATCH /api/v1/engagement/requests/{id}`                          | PATCH  | PUS-07, QA-01            | Freelancer acepta o rechaza la solicitud.                            |
-| `GET /api/v1/engagement/projects/{id}`                            | GET    | PUS-08, QA-01            | Consultar proyecto y su historial de estados.                        |
-| `PATCH /api/v1/engagement/projects/{id}/status`                   | PATCH  | PUS-08, QA-01, QA-02     | Avanzar el estado del proyecto según la máquina de estados.          |
-| `POST /api/v1/engagement/projects/{id}/reviews`                   | POST   | PUS-10, QA-01            | Cliente registra reseña al finalizar el proyecto.                    |
-| `POST /api/v1/engagement/price-suggestions`                       | POST   | PUS-12, QA-02            | Devuelve sugerencia de precio según parámetros del servicio.         |
+| `POST /api/v1/engagement/requests` | POST | PUS-05, QA-01 | Cliente crea una solicitud sobre un servicio publicado. |
+| `PATCH /api/v1/engagement/requests/{id}` | PATCH | PUS-06, QA-01 | Freelancer acepta o rechaza la solicitud. |
+| `GET /api/v1/engagement/projects/{id}` | GET | PUS-07, QA-01 | Consultar proyecto y su historial de estados. |
+| `PATCH /api/v1/engagement/projects/{id}/status` | PATCH | PUS-07, QA-01, QA-02 | Avanzar el estado del proyecto según la máquina de estados. |
+| `POST /api/v1/engagement/projects/{id}/reviews` | POST | PUS-09, QA-01 | Cliente o freelancer registra reseña al finalizar el proyecto. |
+| `POST /api/v1/engagement/price-suggestions` | POST | PUS-11, QA-02 | Devuelve sugerencia de precio según parámetros del servicio. |
 
 ##### Eventos de dominio publicados
 
-| Evento                    | Disparador                                         | Consumidor previsto                              |
+| Evento | Disparador | Consumidor previsto |
 | ------------------------- | -------------------------------------------------- | ------------------------------------------------ |
-| `ProjectRequestCreated`   | Cliente envía nueva solicitud                      | `ChatNotificationService`                         |
-| `AgreementSigned`         | Freelancer acepta la solicitud                     | `ChatNotificationService`                         |
-| `ProjectStatusChanged`    | Cambio de estado en `Project`                      | `ChatNotificationService`                         |
-| `ReviewCreated`           | Cliente registra reseña                            | `GigMarketplaceService`, `ChatNotificationService`|
+| `ProjectRequestCreated` | Cliente envía nueva solicitud | `ChatNotificationService` |
+| `AgreementSigned` | Freelancer acepta la solicitud | `ChatNotificationService` |
+| `ProjectStatusChanged` | Cambio de estado en `Project` | `ChatNotificationService` |
+| `ReviewCreated` | Cliente o freelancer registra reseña | `GigMarketplaceService`, `ChatNotificationService` |
 
 #### 4.3.1.6. Sketch Views: C4 & UML, and Record Design Decisions
 
@@ -1849,142 +1859,147 @@ Para esta iteración se generaron cuatro vistas que sustentan las decisiones tom
 
 ##### Architecture Decision Records de la iteración
 
-| ADR     | Decisión                                                                                              | Estado    | Driver principal | Consecuencia                                                                                            |
+| ADR | Decisión | Estado | Driver principal | Consecuencia |
 | ------- | ----------------------------------------------------------------------------------------------------- | --------- | ---------------- | ------------------------------------------------------------------------------------------------------- |
-| ADR-001 | Aplicar Clean Architecture en cuatro capas dentro de `PullEngagementService`.                         | Aceptada  | QA-03            | Reglas de dominio testeables sin Spring; mayor número de archivos y mappers explícitos.                 |
-| ADR-002 | Usar Strategy Pattern para `PriceSuggestionPolicy` y `ProjectStatusPolicy`.                           | Aceptada  | QA-02            | Permite agregar reglas sin modificar casos de uso; introduce una interfaz adicional por política.       |
-| ADR-003 | Validar ownership en cada caso de uso, no en el controller.                                           | Aceptada  | QA-01            | El controller queda fino; las pruebas unitarias del caso de uso cubren el caso "usuario no dueño".      |
-| ADR-004 | Publicar eventos de dominio mediante Outbox Pattern (`engagement_outbox`) + worker hacia RabbitMQ.    | Aceptada  | QA-05            | Garantía at-least-once incluso ante caída del broker; requiere tabla adicional y un scheduler.          |
-| ADR-005 | Acceder a perfil y a servicio publicado mediante REST (no via lectura directa de tablas externas).    | Aceptada  | CRN-03           | Mantiene ownership de datos; introduce dependencia de red y obliga a manejar timeouts y reintentos.     |
-| ADR-006 | No introducir CQRS completo; se usa CQRS Lite separando comandos y queries solo en casos relevantes.  | Aceptada  | Simplicidad      | Reduce complejidad para el alcance académico; queries y comandos comparten modelo de persistencia.      |
+| ADR-001 | Aplicar Clean Architecture en cuatro capas dentro de `PullEngagementService`. | Aceptada | QA-03 | Reglas de dominio testeables sin Spring; mayor número de archivos y mappers explícitos. |
+| ADR-002 | Usar Strategy Pattern para `PriceSuggestionPolicy` y `ProjectStatusPolicy`. | Aceptada | QA-02 | Permite agregar reglas sin modificar casos de uso; introduce una interfaz adicional por política. |
+| ADR-003 | Validar ownership en cada caso de uso, no en el controller. | Aceptada | QA-01 | El controller queda fino; las pruebas unitarias del caso de uso cubren el caso "usuario no dueño". |
+| ADR-004 | Publicar eventos de dominio mediante Outbox Pattern (`engagement_outbox`) + worker hacia RabbitMQ. | Aceptada | QA-05 | Garantía at-least-once incluso ante caída del broker; requiere tabla adicional y un scheduler. |
+| ADR-005 | Acceder a perfil y a servicio publicado mediante REST, no mediante lectura directa de tablas externas. | Aceptada | CRN-03 | Mantiene ownership de datos; introduce dependencia de red y obliga a manejar timeouts y reintentos. |
+| ADR-006 | No introducir CQRS completo; se usa CQRS Lite separando comandos y queries solo en casos relevantes. | Aceptada | Simplicidad | Reduce complejidad para el alcance académico; queries y comandos comparten modelo de persistencia. |
 
 #### 4.3.1.7. Analysis of Current Design and Review Iteration Goal: Kanban Board
 
-El tablero Kanban de la Iteración 1 se gestiona en Jira sobre el proyecto `GigU Architecture Design`. Cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir, agrupada bajo el Epic de producto al que afecta (EP07, EP08, EP09 o EP10). La siguiente captura muestra las 27 tarjetas filtradas por la etiqueta de iteración correspondiente.
+El tablero Kanban de la Iteración 1 se gestiona en Jira sobre el proyecto `GigU Architecture Design`. Cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir, agrupada bajo el Epic de producto al que afecta. La siguiente captura muestra las tarjetas filtradas por la etiqueta de iteración correspondiente.
 
 ![4.3.1.7.KanbanBoardIteration1](imgs/add/4.3.1.7.KanbanBoardIteration1.png)
 
 **Análisis de cumplimiento de drivers — Iteración 1**
 
-| Driver de la iteración | Cobertura alcanzada                                                                                                                  |
+| Driver de la iteración | Cobertura alcanzada |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| QA-02 Modificabilidad  | Resuelto vía Strategy Pattern (ADR-002) y separación de bounded context (Encapsulate).                                                |
-| QA-03 Testabilidad     | Resuelto vía Clean Architecture en cuatro capas (ADR-001) y puertos especializados para repositorios y publisher de eventos.          |
-| QA-01 Seguridad        | Resuelto vía Spring Security + JWT y validación de ownership en cada caso de uso (ADR-003); auditoría en `project_status_history`.   |
-| QA-05 Disponibilidad   | Resuelto vía Outbox Pattern (ADR-004); el envío de eventos no bloquea las operaciones principales de contratación.                   |
-| PUS-06, PUS-07, PUS-08, PUS-10, PUS-12 | Cubiertos por contratos REST `/api/v1/engagement/*` y por las cuatro vistas C4/UML producidas en 4.3.1.6.                            |
+| QA-02 Modificabilidad | Resuelto vía Strategy Pattern para reglas de pricing y transición de estados, junto con separación de bounded context. |
+| QA-03 Testabilidad | Resuelto vía Clean Architecture en cuatro capas y puertos especializados para repositorios, clientes externos y publisher de eventos. |
+| QA-01 Seguridad | Resuelto vía Spring Security + JWT y validación de ownership en cada caso de uso; auditoría en `project_status_history`. |
+| QA-05 Disponibilidad | Resuelto vía Outbox Pattern; el envío de eventos no bloquea las operaciones principales de contratación. |
+| PUS-05, PUS-06, PUS-07, PUS-09, PUS-11 | Cubiertos por contratos REST `/api/v1/engagement/*` y por las cuatro vistas C4/UML producidas en 4.3.1.6. |
 
-Los pendientes identificados durante la iteración (políticas de pricing adicionales más allá de Strategy básica, integración con pasarela de pagos real, métricas avanzadas de reputación) se consideran fuera del alcance académico actual y quedan documentados como extensiones futuras.
+Los pendientes identificados durante la iteración, como políticas de pricing adicionales más allá de Strategy básica, integración con pasarela de pagos real y métricas avanzadas de reputación, se consideran fuera del alcance académico actual y quedan documentados como extensiones futuras.
 
 ### 4.3.2. Iteration 2: GigMarketplaceService — Catalog & Discovery
 
-Esta segunda iteración aplica ADD v3 sobre el segundo microservicio de mayor impacto arquitectónico: `GigMarketplaceService`. Este servicio es el catálogo de la plataforma: aloja la oferta de servicios publicados por los freelancers, los expone al cliente mediante búsqueda y filtros, y mantiene métricas visibles como reputación promedio. Una vez cerrada la Iteración 1 (donde quedaron definidos los contratos transaccionales que `PullEngagementService` consume desde Marketplace), esta iteración formaliza la estructura interna del catálogo y los contratos REST que el frontend utilizará para descubrir servicios.
+Esta segunda iteración aplica ADD v3 sobre el segundo microservicio de mayor impacto arquitectónico: `GigMarketplaceService`. Este servicio es el catálogo de la plataforma: aloja la oferta de servicios publicados por los freelancers, los expone al cliente mediante búsqueda y filtros, y mantiene métricas visibles como reputación promedio.
 
-`GigMarketplaceService` se selecciona como segundo foco por tres razones objetivas:
+Una vez cerrada la Iteración 1, donde quedaron definidos los contratos transaccionales que `PullEngagementService` consume desde Marketplace, esta iteración formaliza la estructura interna del catálogo y los contratos REST que el frontend utilizará para descubrir servicios. `GigMarketplaceService` se selecciona como segundo foco por tres razones objetivas:
+
 - Es el bounded context que materializa la propuesta de valor visible para el cliente: sin un catálogo navegable no hay marketplace.
-- Concentra los drivers de calidad de **performance** (búsquedas paginadas, filtros, índices) y **modificabilidad** (nuevas categorías, nuevos atributos de servicio) que no fueron foco principal en la Iteración 1.
-- Recibe eventos producidos por `PullEngagementService` (`ReviewCreated`) que afectan vistas derivadas como reputación promedio, lo que convierte a este microservicio en el primer caso real de **proyección eventual** de la plataforma.
+- Concentra los drivers de calidad de **performance** mediante búsquedas paginadas, filtros e índices, y de **modificabilidad** mediante nuevas categorías y nuevos atributos de servicio.
+- Recibe eventos producidos por `PullEngagementService`, como `ReviewCreated`, que afectan vistas derivadas como reputación promedio, lo que convierte a este microservicio en el primer caso real de proyección eventual de la plataforma.
 
 #### 4.3.2.1. Architectural Design Backlog 2
 
-| ID      | Tipo                | Descripción                                                                                                                              | Prioridad |
+| ID | Tipo | Descripción | Prioridad |
 | ------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| PUS-04  | Funcional           | Como estudiante freelancer, deseo publicar servicios con descripción, categoría, tarifa, tiempo estimado y media asociada (imágenes/archivos) para ofrecerlos en la plataforma. | Alta      |
-| PUS-05  | Funcional           | Como cliente, deseo buscar servicios por categoría, habilidades, precio y reputación para encontrar freelancers adecuados.               | Alta      |
-| QA-02   | Atributo de calidad | Modificabilidad: agregar una nueva categoría de servicio o un nuevo atributo no debe forzar cambios en otros microservicios.             | Alta      |
-| QA-04   | Atributo de calidad | Interoperabilidad: el catálogo se consume por el frontend mediante REST documentado con OpenAPI y DTOs estables.                         | Alta      |
-| QA-06   | Atributo de calidad | Performance: la búsqueda paginada de servicios responde de forma fluida sobre el dataset de validación académica.                        | Alta      |
-| QA-01   | Atributo de calidad | Seguridad: solo el freelancer dueño del servicio puede editarlo o despublicarlo; visitantes no autenticados pueden consultarlo.          | Alta      |
-| CON-02  | Restricción         | El microservicio se implementa con Java + Spring Boot.                                                                                   | Fija      |
-| CON-03  | Restricción         | Aplica Clean Architecture en cuatro capas.                                                                                               | Fija      |
-| CON-07  | Restricción         | Persistencia con Supabase PostgreSQL bajo el esquema `marketplace_schema`.                                                               | Fija      |
-| CON-08  | Restricción         | Los binarios de portafolio y media de servicios se almacenan en Supabase Storage; en la base de datos solo se guardan referencias.       | Fija      |
-| CON-11  | Restricción         | API documentada con OpenAPI/Swagger.                                                                                                     | Fija      |
-| CRN-12  | Concern             | Performance en búsquedas: la búsqueda puede degradarse al crecer el catálogo.                                                            | Alta      |
-| CRN-03  | Concern             | Consistencia entre microservicios: la reputación promedio se actualiza por eventos, no por joins.                                        | Alta      |
-| CRN-11  | Concern             | Encapsular dependencias de Supabase Storage en adaptadores, no en el dominio.                                                            | Media     |
+| PUS-03 | Funcional | Como estudiante freelancer, deseo publicar servicios con descripción, categoría, tarifa, tiempo estimado y media asociada para ofrecerlos en la plataforma. | Alta |
+| PUS-04 | Funcional | Como cliente, deseo buscar servicios por palabra clave, habilidad, precio, experiencia, relevancia o calificación para encontrar freelancers adecuados. | Alta |
+| QA-02 | Atributo de calidad | Modificabilidad: agregar una nueva categoría de servicio o un nuevo atributo no debe forzar cambios en otros microservicios. | Alta |
+| QA-04 | Atributo de calidad | Interoperabilidad: el catálogo se consume por el frontend mediante REST documentado con OpenAPI y DTOs estables. | Alta |
+| QA-06 | Atributo de calidad | Performance: la búsqueda paginada de servicios responde de forma fluida sobre el dataset de validación académica. | Alta |
+| QA-01 | Atributo de calidad | Seguridad: solo el freelancer dueño del servicio puede editarlo o despublicarlo; visitantes no autenticados pueden consultarlo. | Alta |
+| CON-02 | Restricción | El microservicio se implementa con Java + Spring Boot. | Fija |
+| CON-03 | Restricción | Aplica Clean Architecture en cuatro capas. | Fija |
+| CON-07 | Restricción | Persistencia con Supabase PostgreSQL bajo el esquema `marketplace_schema`. | Fija |
+| CON-08 | Restricción | Los binarios de portafolio y media de servicios se almacenan en Supabase Storage; en la base de datos solo se guardan referencias. | Fija |
+| CON-11 | Restricción | API documentada con OpenAPI/Swagger. | Fija |
+| CRN-12 | Concern | Performance en búsquedas: la búsqueda puede degradarse al crecer el catálogo. | Alta |
+| CRN-03 | Concern | Consistencia entre microservicios: la reputación promedio se actualiza por eventos, no por joins. | Alta |
+| CRN-11 | Concern | Encapsular dependencias de Supabase Storage en adaptadores, no en el dominio. | Media |
 
 #### 4.3.2.2. Establish Iteration Goal by Selecting Drivers
 
-**Meta de la iteración:** definir la estructura interna de `GigMarketplaceService` y sus contratos REST de manera que el catálogo soporte alta de servicios, búsqueda paginada con filtros, almacenamiento de media en Supabase Storage y proyección de reputación a partir de eventos consumidos desde RabbitMQ.
+**Meta de la iteración:** definir la estructura interna de `GigMarketplaceService` y sus contratos REST de manera que el catálogo soporte publicación de servicios, búsqueda paginada con filtros, almacenamiento de media en Supabase Storage y proyección de reputación a partir de eventos consumidos desde RabbitMQ.
 
-| Driver                            | Por qué guía esta iteración                                                                                                            |
+| Driver | Por qué guía esta iteración |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| QA-06 Performance                 | El catálogo es el endpoint con mayor volumen de lecturas: requiere paginación, filtros indexados y DTOs ligeros.                       |
-| QA-02 Modificabilidad             | La taxonomía de categorías y los criterios de búsqueda evolucionarán durante los sprints siguientes.                                   |
-| QA-04 Interoperabilidad           | El frontend consume directamente este microservicio: los contratos deben quedar estables y documentados antes de iniciar la UI.        |
-| QA-01 Seguridad                   | Endpoints públicos para visitantes coexisten con endpoints protegidos para el dueño del servicio: requiere segregación clara.          |
-| PUS-04, PUS-05                    | Estas dos historias definen el ciclo crear (con media) → buscar del catálogo. PUS-03 (portafolio del freelancer) queda fuera de foco: el Marketplace solo consume referencias y no es dueño del portafolio. |
-| CON-07, CON-08                    | Restricciones que definen dónde vive cada tipo de dato (relacional vs storage).                                                        |
+| QA-06 Performance | El catálogo es el endpoint con mayor volumen de lecturas: requiere paginación, filtros indexados y DTOs ligeros. |
+| QA-02 Modificabilidad | La taxonomía de categorías y los criterios de búsqueda evolucionarán durante los sprints siguientes. |
+| QA-04 Interoperabilidad | El frontend consume directamente este microservicio: los contratos deben quedar estables y documentados antes de iniciar la UI. |
+| QA-01 Seguridad | Endpoints públicos para visitantes coexisten con endpoints protegidos para el dueño del servicio: requiere segregación clara. |
+| PUS-03, PUS-04 | Estas dos historias definen el ciclo publicar servicio con media → buscar y consultar catálogo. |
+| CON-07, CON-08 | Restricciones que definen dónde vive cada tipo de dato: base relacional para metadatos y Supabase Storage para archivos. |
 
-Quedan fuera del foco: la lógica transaccional de contratación (resuelta en Iteración 1), el chat en tiempo real y la operación administrativa.
+Quedan fuera del foco: la lógica transaccional de contratación, resuelta en la Iteración 1; el chat en tiempo real; la operación administrativa; y la gestión de perfil y portafolio, que pertenece a `AccessProfileService`.
 
 #### 4.3.2.3. Choose One or More Elements of the System to Refine
 
-| Elemento a refinar              | Tipo                | Razón                                                                                                                              |
+| Elemento a refinar | Tipo | Razón |
 | ------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `GigMarketplaceService`         | Contenedor          | Foco principal: mayor concentración de drivers seleccionados.                                                                       |
-| Esquema `marketplace_schema`    | Componente de datos | Aloja `service_offerings`, `service_categories`, `service_media` y la vista derivada `freelancer_reputation`.                       |
-| Contrato REST `/api/v1/marketplace/*` | Interfaz pública | Punto de acoplamiento del frontend Vue para listado y detalle del catálogo.                                                         |
-| Consumidor de eventos `ReviewCreated` | Interfaz asíncrona | Punto de entrada para mantener actualizada la proyección de reputación promedio.                                                    |
+| `GigMarketplaceService` | Contenedor | Foco principal de la iteración y mayor concentración de drivers de catálogo, búsqueda y publicación de servicios. |
+| Esquema `marketplace_schema` | Componente de datos | Aloja `service_offerings`, `service_categories`, `service_media` y la vista derivada `freelancer_reputation`. |
+| Contrato REST `/api/v1/marketplace/*` | Interfaz pública | Punto de acoplamiento del frontend Vue para listado, detalle, publicación, edición y despublicación de servicios. |
+| Consumidor de eventos `ReviewCreated` | Interfaz asíncrona | Punto de entrada para mantener actualizada la proyección de reputación promedio. |
+| Integración con Supabase Storage | Adaptador externo | Permite almacenar archivos asociados a servicios sin guardar binarios dentro de la base de datos relacional. |
 
 #### 4.3.2.4. Choose One or More Design Concepts That Satisfy the Selected Drivers
 
-| Driver atendido           | Concepto de diseño seleccionado                                                                            | Justificación contra el driver                                                                                                  |
+| Driver atendido | Concepto de diseño seleccionado | Justificación contra el driver |
 | ------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| QA-06 Performance         | Specification Pattern para componer filtros (categoría, precio, reputación, habilidades).                  | Permite construir consultas dinámicas sin métodos `findByXandYandZ`; deja al motor SQL aprovechar índices.                      |
-| QA-06 Performance         | Manage Resources (táctica): paginación obligatoria + índices en `category_id`, `price`, `avg_rating`.       | Evita cargar el catálogo completo y mantiene tiempos de respuesta acotados al crecer el volumen.                                 |
-| QA-06 Performance         | Reduce Overhead (táctica): `ServiceCardDTO` ligero para listados, `ServiceDetailDTO` rico solo para detalle.| Reduce ancho de banda y evita serializar campos innecesarios en consultas masivas.                                              |
-| QA-02 Modificabilidad     | Repository + Specification: nuevas dimensiones de filtro se agregan implementando `Specification<Service>`.| Aísla cambios al dominio sin tocar controllers ni JPA queries.                                                                  |
-| QA-02 Modificabilidad     | Encapsulate (táctica): la taxonomía de categorías es un agregado independiente de `ServiceOffering`.        | Permite agregar/renombrar categorías sin modificar la entidad principal.                                                        |
-| QA-04 Interoperabilidad   | API First + DTOs explícitos + OpenAPI/Swagger.                                                              | El frontend consume contratos versionados y validables; la entidad de dominio nunca se expone directamente.                      |
-| QA-01 Seguridad           | Authorize Actors: endpoints `GET` públicos, endpoints `POST/PATCH/DELETE` protegidos por JWT + ownership.   | Visitantes pueden navegar el catálogo; solo el dueño del servicio puede modificarlo.                                            |
-| PUS-04                    | Adapter Pattern para `MediaStoragePort` → `SupabaseStorageAdapter`.                                         | Mantiene el dominio agnóstico al proveedor de storage; permite cambiar a S3 u otro sin tocar reglas de negocio.                 |
-| ReviewCreated consumer    | Event Handler + Materialized Read Model `freelancer_reputation`.                                            | Calcular el promedio de reseñas en cada lectura sería costoso; mantener una proyección actualizada por evento sirve a QA-06.    |
-| CRN-11                    | Hexagonal ports/adapters dentro del microservicio.                                                          | Separa Supabase Storage, Postgres y RabbitMQ del dominio.                                                                       |
+| QA-06 Performance | Specification Pattern para componer filtros por categoría, precio, reputación, habilidades y palabra clave. | Permite construir consultas dinámicas sin métodos `findByXandYandZ`; deja al motor SQL aprovechar índices. |
+| QA-06 Performance | Manage Resources: paginación obligatoria e índices en `category_id`, `price`, `avg_rating` y campos de búsqueda frecuente. | Evita cargar el catálogo completo y mantiene tiempos de respuesta acotados al crecer el volumen. |
+| QA-06 Performance | Reduce Overhead: `ServiceCardDTO` ligero para listados y `ServiceDetailDTO` enriquecido solo para detalle. | Reduce ancho de banda y evita serializar campos innecesarios en consultas masivas. |
+| QA-02 Modificabilidad | Repository + Specification: nuevas dimensiones de filtro se agregan implementando `Specification`. | Aísla cambios al dominio sin tocar controllers ni queries JPA rígidas. |
+| QA-02 Modificabilidad | Encapsulate: la taxonomía de categorías es un agregado independiente de `ServiceOffering`. | Permite agregar o renombrar categorías sin modificar la entidad principal. |
+| QA-04 Interoperabilidad | API First + DTOs explícitos + OpenAPI/Swagger. | El frontend consume contratos versionados y validables; la entidad de dominio nunca se expone directamente. |
+| QA-01 Seguridad | Authorize Actors: endpoints `GET` públicos, endpoints `POST/PATCH/DELETE` protegidos por JWT + ownership. | Visitantes pueden navegar el catálogo; solo el dueño del servicio puede modificarlo. |
+| PUS-03 | Adapter Pattern para `MediaStoragePort` → `SupabaseStorageAdapter`. | Mantiene el dominio agnóstico al proveedor de storage; permite cambiar a S3 u otro sin tocar reglas de negocio. |
+| PUS-04 | Specification Pattern + DTOs de lectura. | Permite que la búsqueda y visualización del catálogo evolucionen sin afectar publicación, contratación ni perfil. |
+| ReviewCreated consumer | Event Handler + Materialized Read Model `freelancer_reputation`. | Calcular el promedio de reseñas en cada lectura sería costoso; mantener una proyección actualizada por evento sirve a QA-06. |
+| CRN-11 | Hexagonal ports/adapters dentro del microservicio. | Separa Supabase Storage, Postgres y RabbitMQ del dominio. |
 
 #### 4.3.2.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
 
 ##### Componentes internos de `GigMarketplaceService`
 
-| Componente                          | Capa Clean Architecture | Responsabilidad                                                                                  |
+| Componente | Capa Clean Architecture | Responsabilidad |
 | ----------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------ |
-| `MarketplaceController`             | Interface               | Expone REST `/api/v1/marketplace/*` para listado, detalle, creación y edición.                   |
-| `JwtAuthenticationFilter`           | Interface               | Valida JWT en endpoints protegidos; permite paso libre a endpoints públicos de lectura.          |
-| `PublishServiceUseCase`             | Application             | Crea `ServiceOffering` validando categoría y dueño; sube media a través de `MediaStoragePort`.   |
-| `UpdateServiceUseCase`              | Application             | Aplica cambios respetando ownership.                                                             |
-| `UnpublishServiceUseCase`           | Application             | Marca el servicio como retirado sin borrarlo (soft delete).                                      |
-| `SearchServicesUseCase`             | Application             | Compone `ServiceSpecification` a partir de filtros y devuelve página de `ServiceCardDTO`.         |
-| `GetServiceDetailUseCase`           | Application             | Devuelve `ServiceDetailDTO` enriquecido (media, reputación, freelancer básico).                  |
-| `OnReviewCreatedHandler`            | Application             | Consume `ReviewCreated` y actualiza `freelancer_reputation`.                                     |
-| `ServiceOffering`, `ServiceCategory`, `ServiceMedia`, `FreelancerReputation` | Domain | Entidades agregadas con invariantes.                                                             |
-| `ServiceSpecification` (Specification Pattern) | Domain        | Compone predicados de búsqueda.                                                                  |
-| `ServiceRepository`, `CategoryRepository`, `ReputationRepository` | Application (puerto) | Abstracciones de persistencia.                                                                   |
-| `MediaStoragePort`                  | Application (puerto)    | Abstracción de almacenamiento de binarios.                                                       |
-| `EventConsumer`                     | Application (puerto)    | Abstracción de consumo de eventos del broker.                                                    |
-| `JpaServiceRepository` (con Specification API) | Infrastructure | Implementa el puerto sobre Supabase PostgreSQL.                                                  |
-| `SupabaseStorageAdapter`            | Infrastructure          | Implementa `MediaStoragePort` contra Supabase Storage.                                           |
-| `RabbitReviewConsumer`              | Infrastructure          | Suscribe a `engagement.events` y delega a `OnReviewCreatedHandler`.                              |
+| `MarketplaceController` | Interface | Expone REST `/api/v1/marketplace/*` para listado, detalle, creación, edición y despublicación de servicios. |
+| `JwtAuthenticationFilter` | Interface | Valida JWT en endpoints protegidos; permite paso libre a endpoints públicos de lectura. |
+| `PublishServiceUseCase` | Application | Crea `ServiceOffering` validando categoría y dueño; sube media a través de `MediaStoragePort`. |
+| `UpdateServiceUseCase` | Application | Aplica cambios respetando ownership. |
+| `UnpublishServiceUseCase` | Application | Marca el servicio como retirado sin borrarlo físicamente. |
+| `SearchServicesUseCase` | Application | Compone `ServiceSpecification` a partir de filtros y devuelve página de `ServiceCardDTO`. |
+| `GetServiceDetailUseCase` | Application | Devuelve `ServiceDetailDTO` enriquecido con media, reputación y datos básicos del freelancer. |
+| `OnReviewCreatedHandler` | Application | Consume `ReviewCreated` y actualiza `freelancer_reputation`. |
+| `ServiceOffering`, `ServiceCategory`, `ServiceMedia`, `FreelancerReputation` | Domain | Entidades agregadas con invariantes del catálogo. |
+| `ServiceSpecification` | Domain | Compone predicados de búsqueda. |
+| `ServiceRepository`, `CategoryRepository`, `ReputationRepository` | Application (puerto) | Abstracciones de persistencia. |
+| `MediaStoragePort` | Application (puerto) | Abstracción de almacenamiento de binarios. |
+| `EventConsumer` | Application (puerto) | Abstracción de consumo de eventos del broker. |
+| `JpaServiceRepository` | Infrastructure | Implementa el puerto sobre Supabase PostgreSQL. |
+| `SupabaseStorageAdapter` | Infrastructure | Implementa `MediaStoragePort` contra Supabase Storage. |
+| `RabbitReviewConsumer` | Infrastructure | Suscribe a `engagement.events` y delega a `OnReviewCreatedHandler`. |
 
 ##### Interfaces (contratos REST principales)
 
-| Endpoint                                                  | Método  | Driver atendido       | Auth     | Descripción                                                      |
+| Endpoint | Método | Driver atendido | Auth | Descripción |
 | --------------------------------------------------------- | ------- | --------------------- | -------- | ---------------------------------------------------------------- |
-| `GET /api/v1/marketplace/services`                        | GET     | PUS-05, QA-06         | Pública  | Listado paginado + filtros (`category`, `priceMin`, `priceMax`, `minRating`, `q`). |
-| `GET /api/v1/marketplace/services/{id}`                   | GET     | PUS-05, QA-04         | Pública  | Detalle con media y reputación del freelancer.                   |
-| `POST /api/v1/marketplace/services`                       | POST    | PUS-04, QA-01         | JWT      | Freelancer publica un nuevo servicio.                             |
-| `PATCH /api/v1/marketplace/services/{id}`                 | PATCH   | PUS-04, QA-01         | JWT      | Edita un servicio propio.                                        |
-| `DELETE /api/v1/marketplace/services/{id}`                | DELETE  | PUS-04, QA-01         | JWT      | Despublica un servicio (soft delete).                            |
-| `POST /api/v1/marketplace/services/{id}/media`            | POST    | PUS-04, QA-01         | JWT      | Sube archivo asociado al servicio publicado (delegado a Supabase Storage). |
-| `GET /api/v1/marketplace/categories`                      | GET     | QA-02, QA-04          | Pública  | Lista la taxonomía de categorías para alimentar filtros del front.|
+| `GET /api/v1/marketplace/services` | GET | PUS-04, QA-06 | Pública | Listado paginado + filtros (`category`, `priceMin`, `priceMax`, `minRating`, `q`). |
+| `GET /api/v1/marketplace/services/{id}` | GET | PUS-04, QA-04 | Pública | Detalle con media y reputación del freelancer. |
+| `POST /api/v1/marketplace/services` | POST | PUS-03, QA-01 | JWT | Freelancer publica un nuevo servicio. |
+| `PATCH /api/v1/marketplace/services/{id}` | PATCH | PUS-03, QA-01 | JWT | Edita un servicio propio. |
+| `DELETE /api/v1/marketplace/services/{id}` | DELETE | PUS-03, QA-01 | JWT | Despublica un servicio mediante soft delete. |
+| `POST /api/v1/marketplace/services/{id}/media` | POST | PUS-03, QA-01 | JWT | Sube archivo asociado al servicio publicado. |
+| `GET /api/v1/marketplace/categories` | GET | QA-02, QA-04 | Pública | Lista la taxonomía de categorías para alimentar filtros del frontend. |
 
 ##### Eventos consumidos
 
-| Evento            | Origen                  | Acción                                                                            |
+| Evento | Origen | Acción |
 | ----------------- | ----------------------- | --------------------------------------------------------------------------------- |
-| `ReviewCreated`   | `PullEngagementService` | `OnReviewCreatedHandler` actualiza `freelancer_reputation` (avg_rating, count).   |
+| `ReviewCreated` | `PullEngagementService` | `OnReviewCreatedHandler` actualiza `freelancer_reputation` (`avg_rating`, `count`). |
 
 #### 4.3.2.6. Sketch Views: C4 & UML, and Record Design Decisions
+
+Para esta iteración se generaron cuatro vistas que sustentan las decisiones tomadas: una vista de componentes C4 del microservicio, una vista de secuencia UML para la búsqueda paginada con filtros, una vista de secuencia UML para la proyección de reputación por evento `ReviewCreated` y una vista de clases UML del modelo de dominio.
 
 ##### Viewpoint 01: Component View — GigMarketplaceService (C4 nivel 3)
 
@@ -2004,36 +2019,33 @@ Quedan fuera del foco: la lógica transaccional de contratación (resuelta en It
 
 ##### Architecture Decision Records de la iteración
 
-| ADR     | Decisión                                                                                              | Estado    | Driver principal | Consecuencia                                                                                            |
+| ADR | Decisión | Estado | Driver principal | Consecuencia |
 | ------- | ----------------------------------------------------------------------------------------------------- | --------- | ---------------- | ------------------------------------------------------------------------------------------------------- |
-| ADR-007 | Aplicar Specification Pattern para componer filtros de búsqueda.                                      | Aceptada  | QA-02, QA-06     | Filtros componibles y mantenibles; introduce una abstracción adicional sobre los repositorios.          |
-| ADR-008 | Separar `ServiceCardDTO` (listado) y `ServiceDetailDTO` (detalle).                                    | Aceptada  | QA-06            | Listados ligeros y rápidos; el equipo debe mantener dos DTOs sincronizados con el modelo de dominio.    |
-| ADR-009 | Mantener un read model materializado `freelancer_reputation` actualizado por `ReviewCreated`.         | Aceptada  | QA-06            | Lecturas O(1) sin agregaciones; introduce consistencia eventual y un consumer adicional.                |
-| ADR-010 | Soft delete (`unpublished_at`) en lugar de borrado físico de servicios.                               | Aceptada  | CRN-03           | Permite preservar referencias históricas desde proyectos cerrados; requiere filtrar en cada query.      |
-| ADR-011 | Endpoints `GET` públicos sin JWT; `POST/PATCH/DELETE` protegidos por JWT + ownership.                 | Aceptada  | QA-01, QA-04     | Visitantes pueden explorar el catálogo (mejor UX); requiere configuración granular en Spring Security.  |
-| ADR-012 | Encapsular Supabase Storage como adaptador del puerto `MediaStoragePort`.                             | Aceptada  | CRN-11           | El dominio queda agnóstico al proveedor; permite cambiar a S3 u otro storage sin tocar reglas.          |
+| ADR-007 | Aplicar Specification Pattern para componer filtros de búsqueda. | Aceptada | QA-02, QA-06 | Filtros componibles y mantenibles; introduce una abstracción adicional sobre los repositorios. |
+| ADR-008 | Separar `ServiceCardDTO` para listado y `ServiceDetailDTO` para detalle. | Aceptada | QA-06 | Listados ligeros y rápidos; el equipo debe mantener dos DTOs sincronizados con el modelo de dominio. |
+| ADR-009 | Mantener un read model materializado `freelancer_reputation` actualizado por `ReviewCreated`. | Aceptada | QA-06 | Lecturas O(1) sin agregaciones; introduce consistencia eventual y un consumer adicional. |
+| ADR-010 | Aplicar soft delete mediante `unpublished_at` en lugar de borrado físico de servicios. | Aceptada | CRN-03 | Permite preservar referencias históricas desde proyectos cerrados; requiere filtrar en cada query. |
+| ADR-011 | Exponer endpoints `GET` públicos sin JWT y proteger `POST/PATCH/DELETE` con JWT + ownership. | Aceptada | QA-01, QA-04 | Visitantes pueden explorar el catálogo; requiere configuración granular en Spring Security. |
+| ADR-012 | Encapsular Supabase Storage como adaptador del puerto `MediaStoragePort`. | Aceptada | CRN-11 | El dominio queda agnóstico al proveedor; permite cambiar a S3 u otro storage sin tocar reglas. |
 
 #### 4.3.2.7. Analysis of Current Design and Review Iteration Goal: Kanban Board
 
-El tablero Kanban de la Iteración 2 se gestiona en el mismo proyecto Jira `GigU Architecture Design`, filtrado para mostrar las 27 tarjetas correspondientes a `GigMarketplaceService`. Cada tarjeta se agrupa bajo el Epic de producto al que afecta (EP05 o EP06).
+El tablero Kanban de la Iteración 2 se gestiona en el mismo proyecto Jira `GigU Architecture Design`, filtrado para mostrar las tarjetas correspondientes a `GigMarketplaceService`. Cada tarjeta se agrupa bajo el Epic de producto al que afecta dentro del catálogo y descubrimiento de servicios.
 
 ![4.3.2.7.KanbanBoardIteration2](imgs/add/4.3.2.7.KanbanBoardIteration2.png)
 
 **Análisis de cumplimiento de drivers — Iteración 2**
 
-| Driver de la iteración    | Cobertura alcanzada                                                                                                                                |
+| Driver de la iteración | Cobertura alcanzada |
 | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| QA-06 Performance         | Resuelto vía Specification Pattern + paginación obligatoria (ADR-007) y separación de DTOs por uso (ADR-008).                                       |
-| QA-02 Modificabilidad     | Resuelto vía Specifications componibles para nuevos filtros y desacoplamiento de `ServiceCategory` como agregado independiente.                      |
-| QA-04 Interoperabilidad   | Resuelto vía contratos REST `/api/v1/marketplace/*` documentados con OpenAPI y DTOs estables (`ServiceCardDTO`, `ServiceDetailDTO`).                |
-| QA-01 Seguridad           | Resuelto vía endpoints públicos `GET` y endpoints protegidos `POST/PATCH/DELETE` con JWT + ownership (ADR-011).                                     |
-| Consistencia eventual     | Resuelto vía read model materializado `freelancer_reputation` actualizado por `ReviewCreated` (ADR-009), con idempotencia mediante `applied_reviews`.|
-| PUS-04, PUS-05            | Cubiertos por contratos REST (incluyendo el endpoint de media bajo PUS-04), esquema `marketplace_schema` con índices y las cuatro vistas C4/UML producidas en 4.3.2.6. |
+| QA-06 Performance | Resuelto vía Specification Pattern, paginación obligatoria e índices sobre campos frecuentes de búsqueda. |
+| QA-02 Modificabilidad | Resuelto vía Specifications componibles para nuevos filtros y desacoplamiento de `ServiceCategory` como agregado independiente. |
+| QA-04 Interoperabilidad | Resuelto vía contratos REST `/api/v1/marketplace/*` documentados con OpenAPI y DTOs estables (`ServiceCardDTO`, `ServiceDetailDTO`). |
+| QA-01 Seguridad | Resuelto vía endpoints públicos `GET` y endpoints protegidos `POST/PATCH/DELETE` con JWT + ownership. |
+| Consistencia eventual | Resuelto vía read model materializado `freelancer_reputation` actualizado por `ReviewCreated`, con idempotencia mediante `applied_reviews`. |
+| PUS-03, PUS-04 | Cubiertos por contratos REST, endpoint de media bajo PUS-03, esquema `marketplace_schema` con índices y las cuatro vistas C4/UML producidas en 4.3.2.6. |
 
-Los pendientes identificados durante la iteración (recomendación de servicios por similitud, métricas de tendencia del catálogo, búsqueda full-text avanzada) se consideran fuera del alcance académico actual y quedan documentados como extensiones para futuras iteraciones de ADD.
-
-
-<div style="page-break-before: always;"></div>
+Los pendientes identificados durante la iteración, como recomendación de servicios por similitud, métricas de tendencia del catálogo y búsqueda full-text avanzada, se consideran fuera del alcance académico actual y quedan documentados como extensiones para futuras iteraciones de ADD.
 
 # Capítulo V: Product Implementation, Validation & Deployment
 
