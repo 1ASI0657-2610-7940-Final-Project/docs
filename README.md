@@ -1372,14 +1372,14 @@ La arquitectura de GigU se organizará alrededor de las capacidades centrales de
 
 #### Clean Architecture por microservicio
 
-Cada microservicio de GigU aplicará Clean Architecture para separar reglas de negocio, casos de uso, adaptadores de entrada/salida e infraestructura. El objetivo es que el dominio no dependa del framework, de la base de datos, del gateway, del broker de mensajería ni de servicios externos.
+Cada microservicio de GigU aplicará Clean Architecture para separar reglas de negocio, casos de uso, adaptadores de entrada/salida e infraestructura. El objetivo es que el dominio no dependa del framework, de la base de datos, del routing público, de servicios de mensajería ni de proveedores externos. Esta separación permite mantener reglas de negocio testeables, reemplazar adaptadores de infraestructura sin afectar el núcleo del sistema y desplegar cada microservicio de forma independiente.
 
-| Capa                 | Responsabilidad                                                                                          |
-| -------------------- | -------------------------------------------------------------------------------------------------------- |
-| Domain Layer         | Define entidades, value objects, reglas de negocio, invariantes y eventos de dominio.                    |
-| Application Layer    | Orquesta casos de uso, comandos, consultas y puertos.                                                    |
-| Interface Layer      | Expone controladores REST, DTOs de entrada/salida y validaciones de contrato.                            |
-| Infrastructure Layer | Implementa persistencia, integración con Supabase, RabbitMQ, Caddy, almacenamiento y servicios externos. |
+| Capa | Responsabilidad |
+| --- | --- |
+| Domain Layer | Define entidades, value objects, reglas de negocio, invariantes y eventos de dominio. |
+| Application Layer | Orquesta casos de uso, comandos, consultas y puertos hacia repositorios, clientes externos, publicadores de eventos y storage. |
+| Interface Layer | Expone controladores REST, DTOs de entrada/salida, validaciones de contrato y filtros de seguridad. |
+| Infrastructure Layer | Implementa persistencia en Supabase PostgreSQL, integración con Google Cloud Run, clientes HTTP entre microservicios, adaptadores futuros de Google Cloud Pub/Sub, adaptadores futuros de storage y servicios externos. |
 
 #### API First y contratos explícitos
 
@@ -1415,77 +1415,83 @@ GigU gestionará información de usuarios, perfiles públicos, conversaciones, s
 | Auditoría     | Los cambios relevantes de contratación, proyecto, reseña y bloqueo serán registrados. |
 | Validación    | Las entradas serán validadas en API y en casos de uso.                                |
 
+
+
+
 #### Comunicación asíncrona para eventos secundarios
 
-Las operaciones críticas se resolverán mediante REST cuando el usuario requiera respuesta inmediata. Las operaciones secundarias, como notificaciones internas, eventos de cambio de estado o avisos de nuevos mensajes, se manejarán mediante RabbitMQ. RabbitMQ es un broker de mensajería open source orientado a comunicación eficiente y confiable entre aplicaciones distribuidas (RabbitMQ, s. f.).
+Las operaciones críticas se resolverán mediante REST cuando el usuario requiera respuesta inmediata. Las operaciones secundarias, como notificaciones internas, eventos de cambio de estado, actualización de vistas derivadas o avisos de nuevos mensajes, se diseñarán para integrarse mediante Google Cloud Pub/Sub como servicio administrado de mensajería asíncrona dentro de GCP. Esta decisión reemplaza la alternativa previa basada en RabbitMQ.
 
-| Evento                     | Publicador              | Consumidor              |
-| -------------------------- | ----------------------- | ----------------------- |
-| `UserRegistered`           | AccessProfileService    | ChatNotificationService |
-| `FreelancerProfileUpdated` | AccessProfileService    | GigMarketplaceService   |
-| `ServicePublished`         | GigMarketplaceService   | ChatNotificationService |
-| `ProjectRequestCreated`    | PullEngagementService   | ChatNotificationService |
-| `ProjectStatusChanged`     | PullEngagementService   | ChatNotificationService |
-| `MessageSent`              | ChatNotificationService | ChatNotificationService |
-| `ReviewCreated`            | PullEngagementService   | GigMarketplaceService   |
+En el estado actual del proyecto, la mensajería asíncrona con Google Cloud Pub/Sub se mantiene como una decisión arquitectónica seleccionada, pero pendiente de implementación. Por ello, no debe presentarse como evidencia de despliegue finalizado. El backend actualmente prioriza APIs REST entre microservicios y deja la publicación/consumo de eventos como extensión de infraestructura para una siguiente fase.
+
+| Evento | Publicador previsto | Consumidor previsto | Estado |
+| --- | --- | --- | --- |
+| `UserRegistered` | AccessProfileService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
+| `FreelancerProfileUpdated` | AccessProfileService | GigMarketplaceService | Diseñado / pendiente de implementación con Pub/Sub |
+| `ServicePublished` | GigMarketplaceService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
+| `ProjectRequestCreated` | PullEngagementService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
+| `ProjectStatusChanged` | PullEngagementService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
+| `MessageSent` | ChatNotificationService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
+| `ReviewCreated` | PullEngagementService | GigMarketplaceService | Diseñado / pendiente de implementación con Pub/Sub |
+
 
 #### Despliegue reproducible
 
-Los servicios backend se desplegarán mediante contenedores administrados con Docker Compose en Oracle Cloud Always Free. Docker Compose permite definir y ejecutar aplicaciones multi-contenedor mediante un archivo YAML, lo que permite levantar microservicios, gateway y broker de forma reproducible (Docker, s. f.).
+Los servicios backend se despliegan en Google Cloud Run como microservicios independientes. Cada microservicio cuenta con un workflow manual de GitHub Actions basado en `workflow_dispatch`, lo que permite desplegar un servicio específico sin redeployar todo el backend. Esta decisión reemplaza la alternativa previa basada en Docker Compose sobre una VM de Oracle Cloud Always Free.
+
+El despliegue backend actual utiliza Google Cloud Run en el proyecto `dosys-rest-api` y la región `us-central1`. Los workflows autentican contra Google Cloud, configuran `gcloud` y ejecutan `gcloud run deploy --source` para desplegar el código fuente del microservicio correspondiente. Además, el repositorio backend conserva scripts PowerShell en la carpeta `gcloud` como alternativa manual local para despliegues controlados desde una estación de desarrollo.
+
+| Mecanismo | Estado | Propósito |
+| --- | --- | --- |
+| GitHub Actions manuales por microservicio | Implementado | Desplegar cada microservicio a Google Cloud Run desde GitHub mediante `workflow_dispatch`. |
+| Scripts PowerShell en `/gcloud` | Implementado | Permitir despliegue local manual con `gcloud run deploy --source`. |
+| Docker Compose en VM | Reemplazado | Ya no representa el modelo de despliegue vigente del backend. |
+| Oracle Cloud Always Free | Reemplazado | Ya no representa el hosting vigente del backend. |
 
 ### 4.1.2. Approaches Statements: Architectural Styles & Patterns
 
 #### Approaches Statements
 
-| Enfoque                  | Aplicación en GigU                                                                                                                                                                                                                                                                                    |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain-Driven Design     | Se utilizará para definir bounded contexts alineados con capacidades de negocio.                                                                                                                                                                                                                      |
-| Clean Architecture       | Se aplicará dentro de cada microservicio para separar dominio, casos de uso, interfaces e infraestructura.                                                                                                                                                                                            |
-| API First                | Se diseñarán contratos REST claros y versionados antes de acoplar el frontend al backend.                                                                                                                                                                                                             |
-| Event-Driven Integration | Se utilizarán eventos asíncronos para notificaciones, cambios de estado y actualización de vistas derivadas.                                                                                                                                                                                          |
-| Cloud Native Deployment  | El frontend se alojará en Vercel, mientras que los microservicios backend se desplegarán en Oracle Cloud Always Free mediante contenedores. Oracle Cloud Always Free incluye recursos Ampere A1 equivalentes a 4 OCPU y 24 GB de memoria dentro de sus límites gratuitos (Oracle, s. f.). |
+| Enfoque | Aplicación en GigU |
+| --- | --- |
+| Domain-Driven Design | Se utilizará para definir bounded contexts alineados con capacidades de negocio: acceso/perfiles, marketplace, contratación/proyectos y chat/notificaciones. |
+| Clean Architecture | Se aplicará dentro de cada microservicio para separar dominio, casos de uso, interfaces e infraestructura. |
+| API First | Se diseñarán contratos REST claros y versionados antes de acoplar el frontend al backend. |
+| Event-Driven Integration | Se utilizarán eventos asíncronos para notificaciones, cambios de estado y actualización de vistas derivadas. La tecnología seleccionada para esta capacidad es Google Cloud Pub/Sub, pero su implementación queda pendiente. |
+| Cloud Native Deployment | El frontend y la landing page se alojan en Vercel. Los microservicios backend se despliegan en Google Cloud Run mediante workflows manuales de GitHub Actions y scripts locales `gcloud`. |
 
 #### Architectural Styles
 
-| Estilo arquitectónico        | Aplicación en GigU                                                                                              | Justificación                                                                |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Microservices Architecture   | El backend se divide en servicios independientes por capacidad de negocio.                                      | Permite modularidad, despliegue separado, testabilidad y alineación con DDD. |
-| Client-Server                | El frontend Vue consume APIs REST expuestas por el backend.                                                     | Separa experiencia de usuario de lógica de negocio.                          |
-| Layered / Clean Architecture | Cada microservicio se organiza en capas internas con dependencias hacia el dominio.                             | Reduce acoplamiento y facilita pruebas.                                      |
-| Event-Driven Architecture    | RabbitMQ soporta eventos secundarios entre microservicios.                                                      | Reduce dependencia temporal entre servicios.                                 |
-| Cloud Native Deployment      | La solución se despliega con frontend, backend, almacenamiento y base de datos distribuidos en servicios cloud. | Permite acceso público, evidencias de despliegue y validación incremental.   |
+| Estilo arquitectónico | Aplicación en GigU | Justificación |
+| --- | --- | --- |
+| Microservices Architecture | El backend se divide en servicios independientes por capacidad de negocio. | Permite modularidad, despliegue separado, testabilidad y alineación con DDD. |
+| Client-Server | El frontend Vue consume APIs REST expuestas por el backend. | Separa experiencia de usuario de lógica de negocio. |
+| Layered / Clean Architecture | Cada microservicio se organiza en capas internas con dependencias hacia el dominio. | Reduce acoplamiento, facilita pruebas y evita que el dominio dependa de frameworks o proveedores externos. |
+| Event-Driven Architecture | Google Cloud Pub/Sub queda seleccionado para soportar eventos secundarios entre microservicios. | Reduce dependencia temporal entre servicios, aunque su implementación queda pendiente. |
+| Cloud Native Deployment | La solución se despliega con frontend, backend y base de datos distribuidos en servicios cloud administrados. | Permite acceso público, despliegue independiente por microservicio y validación académica incremental. |
 
 #### Architectural Patterns
 
-| Patrón arquitectónico        | Aplicación en GigU                                                                                                                                                                                                                                                   |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Lightweight API Gateway      | Caddy actuará como reverse proxy y gateway liviano, enrutando `/api/access`, `/api/marketplace`, `/api/engagement` y `/api/chat` hacia los microservicios correspondientes. Caddy soporta HTTPS automático y renovación de certificados TLS (Caddy, s. f.). |
-| Database per Service lógico  | Supabase PostgreSQL contendrá esquemas separados por microservicio.                                                                                                                                                                                                  |
-| Message Broker               | RabbitMQ desacoplará eventos de dominio y notificaciones.                                                                                                                                                                                                            |
-| Containerized Deployment     | Docker Compose ejecutará Caddy, microservicios y RabbitMQ en la VM de Oracle Cloud.                                                                                                                                                                                  |
-| Backend for Frontend parcial | El gateway expondrá rutas estables para el frontend sin exponer la topología interna.                                                                                                                                                                                |
-| RESTful API                  | Los microservicios expondrán recursos mediante APIs HTTP documentadas con OpenAPI.                                                                                                                                                                                   |
-| Domain Events                | Cambios relevantes del negocio serán publicados como eventos internos.                                                                                                                                                                                               |
+| Patrón arquitectónico | Aplicación en GigU |
+| --- | --- |
+| Vercel Rewrites as Public API Routing | Vercel Rewrites actúa como capa pública de enrutamiento para que el frontend consuma rutas relativas `/api/*` y estas sean reenviadas a los microservicios desplegados en Google Cloud Run. |
+| Database per Service lógico | Supabase PostgreSQL contendrá esquemas separados por microservicio. |
+| Managed Messaging with Google Cloud Pub/Sub | Google Cloud Pub/Sub queda seleccionado como servicio de mensajería asíncrona administrada para eventos internos, reemplazando la alternativa previa basada en RabbitMQ. Su implementación queda pendiente. |
+| Independent Cloud Run Deployment | Cada microservicio backend se despliega de forma independiente en Google Cloud Run. |
+| Backend for Frontend parcial | Vercel Rewrites expone rutas estables para el frontend sin exponer directamente la topología interna completa. |
+| RESTful API | Los microservicios exponen recursos mediante APIs HTTP documentadas con OpenAPI. |
+| Domain Events | Cambios relevantes del negocio serán modelados como eventos internos para su publicación futura mediante Google Cloud Pub/Sub. |
 
-#### Bounded Contexts y microservicios
+#### Servicios externos seleccionados
 
-| Bounded Context     | Microservicio           | Responsabilidades principales                                                                           |
-| ------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------- |
-| Access & Profile    | AccessProfileService    | Registro, autenticación, roles, perfiles freelance, habilidades, portafolio y verificación académica.   |
-| Gig Marketplace     | GigMarketplaceService   | Publicación de servicios, edición, búsqueda, filtros, categorías, tarifas base y archivos de servicios. |
-| Pull & Engagement   | PullEngagementService   | Solicitudes de contratación, acuerdos, proyectos, estados, entrega, reseñas y sugerencias de precio.    |
-| Chat & Notification | ChatNotificationService | Conversaciones, mensajes, notificaciones internas, reportes, bloqueos y tickets de soporte.             |
-
-#### Servicios externos de soporte
-
-| Servicio externo         | Uso arquitectónico                                                                                                                    |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Vercel                   | Alojamiento del frontend Vue + Vite. El plan Hobby está orientado a proyectos personales y aplicaciones pequeñas (Vercel, s. f.).     |
-| Oracle Cloud Always Free | Alojamiento de backend, Caddy, microservicios y RabbitMQ.                                                                             |
-| Supabase PostgreSQL      | Base de datos relacional administrada. Supabase se define como una plataforma de desarrollo basada en PostgreSQL (Supabase, s. f.-a). |
-| Supabase Storage         | Almacenamiento de archivos de portafolio, imágenes y adjuntos.                                                                        |
-| GitHub Actions           | Automatización de build, pruebas y evidencias de integración continua.                                                                |
-| Resend                   | Servicio opcional para correos de recuperación y notificaciones.                                                                      |
+| Servicio externo | Uso arquitectónico | Estado |
+| --- | --- | --- |
+| Vercel | Alojamiento de la landing page, frontend Vue + Vite y routing público mediante Vercel Rewrites. | Implementado |
+| Google Cloud Run | Alojamiento de los microservicios backend como servicios independientes. | Implementado |
+| GitHub Actions | Despliegue manual por microservicio hacia Google Cloud Run mediante `workflow_dispatch`. | Implementado |
+| Supabase PostgreSQL | Base de datos relacional administrada con esquemas lógicos por microservicio. | Implementado |
+| Google Cloud Pub/Sub | Servicio administrado de mensajería asíncrona para eventos secundarios. | Seleccionado / pendiente de implementación |
+| Storage | Capacidad para almacenar binarios de portafolio, imágenes y adjuntos. | Pendiente de implementación |
 
 ### 4.1.3. Context Diagram
 
@@ -1545,8 +1551,8 @@ GigU utilizará una base de datos relacional administrada con PostgreSQL en Supa
 | Strategy Pattern      | La sugerencia de precios podrá usar estrategias por tipo de servicio, complejidad, urgencia o experiencia.                                          | Permite extender reglas de pricing sin modificar el caso de uso principal.   |
 | Specification Pattern | Los filtros de búsqueda podrán componerse por habilidad, categoría, precio, disponibilidad y reputación.                                            | Evita consultas rígidas y mejora mantenibilidad.                             |
 | Domain Events         | Eventos como `ProjectRequestCreated`, `ProjectStatusChanged`, `ReviewCreated` y `MessageSent` representarán cambios relevantes del dominio.         | Desacopla microservicios y facilita reacciones asíncronas.                   |
-| Outbox Pattern        | Los eventos críticos podrán registrarse junto con la transacción local antes de publicarse en RabbitMQ.                                             | Reduce riesgo de pérdida de eventos.                                         |
-| Adapter Pattern       | Integraciones con Supabase Storage, RabbitMQ, Resend y persistencia se encapsularán como adaptadores.                                               | Mantiene el dominio independiente de proveedores externos.                   |
+| Outbox Pattern | Los eventos críticos podrán registrarse junto con la transacción local antes de publicarse en Google Cloud Pub/Sub cuando la mensajería asíncrona sea implementada. | Reduce riesgo de pérdida de eventos y permite reintentos controlados sin bloquear operaciones principales. |
+| Adapter Pattern | Integraciones con Supabase PostgreSQL, Google Cloud Pub/Sub, storage pendiente y clientes HTTP entre microservicios se encapsularán como adaptadores. | Mantiene el dominio independiente de proveedores externos y facilita sustitución de infraestructura. |
 | Dependency Injection  | Los casos de uso dependerán de interfaces y no de implementaciones concretas.                                                                       | Facilita pruebas unitarias y sustitución de infraestructura.                 |
 | API Gateway Pattern   | Caddy centralizará el ingreso HTTP y enrutará hacia microservicios.                                                                                 | Oculta la topología interna y simplifica el consumo del frontend.            |
 | CQRS Lite             | Se separarán comandos y queries en casos de uso relevantes, como búsqueda, contratación y mensajería.                                               | Mejora claridad de responsabilidades sin introducir complejidad innecesaria. |
@@ -1600,20 +1606,25 @@ ADD considera como entradas principales del diseño el design purpose, primary f
 
 El propósito del diseño arquitectónico de GigU es definir una estructura técnica coherente, modular y verificable para implementar una plataforma web que conecte estudiantes universitarios freelancers con clientes y emprendimientos. La arquitectura debe permitir que los estudiantes publiquen servicios, construyan reputación profesional, gestionen proyectos y se comuniquen con clientes dentro de un entorno formal, seguro y alineado a sus habilidades.
 
-GigU será diseñado como una aplicación empresarial basada en microservicios, aplicando Domain-Driven Design para separar capacidades de negocio y Clean Architecture dentro de cada microservicio. El frontend será desplegado en Vercel, el backend se ejecutará en una VM de Oracle Cloud Always Free mediante Docker Compose, la base de datos será Supabase PostgreSQL, el almacenamiento de archivos se realizará con Supabase Storage y la comunicación asíncrona entre servicios se gestionará con RabbitMQ. Caddy funcionará como gateway liviano y reverse proxy para exponer las rutas públicas de la API.
+GigU será diseñado como una aplicación empresarial basada en microservicios, aplicando Domain-Driven Design para separar capacidades de negocio y Clean Architecture dentro de cada microservicio. El frontend y la landing page se despliegan en Vercel, el routing público de la API se resuelve mediante Vercel Rewrites, los microservicios backend se ejecutan en Google Cloud Run y la base de datos principal se gestiona mediante Supabase PostgreSQL.
 
-| Categoría                   | Detalle                                                                                                                                                               |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tipo de sistema             | Plataforma web de servicios freelance universitarios.                                                                                                                 |
-| Propósito de negocio        | Facilitar que estudiantes universitarios consigan experiencia profesional e ingresos mediante servicios freelance formales y verificables.                            |
-| Propósito arquitectónico    | Definir una arquitectura modular, desplegable, testeable y preparada para evolución incremental mediante microservicios.                                              |
-| Enfoque de arquitectura     | Microservices Architecture, Domain-Driven Design y Clean Architecture.                                                                                                |
-| Modelo de despliegue        | Frontend en Vercel; backend, Caddy y RabbitMQ en Oracle Cloud Always Free; base de datos y storage en Supabase.                                                       |
-| Alcance funcional principal | Perfiles, portafolios, publicación de servicios, búsqueda, solicitudes, acuerdos, proyectos, chat, notificaciones y reseñas.                                          |
-| Alcance técnico principal   | RESTful API documentada, microservicios independientes, persistencia relacional por ownership lógico, mensajería asíncrona y testing automatizado.                    |
-| Limitación inicial          | El sistema modelará acuerdos y estados de pago para validación académica; la integración con una pasarela de pagos real queda fuera del primer alcance implementable. |
+La arquitectura anterior basada en Caddy, RabbitMQ, Docker Compose y Oracle Cloud Always Free fue reemplazada por una estrategia cloud native alineada con el estado actual del desarrollo. El deployment backend ya cuenta con workflows manuales de GitHub Actions por microservicio y con scripts PowerShell locales en la carpeta `gcloud`. Google Cloud Pub/Sub queda seleccionado como servicio de mensajería asíncrona administrada, pero su implementación todavía está pendiente. La capacidad de storage también permanece pendiente de implementación y no debe tratarse como evidencia completada.
 
-La decisión de utilizar Docker Compose responde a la necesidad de ejecutar varios contenedores de forma reproducible, debido a que permite definir y administrar aplicaciones multi-contenedor mediante un archivo de configuración centralizado (Docker, s. f.). Oracle Cloud Always Free se selecciona para el backend porque ofrece recursos gratuitos Ampere A1 equivalentes a 4 OCPU y 24 GB de memoria dentro de sus límites Always Free (Oracle, s. f.). Caddy se utilizará como gateway liviano porque permite implementar un reverse proxy de forma directa y soporta HTTPS automático con renovación de certificados TLS (Caddy, s. f.).
+| Categoría | Detalle |
+| --- | --- |
+| Tipo de sistema | Plataforma web de servicios freelance universitarios. |
+| Propósito de negocio | Facilitar que estudiantes universitarios consigan experiencia profesional e ingresos mediante servicios freelance formales y verificables. |
+| Propósito arquitectónico | Definir una arquitectura modular, desplegable, testeable y preparada para evolución incremental mediante microservicios. |
+| Enfoque de arquitectura | Microservices Architecture, Domain-Driven Design y Clean Architecture. |
+| Modelo de despliegue | Landing page y frontend en Vercel; routing público mediante Vercel Rewrites; backend en Google Cloud Run; base de datos en Supabase PostgreSQL. |
+| Deployment backend | Workflows manuales de GitHub Actions por microservicio y scripts PowerShell locales en `/gcloud`. |
+| Mensajería asíncrona | Google Cloud Pub/Sub seleccionado como decisión arquitectónica pendiente de implementación. |
+| Storage | Capacidad pendiente de implementación. |
+| Alcance funcional principal | Perfiles, portafolios, publicación de servicios, búsqueda, solicitudes, acuerdos, proyectos, chat, notificaciones y reseñas. |
+| Alcance técnico principal | RESTful API documentada, microservicios independientes, persistencia relacional por ownership lógico, despliegue independiente en Cloud Run, CI/CD manual con GitHub Actions y mensajería asíncrona pendiente. |
+| Limitación inicial | El sistema modelará acuerdos y estados de pago para validación académica; la integración con una pasarela de pagos real queda fuera del primer alcance implementable. |
+
+La decisión de utilizar Google Cloud Run responde a la necesidad de desplegar microservicios backend de forma independiente, pública y verificable sin administrar una máquina virtual propia. Vercel Rewrites reemplaza a Caddy como mecanismo de routing público para el frontend, permitiendo que las rutas relativas `/api/*` sean reenviadas hacia los servicios backend correspondientes. GitHub Actions permite ejecutar despliegues manuales por microservicio mediante `workflow_dispatch`, manteniendo control sobre cuándo se despliega cada servicio.
 
 ### 4.2.2. Primary Functionality: Primary User Stories
 
@@ -1644,8 +1655,8 @@ Los escenarios de atributos de calidad se redactan como requisitos medibles. El 
 | QA-01 | Seguridad           | Usuario no autenticado o usuario sin permisos | Intenta crear, modificar o consultar un recurso protegido                                  | Operación normal del sistema                        | Caddy Gateway, microservicio correspondiente, endpoints REST         | El sistema valida JWT, rol y ownership antes de ejecutar el caso de uso; si la solicitud no cumple, la rechaza y registra el intento relevante. | El 100% de endpoints protegidos rechaza solicitudes sin token válido o sin permisos; las operaciones críticas quedan registradas en auditoría.                              |
 | QA-02 | Modificabilidad     | Equipo de desarrollo                          | Solicita agregar una nueva categoría de servicio o una nueva regla de sugerencia de precio | Sprint de evolución funcional                       | GigMarketplaceService y PullEngagementService                        | El cambio se implementa dentro del microservicio dueño del contexto sin modificar otros microservicios ni romper contratos existentes.          | El cambio afecta como máximo un microservicio principal y sus pruebas asociadas; las APIs existentes mantienen compatibilidad.                                              |
 | QA-03 | Testabilidad        | Desarrollador backend                         | Agrega o modifica una regla de negocio de solicitud, acuerdo, proyecto o reseña            | Desarrollo local o pipeline de integración continua | Domain Layer y Application Layer del microservicio afectado          | El sistema permite probar la regla mediante pruebas unitarias y pruebas de integración del endpoint correspondiente.                            | Las reglas críticas del dominio tienen pruebas unitarias; los endpoints principales tienen pruebas de integración automatizadas.                                            |
-| QA-04 | Interoperabilidad   | Frontend web o consumidor API                 | Consume funcionalidades de perfil, marketplace, engagement o chat                          | Operación normal desde navegador                    | RESTful API, Caddy Gateway y microservicios backend                  | El sistema expone contratos HTTP consistentes, versionados y documentados con OpenAPI.                                                          | El 100% de endpoints públicos principales se documenta con OpenAPI y responde usando DTOs JSON estandarizados.                                                              |
-| QA-05 | Disponibilidad      | Usuario final o sistema de monitoreo          | Un microservicio o componente secundario falla temporalmente                               | Validación académica en infraestructura gratuita    | Contenedores backend, RabbitMQ o ChatNotificationService             | El sistema mantiene disponibles las funcionalidades no dependientes del componente fallido y permite reinicio del contenedor afectado.          | Los health checks identifican el componente fallido; las operaciones críticas de perfil, marketplace y engagement no dependen del envío exitoso de notificaciones externas. |
+| QA-04 | Interoperabilidad | Frontend web o consumidor API | Consume funcionalidades de perfil, marketplace, engagement o chat | Operación normal desde navegador | RESTful API, Vercel Rewrites y microservicios backend en Google Cloud Run | El sistema expone contratos HTTP consistentes, versionados y documentados con OpenAPI; Vercel Rewrites enruta las solicitudes `/api/*` hacia los servicios Cloud Run correspondientes. | El 100% de endpoints públicos principales se documenta con OpenAPI y responde usando DTOs JSON estandarizados. |
+| QA-05 | Disponibilidad | Usuario final o sistema de monitoreo | Un microservicio o componente secundario falla temporalmente | Validación académica en servicios cloud administrados | Frontend en Vercel, microservicios en Google Cloud Run y Supabase PostgreSQL | El sistema mantiene disponibles las funcionalidades no dependientes del componente fallido y permite redeploy independiente del microservicio afectado mediante GitHub Actions o scripts `gcloud`. | Las operaciones críticas de perfil, marketplace y engagement no dependen de mensajería asíncrona pendiente; cada microservicio puede ser redesplegado de forma independiente. |
 | QA-06 | Performance         | Cliente o freelancer                          | Realiza búsqueda de servicios, perfiles o conversaciones                                   | Dataset de validación académica y operación normal  | GigMarketplaceService, ChatNotificationService y Supabase PostgreSQL | El sistema responde con paginación, filtros e índices en campos de búsqueda frecuentes.                                                         | Las consultas principales devuelven resultados paginados y evitan cargar datasets completos en una sola respuesta.                                                          |
 | QA-07 | Usabilidad          | Cliente o freelancer                          | Completa un flujo de publicación, solicitud, acuerdo, chat o calificación                  | Uso normal desde navegador web                      | Frontend Web App y API backend                                       | El sistema entrega confirmaciones claras y mantiene el estado visible de servicios, solicitudes, proyectos y mensajes.                          | Cada operación principal retorna estado explícito de éxito, error o pendiente; el usuario puede reconocer el estado actual de sus proyectos y conversaciones.               |
 
@@ -1653,24 +1664,24 @@ Los escenarios de atributos de calidad se redactan como requisitos medibles. El 
 
 Las restricciones representan decisiones con bajo o nulo grado de libertad para la arquitectura. Estas limitan las opciones de implementación y deben ser consideradas como drivers arquitectónicos.
 
-| ID     | Restricción                                                                                                                                                  | Tipo                              | Impacto arquitectónico                                                                                                        |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| CON-01 | El frontend se desarrollará con Vue + Vite y se desplegará en Vercel.                                                                                        | Tecnológica / despliegue          | Se separa el frontend del backend y se consume la API mediante HTTPS.                                                         |
-| CON-02 | El backend se desarrollará con Java y Spring Boot.                                                                                                           | Tecnológica                       | Los microservicios, controladores REST, seguridad y pruebas backend se implementan en el ecosistema Spring.                   |
-| CON-03 | Cada microservicio aplicará Clean Architecture.                                                                                                              | Arquitectónica                    | Las reglas de dominio no dependerán de frameworks, persistencia, gateway o servicios externos.                                |
-| CON-04 | El backend se organizará en cuatro microservicios principales: AccessProfileService, GigMarketplaceService, PullEngagementService y ChatNotificationService. | Arquitectónica                    | Se evita sobredimensionar la arquitectura y se mantiene una separación coherente por bounded context.                         |
-| CON-05 | Caddy funcionará como gateway liviano y reverse proxy.                                                                                                       | Infraestructura                   | Las rutas públicas de la API se centralizan sin introducir un microservicio adicional de gateway.                             |
-| CON-06 | Los microservicios, Caddy y RabbitMQ se ejecutarán con Docker Compose en Oracle Cloud Always Free.                                                           | Despliegue                        | La arquitectura backend será reproducible y ejecutable como aplicación multi-contenedor.                                      |
-| CON-07 | La persistencia principal se realizará con Supabase PostgreSQL.                                                                                              | Datos                             | Se adopta una base relacional administrada con esquemas lógicos por microservicio.                                            |
-| CON-08 | Los archivos de portafolio, imágenes y adjuntos se almacenarán en Supabase Storage.                                                                          | Datos / almacenamiento            | Los binarios no se guardan directamente en la base de datos relacional.                                                       |
-| CON-09 | La autenticación y autorización se implementarán con Spring Security y JWT.                                                                                  | Seguridad                         | Cada microservicio validará acceso a operaciones protegidas y ownership de recursos.                                          |
-| CON-10 | La mensajería asíncrona se implementará con RabbitMQ para eventos internos relevantes.                                                                       | Integración                       | Las notificaciones, cambios de estado y eventos secundarios se desacoplan del flujo principal.                                |
-| CON-11 | Las APIs REST serán documentadas con OpenAPI/Swagger.                                                                                                        | Documentación / interoperabilidad | Se asegura trazabilidad de contratos, endpoints y DTOs.                                                                       |
-| CON-12 | El proyecto deberá mantenerse en servicios gratuitos o free tier durante la validación académica.                                                            | Económica / despliegue            | Se priorizan Vercel, Oracle Cloud Always Free, Supabase y herramientas open source.                                           |
-| CON-13 | No se integrará una pasarela de pagos real en la primera versión implementable.                                                                              | Alcance                           | El sistema modelará acuerdos y estados relacionados al pago, pero la integración financiera real queda como extensión futura. |
-| CON-14 | El equipo deberá producir evidencias de implementación, testing, documentación de microservicios y despliegue.                                               | Académica                         | La arquitectura debe ser demostrable mediante repositorio, pruebas, Swagger, CI/CD y ejecución cloud.                         |
+| ID | Restricción | Tipo | Impacto arquitectónico |
+| --- | --- | --- | --- |
+| CON-01 | El frontend se desarrollará con Vue + Vite y se desplegará en Vercel. | Tecnológica / despliegue | Se separa el frontend del backend y se consume la API mediante rutas públicas estables. |
+| CON-02 | El backend se desarrollará con Java y Spring Boot. | Tecnológica | Los microservicios, controladores REST, seguridad y pruebas backend se implementan en el ecosistema Spring. |
+| CON-03 | Cada microservicio aplicará Clean Architecture. | Arquitectónica | Las reglas de dominio no dependerán de frameworks, persistencia, routing público o servicios externos. |
+| CON-04 | El backend se organizará en cuatro microservicios principales: AccessProfileService, GigMarketplaceService, PullEngagementService y ChatNotificationService. | Arquitectónica | Se evita sobredimensionar la arquitectura y se mantiene una separación coherente por bounded context. |
+| CON-05 | Vercel Rewrites funcionará como routing público de API para el frontend. | Infraestructura | Las rutas `/api/*` se centralizan desde el frontend sin mantener un gateway propio con Caddy. |
+| CON-06 | Los microservicios backend se desplegarán en Google Cloud Run. | Despliegue | Cada microservicio puede desplegarse y validarse de forma independiente. |
+| CON-07 | La persistencia principal se realizará con Supabase PostgreSQL. | Datos | Se adopta una base relacional administrada con esquemas lógicos por microservicio. |
+| CON-08 | La capacidad de storage para portafolio, imágenes y adjuntos queda pendiente de implementación. | Datos / almacenamiento | Los binarios no deben presentarse como capacidad implementada hasta que exista integración real. |
+| CON-09 | La autenticación y autorización se implementarán con Spring Security y JWT. | Seguridad | Cada microservicio validará acceso a operaciones protegidas y ownership de recursos. |
+| CON-10 | La mensajería asíncrona se diseñará sobre Google Cloud Pub/Sub, pero queda pendiente de implementación. | Integración | Las notificaciones, cambios de estado y eventos secundarios se desacoplarán del flujo principal cuando la infraestructura de eventos sea implementada. |
+| CON-11 | Las APIs REST serán documentadas con OpenAPI/Swagger. | Documentación / interoperabilidad | Se asegura trazabilidad de contratos, endpoints y DTOs. |
+| CON-12 | El proyecto deberá mantenerse en servicios gratuitos o free tier durante la validación académica. | Económica / despliegue | Se priorizan Vercel, Google Cloud Run, Supabase y herramientas cloud administradas compatibles con validación académica. |
+| CON-13 | No se integrará una pasarela de pagos real en la primera versión implementable. | Alcance | El sistema modelará acuerdos y estados relacionados al pago, pero la integración financiera real queda como extensión futura. |
+| CON-14 | El equipo deberá producir evidencias de implementación, testing, documentación de microservicios y despliegue. | Académica | La arquitectura debe ser demostrable mediante repositorio, pruebas, Swagger, GitHub Actions, Cloud Run y ejecución cloud. |
 
-Supabase se mantiene como plataforma administrada de PostgreSQL y storage para reducir carga operativa en el equipo; su plan gratuito permite usar PostgreSQL y almacenamiento dentro de límites de validación (Supabase, s. f.-b). Docker Compose se mantiene como restricción de despliegue porque permite definir, ejecutar y mantener aplicaciones multi-contenedor desde una configuración centralizada (Docker, s. f.).
+Supabase se mantiene como plataforma administrada de PostgreSQL para reducir carga operativa en el equipo. El despliegue backend se realiza en Google Cloud Run y se automatiza mediante workflows manuales de GitHub Actions por microservicio. La mensajería con Google Cloud Pub/Sub y la capacidad de storage quedan documentadas como decisiones o capacidades pendientes, no como evidencia implementada.
 
 ### 4.2.5. Architectural Concerns
 
@@ -1743,7 +1754,7 @@ El backlog de diseño selecciona los drivers funcionales, de calidad y restricci
 | CON-02 | Restricción | El microservicio se implementa con Java + Spring Boot. | Fija |
 | CON-03 | Restricción | Aplica Clean Architecture (Domain → Application → Interface → Infrastructure). | Fija |
 | CON-09 | Restricción | Autenticación con Spring Security + JWT y validación de ownership en cada caso de uso. | Fija |
-| CON-10 | Restricción | Eventos relevantes (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`) se publican en RabbitMQ. | Fija |
+| CON-10 | Restricción | Eventos relevantes (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`) se diseñan para publicación futura mediante Google Cloud Pub/Sub. | Fija / pendiente de implementación |
 | CRN-03 | Concern | Consistencia entre microservicios: las referencias a usuario y servicio publicado son IDs externos, no joins. | Alta |
 | CRN-08 | Concern | Testabilidad de reglas de negocio sin levantar todo el sistema. | Alta |
 
@@ -1759,7 +1770,7 @@ El backlog de diseño selecciona los drivers funcionales, de calidad y restricci
 | QA-03 Testabilidad | El ciclo de vida del proyecto contiene invariantes que deben ser verificables sin infraestructura levantada. |
 | QA-01 Seguridad | Cada operación expone recursos transaccionales sensibles, como solicitudes, acuerdos, proyectos, calificaciones y sugerencias de precio. |
 | PUS-05, PUS-06, PUS-07, PUS-09, PUS-11 | Estas cinco historias definen el flujo end-to-end de contratación, gestión del proyecto, reputación y pricing que la iteración debe soportar. |
-| CON-03, CON-09, CON-10 | Restricciones tecnológicas que enmarcan toda decisión de implementación. |
+| CON-03, CON-09, CON-10 | Restricciones tecnológicas que enmarcan toda decisión de implementación: Clean Architecture, seguridad con Spring Security/JWT y diseño de eventos preparados para una futura integración con Google Cloud Pub/Sub. |
 
 Quedan fuera del foco de esta iteración: el dominio interno de Marketplace, que se aborda en la Iteración 2; la mensajería en tiempo real del chat; la operación administrativa; y la gestión de perfil y portafolio, que pertenece a `AccessProfileService`.
 
@@ -1773,8 +1784,8 @@ La iteración descompone este contenedor en sus componentes internos siguiendo C
 | ------------------------ | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `PullEngagementService` | Contenedor | Centro transaccional del dominio y mayor concentración de drivers seleccionados. |
 | Esquema `engagement_schema` | Componente de datos | Soporta el modelo agregado de solicitud, acuerdo, proyecto, historial, reseña y sugerencia de precio. |
-| Contrato REST `/api/v1/engagement/*` | Interfaz pública | Punto de acoplamiento para el frontend Vue y para el gateway Caddy. |
-| Eventos publicados en RabbitMQ | Interfaz asíncrona | Punto de acoplamiento eventual hacia `ChatNotificationService` y `GigMarketplaceService`. |
+| Contrato REST `/api/v1/engagement/*` | Interfaz pública | Punto de acoplamiento para el frontend Vue mediante Vercel Rewrites y para los consumidores HTTP del backend. |
+| Eventos diseñados para Google Cloud Pub/Sub | Interfaz asíncrona futura | Punto de acoplamiento eventual hacia `ChatNotificationService` y `GigMarketplaceService`, pendiente de implementación. |
 
 No se refinan en esta iteración los componentes internos de los otros microservicios: solo se acuerda la forma de los contratos que `PullEngagementService` consume o produce.
 
@@ -1786,12 +1797,12 @@ Las decisiones de diseño se seleccionan a partir del catálogo definido en 4.1 
 | ------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | QA-02 Modificabilidad | Clean Architecture con separación Domain, Application, Interface e Infrastructure. | Aísla reglas de negocio de frameworks, persistencia, gateway y broker, reduciendo impacto ante cambios funcionales. |
 | QA-02 Modificabilidad | Strategy Pattern para `PriceSuggestionPolicy` y `ProjectStatusPolicy`. | Permite agregar nuevas reglas de pricing o transición de estados sin modificar los casos de uso principales. |
-| QA-03 Testabilidad | Puertos explícitos para repositorios, clientes externos y publicador de eventos. | Habilita pruebas unitarias sin Spring, sin Postgres y sin RabbitMQ. |
+| QA-03 | Testabilidad | Puertos explícitos para repositorios, clientes externos y publicador de eventos. | Habilita pruebas unitarias sin Spring, sin Postgres y sin Google Cloud Pub/Sub. |
 | QA-03 Testabilidad | Specialized Interfaces sobre `ProjectRepository`, `EventPublisher`, `ProfileLookupClient` y `ServiceLookupClient`. | Permite mockear cada dependencia externa por separado y enfocar pruebas por regla de negocio. |
 | QA-01 Seguridad | Authenticate Actors + Authorize Actors mediante Spring Security y filtro JWT por endpoint. | Cada controller exige token válido y cada caso de uso valida que el `userId` autenticado sea propietario o participante del recurso solicitado. |
 | QA-01 Seguridad | Maintain Audit Trail mediante tabla `project_status_history`. | Toda transición queda registrada con autor y timestamp, atendiendo trazabilidad académica y de negocio. |
-| QA-05 Disponibilidad | Outbox Pattern para `ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged` y `ReviewCreated`. | El evento se persiste en la misma transacción que la operación de dominio; el envío a RabbitMQ se reintenta de forma controlada. |
-| QA-05 Disponibilidad | Exception Handling + Graceful Degradation en el publisher de eventos. | Una falla de RabbitMQ no rompe la operación principal; el outbox la recupera más tarde. |
+| QA-05 | Disponibilidad | Outbox Pattern para `ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged` y `ReviewCreated`. | El evento se persiste en la misma transacción que la operación de dominio; el envío futuro a Google Cloud Pub/Sub podrá reintentarse de forma controlada. |
+| QA-05 | Disponibilidad | Exception Handling + Graceful Degradation en el publisher de eventos. | Una falla en la infraestructura futura de mensajería no debe romper la operación principal; el outbox permitiría recuperación posterior. |
 | PUS-05, PUS-06, PUS-07, PUS-09 | Domain Events (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`). | Modela el flujo end-to-end como cambios significativos del dominio que otros servicios pueden consumir asíncronamente. |
 | PUS-11 | Strategy Pattern para `PriceSuggestionPolicy`. | Desacopla las reglas de sugerencia de precio y permite evolucionar el algoritmo sin afectar contratación, proyectos o reseñas. |
 
@@ -1814,7 +1825,7 @@ Las decisiones de diseño se seleccionan a partir del catálogo definido en 4.1 
 | `EventPublisher` | Application (puerto) | Abstracción para publicar eventos de dominio. |
 | `ProfileLookupClient`, `ServiceLookupClient` | Application (puerto) | Abstracciones para validar existencia de freelancer y servicio antes de iniciar engagement. |
 | `JpaProjectRepository`, `JpaRequestRepository`, `JpaReviewRepository` | Infrastructure | Implementan los puertos sobre Supabase PostgreSQL. |
-| `RabbitEventPublisher` + `OutboxScheduler` | Infrastructure | Implementan el patrón Outbox sobre RabbitMQ. |
+| `PubSubEventPublisher` + `OutboxScheduler` | Infrastructure | Adaptador futuro para publicar eventos desde el patrón Outbox hacia Google Cloud Pub/Sub cuando la mensajería asíncrona sea implementada. |
 | `RestProfileLookupClient`, `RestServiceLookupClient` | Infrastructure | Adaptadores HTTP hacia los otros microservicios. |
 
 ##### Interfaces (contratos REST principales)
@@ -1909,26 +1920,26 @@ Una vez cerrada la Iteración 1, donde quedaron definidos los contratos transacc
 | CON-02 | Restricción | El microservicio se implementa con Java + Spring Boot. | Fija |
 | CON-03 | Restricción | Aplica Clean Architecture en cuatro capas. | Fija |
 | CON-07 | Restricción | Persistencia con Supabase PostgreSQL bajo el esquema `marketplace_schema`. | Fija |
-| CON-08 | Restricción | Los binarios de portafolio y media de servicios se almacenan en Supabase Storage; en la base de datos solo se guardan referencias. | Fija |
-| CON-11 | Restricción | API documentada con OpenAPI/Swagger. | Fija |
+| CON-08 | Restricción | La capacidad de storage para binarios de portafolio y media de servicios queda pendiente de implementación; en el diseño se mantiene un puerto de almacenamiento para evitar acoplamiento con un proveedor específico. | Pendiente |
+| CRN-11 | Concern | Encapsular dependencias futuras de storage en adaptadores, no en el dominio. | Media |
 | CRN-12 | Concern | Performance en búsquedas: la búsqueda puede degradarse al crecer el catálogo. | Alta |
 | CRN-03 | Concern | Consistencia entre microservicios: la reputación promedio se actualiza por eventos, no por joins. | Alta |
 | CRN-11 | Concern | Encapsular dependencias de Supabase Storage en adaptadores, no en el dominio. | Media |
 
 #### 4.3.2.2. Establish Iteration Goal by Selecting Drivers
 
-**Meta de la iteración:** definir la estructura interna de `GigMarketplaceService` y sus contratos REST de manera que el catálogo soporte publicación de servicios, búsqueda paginada con filtros, almacenamiento de media en Supabase Storage y proyección de reputación a partir de eventos consumidos desde RabbitMQ.
+**Meta de la iteración:** definir la estructura interna de `GigMarketplaceService` y sus contratos REST de manera que el catálogo soporte publicación de servicios, búsqueda paginada con filtros, metadatos de media y proyección de reputación a partir de eventos diseñados para una futura integración con Google Cloud Pub/Sub. La capacidad de storage de binarios queda pendiente de implementación, por lo que el diseño conserva un puerto de almacenamiento sin tratarlo como evidencia completada.
 
 | Driver | Por qué guía esta iteración |
-| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| --- | --- |
 | QA-06 Performance | El catálogo es el endpoint con mayor volumen de lecturas: requiere paginación, filtros indexados y DTOs ligeros. |
 | QA-02 Modificabilidad | La taxonomía de categorías y los criterios de búsqueda evolucionarán durante los sprints siguientes. |
-| QA-04 Interoperabilidad | El frontend consume directamente este microservicio: los contratos deben quedar estables y documentados antes de iniciar la UI. |
+| QA-04 Interoperabilidad | El frontend consume directamente este microservicio mediante Vercel Rewrites y contratos REST: los contratos deben quedar estables y documentados antes de iniciar la UI. |
 | QA-01 Seguridad | Endpoints públicos para visitantes coexisten con endpoints protegidos para el dueño del servicio: requiere segregación clara. |
 | PUS-03, PUS-04 | Estas dos historias definen el ciclo publicar servicio con media → buscar y consultar catálogo. |
-| CON-07, CON-08 | Restricciones que definen dónde vive cada tipo de dato: base relacional para metadatos y Supabase Storage para archivos. |
+| CON-07, CON-08 | Restricciones que definen dónde vive cada tipo de dato: base relacional para metadatos y storage de binarios como capacidad pendiente. |
 
-Quedan fuera del foco: la lógica transaccional de contratación, resuelta en la Iteración 1; el chat en tiempo real; la operación administrativa; y la gestión de perfil y portafolio, que pertenece a `AccessProfileService`.
+Quedan fuera del foco: la lógica transaccional de contratación, resuelta en la Iteración 1; el chat en tiempo real; la operación administrativa; la implementación real de Google Cloud Pub/Sub; la implementación real de storage; y la gestión de perfil y portafolio, que pertenece a `AccessProfileService`.
 
 #### 4.3.2.3. Choose One or More Elements of the System to Refine
 
@@ -1937,8 +1948,8 @@ Quedan fuera del foco: la lógica transaccional de contratación, resuelta en la
 | `GigMarketplaceService` | Contenedor | Foco principal de la iteración y mayor concentración de drivers de catálogo, búsqueda y publicación de servicios. |
 | Esquema `marketplace_schema` | Componente de datos | Aloja `service_offerings`, `service_categories`, `service_media` y la vista derivada `freelancer_reputation`. |
 | Contrato REST `/api/v1/marketplace/*` | Interfaz pública | Punto de acoplamiento del frontend Vue para listado, detalle, publicación, edición y despublicación de servicios. |
-| Consumidor de eventos `ReviewCreated` | Interfaz asíncrona | Punto de entrada para mantener actualizada la proyección de reputación promedio. |
-| Integración con Supabase Storage | Adaptador externo | Permite almacenar archivos asociados a servicios sin guardar binarios dentro de la base de datos relacional. |
+| Consumidor de eventos `ReviewCreated` | Interfaz asíncrona futura | Punto de entrada diseñado para mantener actualizada la proyección de reputación promedio cuando Google Cloud Pub/Sub sea implementado. |
+| Puerto de storage de media | Adaptador externo futuro | Permite diseñar el almacenamiento de archivos asociados a servicios sin guardar binarios dentro de la base de datos relacional; la implementación real queda pendiente. |
 
 #### 4.3.2.4. Choose One or More Design Concepts That Satisfy the Selected Drivers
 
@@ -1951,10 +1962,10 @@ Quedan fuera del foco: la lógica transaccional de contratación, resuelta en la
 | QA-02 Modificabilidad | Encapsulate: la taxonomía de categorías es un agregado independiente de `ServiceOffering`. | Permite agregar o renombrar categorías sin modificar la entidad principal. |
 | QA-04 Interoperabilidad | API First + DTOs explícitos + OpenAPI/Swagger. | El frontend consume contratos versionados y validables; la entidad de dominio nunca se expone directamente. |
 | QA-01 Seguridad | Authorize Actors: endpoints `GET` públicos, endpoints `POST/PATCH/DELETE` protegidos por JWT + ownership. | Visitantes pueden navegar el catálogo; solo el dueño del servicio puede modificarlo. |
-| PUS-03 | Adapter Pattern para `MediaStoragePort` → `SupabaseStorageAdapter`. | Mantiene el dominio agnóstico al proveedor de storage; permite cambiar a S3 u otro sin tocar reglas de negocio. |
+| PUS-03 | Adapter Pattern para `MediaStoragePort`. | Mantiene el dominio agnóstico al proveedor de storage; permite implementar Supabase Storage, Google Cloud Storage u otro proveedor sin tocar reglas de negocio. La implementación real queda pendiente. |
 | PUS-04 | Specification Pattern + DTOs de lectura. | Permite que la búsqueda y visualización del catálogo evolucionen sin afectar publicación, contratación ni perfil. |
-| ReviewCreated consumer | Event Handler + Materialized Read Model `freelancer_reputation`. | Calcular el promedio de reseñas en cada lectura sería costoso; mantener una proyección actualizada por evento sirve a QA-06. |
-| CRN-11 | Hexagonal ports/adapters dentro del microservicio. | Separa Supabase Storage, Postgres y RabbitMQ del dominio. |
+| ReviewCreated consumer | Event Handler + Materialized Read Model `freelancer_reputation`. | Calcular el promedio de reseñas en cada lectura sería costoso; mantener una proyección actualizada por evento sirve a QA-06. La integración asíncrona queda diseñada para Google Cloud Pub/Sub, pendiente de implementación. |
+| CRN-11 | Hexagonal ports/adapters dentro del microservicio. | Separa storage futuro, Supabase PostgreSQL y Google Cloud Pub/Sub del dominio. |
 
 #### 4.3.2.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
 
@@ -1973,11 +1984,11 @@ Quedan fuera del foco: la lógica transaccional de contratación, resuelta en la
 | `ServiceOffering`, `ServiceCategory`, `ServiceMedia`, `FreelancerReputation` | Domain | Entidades agregadas con invariantes del catálogo. |
 | `ServiceSpecification` | Domain | Compone predicados de búsqueda. |
 | `ServiceRepository`, `CategoryRepository`, `ReputationRepository` | Application (puerto) | Abstracciones de persistencia. |
-| `MediaStoragePort` | Application (puerto) | Abstracción de almacenamiento de binarios. |
-| `EventConsumer` | Application (puerto) | Abstracción de consumo de eventos del broker. |
-| `JpaServiceRepository` | Infrastructure | Implementa el puerto sobre Supabase PostgreSQL. |
-| `SupabaseStorageAdapter` | Infrastructure | Implementa `MediaStoragePort` contra Supabase Storage. |
-| `RabbitReviewConsumer` | Infrastructure | Suscribe a `engagement.events` y delega a `OnReviewCreatedHandler`. |
+| `MediaStoragePort` | Application (puerto) | Abstracción de almacenamiento de binarios para una capacidad de storage futura. |
+| `EventConsumer` | Application (puerto) | Abstracción de consumo de eventos desde Google Cloud Pub/Sub cuando la mensajería asíncrona sea implementada. |
+| `JpaServiceRepository` | Infrastructure | Implementa el puerto de persistencia sobre Supabase PostgreSQL. |
+| `StorageAdapter` | Infrastructure | Adaptador futuro para implementar `MediaStoragePort` con el proveedor de storage seleccionado. |
+| `PubSubReviewConsumer` | Infrastructure | Consumidor futuro de eventos `ReviewCreated` desde Google Cloud Pub/Sub para delegar en `OnReviewCreatedHandler`. |
 
 ##### Interfaces (contratos REST principales)
 
@@ -2026,7 +2037,7 @@ Para esta iteración se generaron cuatro vistas que sustentan las decisiones tom
 | ADR-009 | Mantener un read model materializado `freelancer_reputation` actualizado por `ReviewCreated`. | Aceptada | QA-06 | Lecturas O(1) sin agregaciones; introduce consistencia eventual y un consumer adicional. |
 | ADR-010 | Aplicar soft delete mediante `unpublished_at` en lugar de borrado físico de servicios. | Aceptada | CRN-03 | Permite preservar referencias históricas desde proyectos cerrados; requiere filtrar en cada query. |
 | ADR-011 | Exponer endpoints `GET` públicos sin JWT y proteger `POST/PATCH/DELETE` con JWT + ownership. | Aceptada | QA-01, QA-04 | Visitantes pueden explorar el catálogo; requiere configuración granular en Spring Security. |
-| ADR-012 | Encapsular Supabase Storage como adaptador del puerto `MediaStoragePort`. | Aceptada | CRN-11 | El dominio queda agnóstico al proveedor; permite cambiar a S3 u otro storage sin tocar reglas. |
+| ADR-012 | Mantener `MediaStoragePort` como puerto de almacenamiento sin fijar implementación concreta en esta fase. | Aceptada | CRN-11 | El dominio queda agnóstico al proveedor; permite implementar Supabase Storage, Google Cloud Storage u otro proveedor posteriormente sin tocar reglas de negocio. |
 
 #### 4.3.2.7. Analysis of Current Design and Review Iteration Goal: Kanban Board
 
@@ -2068,6 +2079,55 @@ Los pendientes identificados durante la iteración, como recomendación de servi
 ### 5.2.3. Source Code Style Guide & Conventions
 
 ### 5.2.4. Software Deployment Configuration
+
+La configuración de despliegue del proyecto se organiza separando frontend, backend, base de datos y capacidades pendientes de infraestructura. El frontend y la landing page se despliegan en Vercel. El backend se despliega en Google Cloud Run mediante workflows manuales de GitHub Actions por microservicio. La base de datos principal se mantiene en Supabase PostgreSQL.
+
+| Componente | Tecnología / servicio | Estado | Descripción |
+| --- | --- | --- | --- |
+| Landing Page | Vercel | Implementado | Sitio público de presentación del producto. |
+| Frontend Web App | Vercel | Implementado | Aplicación Vue + Vite consumida por usuarios finales. |
+| Public API Routing | Vercel Rewrites | Implementado | Reenvía rutas relativas `/api/*` hacia los microservicios backend en Cloud Run. |
+| Backend Runtime | Google Cloud Run | Implementado | Ejecuta los microservicios Spring Boot como servicios cloud independientes. |
+| Backend Deployment | GitHub Actions manuales por microservicio | Implementado | Cada workflow se ejecuta mediante `workflow_dispatch` y despliega un servicio específico. |
+| Local Deployment Support | Scripts PowerShell en `/gcloud` | Implementado | Permiten desplegar manualmente desde una estación local usando `gcloud run deploy --source`. |
+| Database | Supabase PostgreSQL | Implementado | Base de datos relacional administrada con esquemas lógicos por microservicio. |
+| Asynchronous Messaging | Google Cloud Pub/Sub | Seleccionado / pendiente | Servicio elegido para eventos asíncronos entre microservicios; aún no implementado. |
+| Storage | Por definir | Pendiente | Capacidad futura para binarios de portafolio, imágenes y adjuntos. |
+
+Los workflows de despliegue backend se encuentran en el repositorio `backend-microservices` bajo `.github/workflows`:
+
+| Workflow | Microservicio | Servicio Cloud Run |
+| --- | --- | --- |
+| `deploy-access-profile-service.yml` | AccessProfileService | `gigu-access-profile-service` |
+| `deploy-gig-marketplace-service.yml` | GigMarketplaceService | `gigu-gig-marketplace-service` |
+| `deploy-pulls-service.yml` | PullEngagementService | `gigu-pulls-service` |
+| `deploy-chat-notification-service.yml` | ChatNotificationService | `gigu-chat-notification-service` |
+
+Cada workflow valida que el despliegue se ejecute desde la rama `feature/main-app-logic`, autentica contra Google Cloud mediante `google-github-actions/auth`, configura el CLI con `google-github-actions/setup-gcloud` y ejecuta `gcloud run deploy --source` para desplegar el microservicio correspondiente en la región `us-central1` del proyecto `dosys-rest-api`.
+
+Los scripts locales de soporte se encuentran en la carpeta `gcloud` del repositorio backend:
+
+| Script | Propósito |
+| --- | --- |
+| `gcloud/deploy-access-profile-service.ps1` | Despliegue local manual de AccessProfileService. |
+| `gcloud/deploy-gig-marketplace-service.ps1` | Despliegue local manual de GigMarketplaceService. |
+| `gcloud/deploy-pulls-service.ps1` | Despliegue local manual de PullEngagementService. |
+| `gcloud/deploy-chat-notification-service.ps1` | Despliegue local manual de ChatNotificationService. |
+| `gcloud/deploy-all.ps1` | Orquestación local para desplegar todos los microservicios. |
+
+Los secrets requeridos para despliegue desde GitHub Actions son:
+
+| Secret / variable | Uso |
+| --- | --- |
+| `GCP_SA_KEY` | Credenciales de la cuenta de servicio de Google Cloud. |
+| `SPRING_DATASOURCE_URL` | URL JDBC de Supabase PostgreSQL. |
+| `SPRING_DATASOURCE_USERNAME` | Usuario de base de datos. |
+| `SPRING_DATASOURCE_PASSWORD` | Contraseña de base de datos. |
+| `SUPABASE_URL` | URL del proyecto Supabase. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Llave de servicio de Supabase. |
+| `JWT_SECRET` | Secreto para emisión/validación de JWT. |
+| `INTERNAL_SERVICE_TOKEN` | Token interno para comunicación entre microservicios. |
+| `CORS_ALLOWED_ORIGINS` | Variable recomendada para configurar orígenes permitidos de frontend. |
 
 ## 5.3. Microservices Implementation
 
@@ -2147,7 +2207,77 @@ Los pendientes identificados durante la iteración, como recomendación de servi
 
 ### 5.4.1. Cloud Architecture Diagram
 
+La arquitectura cloud actual de GigU distribuye la aplicación en servicios administrados para reducir carga operativa y permitir despliegues independientes. Vercel aloja la landing page y la aplicación frontend. Vercel Rewrites funciona como capa pública de routing para reenviar solicitudes `/api/*` hacia los microservicios backend desplegados en Google Cloud Run. Supabase PostgreSQL se utiliza como base de datos relacional administrada.
+
+```text
+Usuario
+  |
+  | HTTPS
+  v
+Vercel
+  |-- Landing Page
+  |-- Frontend Web App
+  |
+  | /api/* mediante Vercel Rewrites
+  v
+Google Cloud Run
+  |-- gigu-access-profile-service
+  |-- gigu-gig-marketplace-service
+  |-- gigu-pulls-service
+  |-- gigu-chat-notification-service
+  |
+  v
+Supabase PostgreSQL
+
+Capacidades pendientes:
+  |-- Google Cloud Pub/Sub para mensajería asíncrona
+  |-- Storage para binarios de portafolio, imágenes y adjuntos
+
+  | Elemento               | Tecnología           | Estado                      |
+| ---------------------- | -------------------- | --------------------------- |
+| Landing page           | Vercel               | Implementado                |
+| Frontend web app       | Vercel               | Implementado                |
+| API routing            | Vercel Rewrites      | Implementado                |
+| Backend microservices  | Google Cloud Run     | Implementado                |
+| Database               | Supabase PostgreSQL  | Implementado                |
+| Asynchronous messaging | Google Cloud Pub/Sub | Pendiente de implementación |
+| Storage                | Por definir          | Pendiente de implementación |
+
+```
+
 ### 5.4.2. Cloud Architecture Deployment
+
+El despliegue backend se realiza sobre Google Cloud Run mediante workflows manuales de GitHub Actions, uno por microservicio. Esta configuración permite desplegar un servicio sin afectar a los demás, lo cual reduce riesgo operacional y mejora la mantenibilidad del sistema durante la validación académica.
+
+| Microservicio | Ruta de código fuente | Workflow de despliegue | Servicio Cloud Run | URL |
+| --- | --- | --- | --- | --- |
+| AccessProfileService | `services/access-profile-service` | `deploy-access-profile-service.yml` | `gigu-access-profile-service` | `https://gigu-access-profile-service-149855215912.us-central1.run.app` |
+| GigMarketplaceService | `services/gig-marketplace-service` | `deploy-gig-marketplace-service.yml` | `gigu-gig-marketplace-service` | `https://gigu-gig-marketplace-service-149855215912.us-central1.run.app` |
+| PullEngagementService | `services/pulls-service` | `deploy-pulls-service.yml` | `gigu-pulls-service` | `https://gigu-pulls-service-149855215912.us-central1.run.app` |
+| ChatNotificationService | `services/chat-notification-service` | `deploy-chat-notification-service.yml` | `gigu-chat-notification-service` | `https://gigu-chat-notification-service-149855215912.us-central1.run.app` |
+
+El procedimiento de despliegue desde GitHub Actions es manual:
+
+1. Ingresar al repositorio `backend-microservices`.
+2. Abrir la pestaña **Actions**.
+3. Seleccionar el workflow del microservicio a desplegar.
+4. Ejecutar **Run workflow**.
+5. Seleccionar la rama `feature/main-app-logic`.
+6. Confirmar la ejecución.
+7. Verificar al final del job la URL real impresa por `gcloud run services describe`.
+
+Los workflows actuales no realizan despliegue automático ante cada `push`. El despliegue es intencionalmente manual mediante `workflow_dispatch`, lo que permite controlar cuándo se publica cada microservicio.
+
+Como alternativa local, el equipo mantiene scripts PowerShell en la carpeta `gcloud`. El orden recomendado de despliegue local es:
+
+1. `./gcloud/deploy-access-profile-service.ps1`
+2. `./gcloud/deploy-gig-marketplace-service.ps1`
+3. `./gcloud/deploy-chat-notification-service.ps1`
+4. Actualizar `_local-gcloud-config/pulls-service.env.yaml` con las URLs reales de Cloud Run.
+5. `./gcloud/deploy-pulls-service.ps1`
+
+También puede utilizarse:
+./gcloud/deploy-all.ps1
 
 <div style="page-break-before: always;"></div>
 
@@ -2161,57 +2291,61 @@ Los pendientes identificados durante la iteración, como recomendación de servi
 
 # Referencias bibliográficas
 
-Banco Mundial. (2023). *Working without borders: The promise and peril of online gig work*. World Bank. https://openknowledge.worldbank.org/entities/publication/ebc4a7e2-85c6-467b-8713-e2d77e954c6c
+Banco Mundial. (2023). [*Working without borders: The promise and peril of online gig work*](https://openknowledge.worldbank.org/entities/publication/ebc4a7e2-85c6-467b-8713-e2d77e954c6c). World Bank.
 
-Banco Mundial. (2024). *Four ways local online gig platforms connect young people to jobs*. World Bank Blogs. https://blogs.worldbank.org/en/jobs/four-ways-local-online-gig-platforms-connect-young-people-jobs
+Banco Mundial. (2024). [*Four ways local online gig platforms connect young people to jobs*](https://blogs.worldbank.org/en/jobs/four-ways-local-online-gig-platforms-connect-young-people-jobs). World Bank Blogs.
 
-Caddy. (s. f.-a). *Automatic HTTPS*. Caddy. https://caddyserver.com/docs/automatic-https
+GigU. (2026). [*Documentación del proyecto GigU*](https://github.com/1ASI0657-2610-7940-Final-Project/docs). GitHub.
 
-Caddy. (s. f.-b). *Reverse proxy quick-start*. Caddy. https://caddyserver.com/docs/quick-starts/reverse-proxy
+GitHub. (s. f.). [*GitHub Actions documentation*](https://docs.github.com/en/actions). GitHub Docs.
 
-Docker. (s. f.). *Defining and running multi-container applications with Docker Compose*. Docker Docs. https://docs.docker.com/guides/docker-compose/
+Google Cloud. (s. f.-a). [*Cloud Run documentation*](https://cloud.google.com/run/docs). Google Cloud Documentation.
 
-GigU. (2026). *Documentación del proyecto GigU*. GitHub. https://github.com/1ASI0657-2610-7940-Final-Project/docs
+Google Cloud. (s. f.-b). [*Deploy services from source code*](https://cloud.google.com/run/docs/deploying-source-code). Google Cloud Documentation.
 
-Instituto Nacional de Estadística e Informática. (2025a). *Perú: Comportamiento de los indicadores del mercado laboral a nivel nacional y en 27 ciudades. Primer trimestre 2025*. INEI. https://www.inei.gob.pe/media/MenuRecursivo/boletines/informe-tecnico_empleonacional_1.pdf
+Google Cloud. (s. f.-c). [*What is Pub/Sub?*](https://cloud.google.com/pubsub/docs/overview). Google Cloud Documentation.
 
-Instituto Nacional de Estadística e Informática. (2025b). *Perú: Comportamiento de los indicadores del mercado laboral a nivel nacional y en 27 ciudades. Segundo trimestre 2025*. INEI. https://m.inei.gob.pe/media/MenuRecursivo/boletines/informe-tecnico_empleonacional_2.pdf
+Google GitHub Actions. (s. f.-a). [*Authenticate to Google Cloud*](https://github.com/google-github-actions/auth). GitHub.
 
-Lewis, J., & Fowler, M. (2014). *Microservices: A definition of this new architectural term*. Martin Fowler. https://martinfowler.com/articles/microservices.html
+Google GitHub Actions. (s. f.-b). [*Set up gcloud Cloud SDK environment*](https://github.com/google-github-actions/setup-gcloud). GitHub.
 
-Ministerio de Educación del Perú. (2021). *Encuesta Nacional de Estudiantes de Educación Superior Universitaria 2019: principales resultados*. MINEDU. https://repositorio.minedu.gob.pe/handle/20.500.12799/7745
+Instituto Nacional de Estadística e Informática. (2025a). [*Perú: Comportamiento de los indicadores del mercado laboral a nivel nacional y en 27 ciudades. Primer trimestre 2025*](https://www.inei.gob.pe/media/MenuRecursivo/boletines/informe-tecnico_empleonacional_1.pdf). INEI.
 
-Ministerio de Educación del Perú. (2023). *La universidad en cifras*. MINEDU. https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9077/La%20Universidad%20en%20Cifras.pdf
+Instituto Nacional de Estadística e Informática. (2025b). [*Perú: Comportamiento de los indicadores del mercado laboral a nivel nacional y en 27 ciudades. Segundo trimestre 2025*](https://m.inei.gob.pe/media/MenuRecursivo/boletines/informe-tecnico_empleonacional_2.pdf). INEI.
 
-Ministerio de Educación del Perú. (2024). *Reporte nacional de seguimiento al Proyecto Educativo Nacional: Análisis de indicadores al 2023*. MINEDU. https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/10653/Reporte%20nacional%20de%20seguimiento%20al%20Proyecto%20Educativo%20Nacional%20an%C3%A1lisis%20de%20indicadores%20al%202023.pdf
+Lewis, J., & Fowler, M. (2014). [*Microservices: A definition of this new architectural term*](https://martinfowler.com/articles/microservices.html). Martin Fowler.
 
-OpenAPI Initiative. (s. f.). *OpenAPI Specification*. Swagger. https://swagger.io/specification/
+Ministerio de Educación del Perú. (2021). [*Encuesta Nacional de Estudiantes de Educación Superior Universitaria 2019: principales resultados*](https://repositorio.minedu.gob.pe/handle/20.500.12799/7745). MINEDU.
 
-Oracle. (s. f.). *Oracle Cloud Free Tier*. Oracle. https://www.oracle.com/cloud/free/
+Ministerio de Educación del Perú. (2023). [*La universidad en cifras*](https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9077/La%20Universidad%20en%20Cifras.pdf). MINEDU.
 
-Oracle. (s. f.). *Always Free Resources*. Oracle Documentation. https://docs.oracle.com/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm
+Ministerio de Educación del Perú. (2024). [*Reporte nacional de seguimiento al Proyecto Educativo Nacional: Análisis de indicadores al 2023*](https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/10653/Reporte%20nacional%20de%20seguimiento%20al%20Proyecto%20Educativo%20Nacional%20an%C3%A1lisis%20de%20indicadores%20al%202023.pdf). MINEDU.
 
-Organización Internacional del Trabajo. (2021). *World Employment and Social Outlook 2021: The role of digital labour platforms in transforming the world of work*. OIT. https://www.ilo.org/publications/flagship-reports/role-digital-labour-platforms-transforming-world-work
+OpenAPI Initiative. (s. f.). [*OpenAPI Specification*](https://swagger.io/specification/). Swagger.
 
-Organización Internacional del Trabajo. (2025). *Jóvenes en el mercado laboral: entre la informalidad y la falta de oportunidades*. OIT. https://www.ilo.org/es/resource/news/jovenes-entre-informalidad-y-falta-de-oportunidades
+Organización Internacional del Trabajo. (2021). [*World Employment and Social Outlook 2021: The role of digital labour platforms in transforming the world of work*](https://www.ilo.org/publications/flagship-reports/role-digital-labour-platforms-transforming-world-work). OIT.
 
-RabbitMQ. (s. f.). *RabbitMQ: One broker to queue them all*. RabbitMQ. https://www.rabbitmq.com/
+Organización Internacional del Trabajo. (2025). [*Jóvenes en el mercado laboral: entre la informalidad y la falta de oportunidades*](https://www.ilo.org/es/resource/news/jovenes-entre-informalidad-y-falta-de-oportunidades). OIT.
 
-Spring. (s. f.-a). *Spring Security reference*. Spring. https://docs.spring.io/spring-security/reference/index.html
+Spring. (s. f.-a). [*Production-ready features*](https://docs.spring.io/spring-boot/reference/actuator/index.html). Spring Boot.
 
-Spring. (s. f.-b). *Testcontainers support in Spring Boot*. Spring. https://docs.spring.io/spring-boot/reference/testing/testcontainers.html
+Spring. (s. f.-b). [*Spring Security reference*](https://docs.spring.io/spring-security/reference/index.html). Spring.
 
-Supabase. (s. f.-a). *The Postgres development platform*. Supabase. https://supabase.com/
+Spring. (s. f.-c). [*Testcontainers support in Spring Boot*](https://docs.spring.io/spring-boot/reference/testing/testcontainers.html). Spring Boot.
 
-Supabase. (s. f.-b). *Pricing & Fees*. Supabase. https://supabase.com/pricing
+Supabase. (s. f.-a). [*The Postgres development platform*](https://supabase.com/). Supabase.
 
-Supabase. (s. f.-c). *About billing on Supabase*. Supabase. https://supabase.com/docs/guides/platform/billing-on-supabase
+Supabase. (s. f.-b). [*Pricing & Fees*](https://supabase.com/pricing). Supabase.
+
+Supabase. (s. f.-c). [*About billing on Supabase*](https://supabase.com/docs/guides/platform/billing-on-supabase). Supabase.
 
 Universidad Peruana de Ciencias Aplicadas. (2025a). *Attribute-Driven Design: SI657 Fundamentos de Arquitectura de Software*. Material del curso.
 
 Universidad Peruana de Ciencias Aplicadas. (2025b). *Final Project Statement: Fundamentos de Arquitectura de Software*. Material del curso.
 
-Vercel. (s. f.). *Vercel Hobby Plan*. Vercel. https://vercel.com/docs/plans/hobby
+Vercel. (s. f.-a). [*Rewrites on Vercel*](https://vercel.com/docs/routing/rewrites). Vercel Documentation.
+
+Vercel. (s. f.-b). [*Vercel Hobby Plan*](https://vercel.com/docs/plans/hobby). Vercel Documentation.
 
 # Anexos
 
