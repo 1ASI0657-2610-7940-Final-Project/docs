@@ -159,39 +159,6 @@
       * [5.3.1.7. Team Collaboration Insights during Sprint](#5317-team-collaboration-insights-during-sprint)
       * [5.3.1.8. Kanban Board](#5318-kanban-board)
 
-    * [5.3.2. Sprint 2](#532-sprint-2)
-
-      * [5.3.2.1. Sprint Backlog 2](#5321-sprint-backlog-2)
-      * [5.3.2.2. Development Evidence for Sprint Review](#5322-development-evidence-for-sprint-review)
-      * [5.3.2.3. Testing Suite Evidence for Sprint Review](#5323-testing-suite-evidence-for-sprint-review)
-      * [5.3.2.4. Execution Evidence for Sprint Review](#5324-execution-evidence-for-sprint-review)
-      * [5.3.2.5. Microservices Documentation Evidence for Sprint Review](#5325-microservices-documentation-evidence-for-sprint-review)
-      * [5.3.2.6. Software Deployment Evidence for Sprint Review](#5326-software-deployment-evidence-for-sprint-review)
-      * [5.3.2.7. Team Collaboration Insights during Sprint](#5327-team-collaboration-insights-during-sprint)
-      * [5.3.2.8. Kanban Board](#5328-kanban-board)
-
-    * [5.3.3. Sprint 3](#533-sprint-3)
-
-      * [5.3.3.1. Sprint Backlog 3](#5331-sprint-backlog-3)
-      * [5.3.3.2. Development Evidence for Sprint Review](#5332-development-evidence-for-sprint-review)
-      * [5.3.3.3. Testing Suite Evidence for Sprint Review](#5333-testing-suite-evidence-for-sprint-review)
-      * [5.3.3.4. Execution Evidence for Sprint Review](#5334-execution-evidence-for-sprint-review)
-      * [5.3.3.5. Microservices Documentation Evidence for Sprint Review](#5335-microservices-documentation-evidence-for-sprint-review)
-      * [5.3.3.6. Software Deployment Evidence for Sprint Review](#5336-software-deployment-evidence-for-sprint-review)
-      * [5.3.3.7. Team Collaboration Insights during Sprint](#5337-team-collaboration-insights-during-sprint)
-      * [5.3.3.8. Kanban Board](#5338-kanban-board)
-
-    * [5.3.4. Sprint 4](#534-sprint-4)
-
-      * [5.3.4.1. Sprint Backlog 4](#5341-sprint-backlog-4)
-      * [5.3.4.2. Development Evidence for Sprint Review](#5342-development-evidence-for-sprint-review)
-      * [5.3.4.3. Testing Suite Evidence for Sprint Review](#5343-testing-suite-evidence-for-sprint-review)
-      * [5.3.4.4. Execution Evidence for Sprint Review](#5344-execution-evidence-for-sprint-review)
-      * [5.3.4.5. Microservices Documentation Evidence for Sprint Review](#5345-microservices-documentation-evidence-for-sprint-review)
-      * [5.3.4.6. Software Deployment Evidence for Sprint Review](#5346-software-deployment-evidence-for-sprint-review)
-      * [5.3.4.7. Team Collaboration Insights during Sprint](#5347-team-collaboration-insights-during-sprint)
-      * [5.3.4.8. Kanban Board](#5348-kanban-board)
-
   * [5.4. Microservices Deployment](#54-microservices-deployment)
 
     * [5.4.1. Cloud Architecture Diagram](#541-cloud-architecture-diagram)
@@ -2250,8 +2217,6 @@ El objetivo principal del Sprint 1 fue **implementar y desplegar el backbone fun
 
 Siguiendo el enfoque Attribute-Driven Design, el **tablero Kanban del ADD** se desarrolla durante este Sprint: el proyecto de Jira `GigU Architecture Design` contiene los work-items resultantes de las iteraciones ADD del Capítulo IV —Primary User Stories (PUS), drivers de calidad (QA), restricciones (CON), concerns (CRN), Architecture Decision Records (ADR), Sketch Views y definición de contratos y esquemas—, agrupados bajo el Epic de producto al que afectan. Las 54 tarjetas (GIGU-8 a GIGU-61) constituyen el Sprint Backlog 1 y se ejecutan, prueban y despliegan en este Sprint.
 
-> **Nota:** Las estimaciones y asignaciones deben validarse contra el tablero real del equipo. El estado de cada tarjeta refleja lo efectivamente implementado y desplegado, evidenciado por los endpoints publicados en Swagger y los commits del repositorio.
-
 **Board del Sprint 1 (Jira — `GigU Architecture Design`):** https://miguelybaneze.atlassian.net/jira/software/projects/GIGU/boards/595
 
 El backlog del Sprint 1 en Jira, filtrado por estado al cierre del Sprint:
@@ -2342,8 +2307,6 @@ _Tareas finalizadas (Done) — 45 actividades:_
 | T-A5 | Despliegue backend en Google Cloud Run | Workflows de GitHub Actions y scripts `gcloud` para los cuatro microservicios. | 5 | Ybañez Esquerre, Miguel | Done |
 | T-A6 | Despliegue frontend y landing en Vercel | Configuración de los proyectos en Vercel y routing de Vercel Rewrites hacia Cloud Run. | 3 | Mio Mejia, Andy | Done |
 
-> **Recomendación:** Estas tareas adicionales (AccessProfileService y ChatNotificationService) se implementaron y desplegaron pero aún no tienen tarjeta en el tablero `GigU Architecture Design`. Se recomienda crear las tarjetas correspondientes en Jira para que el tablero coincida con lo efectivamente entregado.
-
 #### 5.3.1.2. Development Evidence for Sprint Review
 
 Durante el Sprint 1 se implementó la totalidad del backbone de la solución. En el repositorio `backend-microservices` se desarrollaron los cuatro microservicios Spring Boot con arquitectura Clean Architecture, se estandarizó la configuración de errores, Swagger y CI, y se migró el despliegue a Google Cloud Run. En el repositorio `frontend` se construyó la aplicación Vue 3 + Vite con sus vistas de acceso, marketplace, engagement y chat. En el repositorio `landing-page` se publicó la landing page del producto.
@@ -2384,8 +2347,6 @@ Durante el Sprint 1 se estableció la infraestructura de pruebas en los cuatro m
 | --- | --- | --- | --- | --- | --- |
 | 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/access-profile-service | c630518 | feat(access): stabilize profile service authentication | Incluye las pruebas unitaria e integración del servicio de acceso. | 10/05/2026 |
 | 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 8e60ed4 | chore(platform): standardize errors swagger and ci | Estandariza la configuración de testing y CI entre microservicios. | 10/05/2026 |
-
-> **Deuda de testing (pendiente para Sprint 2):** Implementar los archivos `.feature` de BDD en Gherkin para Integration/Acceptance Tests, y completar las suites de prueba de `gig-marketplace-service`, `pulls-service` y `chat-notification-service`. Los archivos `.feature` se ubicarán en `services/<microservicio>/src/test/resources` y se registrarán con commits de tipo `test:`.
 
 #### 5.3.1.4. Execution Evidence for Sprint Review
 
@@ -2539,60 +2500,6 @@ Las tarjetas en **En Curso** corresponden a testabilidad parcial (solo `access-p
 <img src="imgs/sprint1/sprint1-kanban-board.png" alt="Kanban Board del Sprint 1 en Jira" title="Kanban Board Sprint 1"/>
 
 URL del tablero: https://miguelybaneze.atlassian.net/jira/software/projects/GIGU/boards/595
-
-### 5.3.2. Sprint 2
-
-#### 5.3.2.1. Sprint Backlog 2
-
-#### 5.3.2.2. Development Evidence for Sprint Review
-
-#### 5.3.2.3. Testing Suite Evidence for Sprint Review
-
-#### 5.3.2.4. Execution Evidence for Sprint Review
-
-#### 5.3.2.5. Microservices Documentation Evidence for Sprint Review
-
-#### 5.3.2.6. Software Deployment Evidence for Sprint Review
-
-#### 5.3.2.7. Team Collaboration Insights during Sprint
-
-#### 5.3.2.8. Kanban Board
-
-### 5.3.3. Sprint 3
-
-#### 5.3.3.1. Sprint Backlog 3
-
-#### 5.3.3.2. Development Evidence for Sprint Review
-
-#### 5.3.3.3. Testing Suite Evidence for Sprint Review
-
-#### 5.3.3.4. Execution Evidence for Sprint Review
-
-#### 5.3.3.5. Microservices Documentation Evidence for Sprint Review
-
-#### 5.3.3.6. Software Deployment Evidence for Sprint Review
-
-#### 5.3.3.7. Team Collaboration Insights during Sprint
-
-#### 5.3.3.8. Kanban Board
-
-### 5.3.4. Sprint 4
-
-#### 5.3.4.1. Sprint Backlog 4
-
-#### 5.3.4.2. Development Evidence for Sprint Review
-
-#### 5.3.4.3. Testing Suite Evidence for Sprint Review
-
-#### 5.3.4.4. Execution Evidence for Sprint Review
-
-#### 5.3.4.5. Microservices Documentation Evidence for Sprint Review
-
-#### 5.3.4.6. Software Deployment Evidence for Sprint Review
-
-#### 5.3.4.7. Team Collaboration Insights during Sprint
-
-#### 5.3.4.8. Kanban Board
 
 ## 5.4. Microservices Deployment
 
