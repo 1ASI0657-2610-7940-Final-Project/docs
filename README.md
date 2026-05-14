@@ -2479,11 +2479,30 @@ El trabajo del Sprint 1 se distribuyó entre los tres integrantes del equipo, co
 | --- | --- | --- |
 | Oblitas Davila, Mariano Moises | `Sigilo-dev` / `vr700` | Implementación de los cuatro microservicios backend, estandarización de errores/Swagger/CI, migración a Cloud Run y workflows de despliegue. |
 | Ybañez Esquerre, Miguel Angel | `Miguel080902` | Integración del frontend con los microservicios, configuración de routing de Vercel hacia Cloud Run y configuración de despliegue. |
-| Mio Mejia, Andy Alejandro | `AndyMio` | Implementación del shell de la aplicación frontend, vistas de dashboard y flujo de marketplace. |
+| Mio Mejia, Andy Alejandro | `AndyMio27` | Implementación del shell de la aplicación frontend, vistas de dashboard y flujo de marketplace. |
 
-> **Nota:** La correspondencia entre integrantes y usuarios de GitHub debe confirmarse con el equipo. Las cuentas `Sigilo-dev` y `vr700` corresponden al mismo autor.
+
 
 **Pendiente:** Incluir los screenshots de los analíticos de colaboración y commits de GitHub (pestaña *Insights → Contributors*) de cada repositorio del Sprint 1.
+
+**Analisis de colaboracion y commits de GitHub del Reporte**
+
+<img src="imgs/contribucion1.png"/>
+
+<img src="imgs/contribucion2.png"/>
+
+**Analisis de colaboracion y commits de GitHub del BackendMicroservicios**
+
+<img src="imgs/contribucion3.png"/>
+
+**Analisis de colaboracion y commits de GitHub del Lading Page**
+
+<img src="imgs/contribucion4.png"/>
+
+**Analisis de colaboracion y commits de GitHub del Frontend**
+
+<img src="imgs/contribucion5.png"/>
+<img src="imgs/contribucion6.png"/>
 
 #### 5.3.1.8. Kanban Board
 
