@@ -2062,21 +2062,132 @@ Los pendientes identificados durante la iteración, como recomendación de servi
 
 ## 5.1. Testing Suites & General Patterns
 
+Esta sección describe la estrategia de pruebas adoptada para el backend de GigU y los patrones generales que estructuran cada microservicio. La solución backend está compuesta por cuatro microservicios Spring Boot (`access-profile-service`, `gig-marketplace-service`, `pulls-service` y `chat-notification-service`) que comparten una misma estructura interna basada en Clean Architecture y un mismo conjunto de herramientas de prueba.
+
 ### 5.1.1. Backend Application Core Testing Suite
+
+El núcleo de pruebas del backend se apoya en el stack de testing de Spring Boot. Cada microservicio declara en su `pom.xml` las dependencias necesarias para pruebas unitarias y de integración, y aplica un umbral mínimo de cobertura mediante JaCoCo.
+
+| Tipo de prueba | Herramienta | Propósito |
+| --- | --- | --- |
+| Unit Testing | JUnit 5 + Mockito | Verificar reglas de negocio y servicios de aplicación de forma aislada. |
+| Application / Security Testing | spring-boot-starter-test + spring-security-test | Validar el comportamiento de la capa de aplicación y la seguridad basada en JWT. |
+| Integration Testing | Testcontainers (PostgreSQL) | Levantar una base de datos PostgreSQL real en contenedor para validar la persistencia y los flujos de extremo a extremo. |
+| Code Coverage | JaCoCo | Aplicar un umbral mínimo de 85% de cobertura de instrucciones, excluyendo modelos de dominio y DTOs. |
+
+**Estado actual de la suite:** `access-profile-service` cuenta con una prueba unitaria del servicio de aplicación (`AccessProfileApplicationServiceTest`) y una prueba de integración basada en Testcontainers (`AccessIntegrationTest`). Los microservicios `gig-marketplace-service`, `pulls-service` y `chat-notification-service` ya tienen la infraestructura de pruebas configurada (dependencias y JaCoCo), pero la implementación de sus casos de prueba queda pendiente para el siguiente Sprint. Los archivos `.feature` de BDD (Gherkin) para Integration/Acceptance Tests también quedan pendientes y se registran como deuda de testing en la sección 5.3.1.3.
 
 ### 5.1.2. Pattern Based Backend Application(s)
 
+Los cuatro microservicios siguen un mismo patrón arquitectónico de aplicación basado en Clean Architecture / Hexagonal Architecture (Ports & Adapters). La estructura interna de paquetes es consistente entre servicios, como se evidencia en `access-profile-service`:
+
+| Capa | Paquete | Responsabilidad | Patrones aplicados |
+| --- | --- | --- | --- |
+| Domain | `domain.model`, `domain.valueobject` | Entidades y value objects con reglas de negocio puras, sin dependencias de framework. | Domain Model, Value Object |
+| Application | `application.service`, `application.port.out`, `application.dto`, `application.exception` | Casos de uso, puertos de salida y comandos. Orquesta el dominio sin conocer detalles de infraestructura. | Use Case, Ports & Adapters, Command, jerarquía de excepciones de negocio |
+| Infrastructure | `infrastructure.persistence`, `infrastructure.security`, `infrastructure.storage`, `infrastructure.config` | Adaptadores concretos: repositorios JPA, proveedor JWT, almacenamiento Supabase, configuración de seguridad y OpenAPI. | Adapter, Repository, Data Mapper |
+| Interfaces | `interfaces.rest` | Controladores REST, DTOs de request y manejo centralizado de errores. | REST Controller, DTO, Exception Handler |
+
+Este patrón se replica en `gig-marketplace-service`, `pulls-service` y `chat-notification-service`, lo que garantiza que el dominio nunca dependa de frameworks o proveedores externos y que cada adaptador (PostgreSQL, JWT, Supabase Storage) pueda sustituirse sin afectar la lógica de negocio.
+
 ### 5.1.3. Pattern Based Custom Software Library
 
+Actualmente la solución no cuenta con una librería de software compartida extraída como artefacto independiente; cada microservicio es autónomo y empaqueta su propia copia de los componentes transversales. Sin embargo, se identifican patrones repetidos entre los cuatro servicios que son candidatos naturales a ser extraídos como librería común:
+
+| Componente transversal | Descripción | Servicios donde se repite |
+| --- | --- | --- |
+| Jerarquía de excepciones de negocio | `BusinessRuleViolationException`, `ResourceNotFoundException`, `DuplicatedResourceException`, `UnauthorizedActionException`, entre otras. | Los 4 microservicios |
+| `RestExceptionHandler` | Manejo centralizado y uniforme de errores HTTP. | Los 4 microservicios |
+| `OpenApiConfig` | Configuración estándar de documentación OpenAPI/Swagger. | Los 4 microservicios |
+| Seguridad JWT | `JwtAuthenticationFilter`, `JwtTokenProviderAdapter`, `SecurityConfig`. | Los 4 microservicios |
+
+La extracción de estos componentes a una librería `gigu-platform-commons` se registra como recomendación de refactoring para próximos Sprints (ver sección 5.1.4).
+
 ### 5.1.4. Framework Pattern Driven Refactoring Report
+
+Durante la implementación se realizaron varios refactorings orientados a consolidar patrones y estabilizar la solución. Los principales se resumen a continuación:
+
+| Refactoring | Motivación | Evidencia (commit) |
+| --- | --- | --- |
+| Eliminación de servicio de engagement duplicado | Existía un microservicio legacy duplicado; se consolidó en `pulls-service`. | `4af6f86` refactor(pulls): remove legacy engagement service duplicate |
+| Canonicalización de endpoints de autenticación | Se conservaron únicamente los endpoints canónicos de acceso, eliminando rutas redundantes. | `213a2ed` fix(access): keep only canonical auth endpoints |
+| Normalización de CORS | Se unificó la configuración CORS para servicios cloud autenticados. | `afa5097` fix(security): normalize CORS for authenticated cloud services |
+| Migración de plataforma de despliegue | Se migró el despliegue de los microservicios de Render a Google Cloud Run. | `d92410c` chore(cloud): migrate microservices deployment to Google Cloud Run |
+| Soporte de esquema HTTPS reenviado en Swagger | Se ajustó la configuración para respetar el esquema HTTPS detrás del proxy de Cloud Run. | `c6ba4eb` fix(cloud): honor forwarded https scheme in swagger |
+
+Refactoring pendiente recomendado: extracción de los componentes transversales descritos en 5.1.3 a una librería compartida `gigu-platform-commons`, e implementación de las suites de prueba faltantes en los tres microservicios que aún no las tienen.
 
 ## 5.2. Software Configuration Management
 
 ### 5.2.1. Software Development Environment Configuration
 
+En esta sección se especifican los productos de software que utilizan los miembros del equipo durante el ciclo de vida del producto digital, organizados por tipo de actividad. Para herramientas SaaS se indica la ruta de referencia; para productos que se ejecutan localmente se indica la ruta de descarga.
+
+| Actividad | Herramienta | Tipo | Ruta de referencia / descarga |
+| --- | --- | --- | --- |
+| Project Management | Trello | SaaS | https://trello.com |
+| Requirements Management | Trello + GitHub | SaaS | https://trello.com — https://github.com |
+| Product Design (UX/UI) | Figma | SaaS | https://www.figma.com |
+| Modelado UML / C4 | diagrams.net (draw.io) | SaaS | https://app.diagrams.net |
+| Software Development (Backend) | IntelliJ IDEA Community | Descarga local | https://www.jetbrains.com/idea/download |
+| Software Development (Frontend) | Visual Studio Code | Descarga local | https://code.visualstudio.com/download |
+| Plataforma Backend | JDK 21 + Apache Maven | Descarga local | https://adoptium.net — https://maven.apache.org/download.cgi |
+| Plataforma Frontend | Node.js + npm | Descarga local | https://nodejs.org/en/download |
+| Control de versiones | Git | Descarga local | https://git-scm.com/downloads |
+| Software Testing | JUnit 5, Mockito, Testcontainers | Dependencias Maven | Gestionadas vía `pom.xml` |
+| Software Testing (API manual) | Postman | Descarga local | https://www.postman.com/downloads |
+| Software Deployment (Backend) | Google Cloud SDK (`gcloud` CLI) | Descarga local | https://cloud.google.com/sdk/docs/install |
+| Software Deployment (CI) | GitHub Actions | SaaS | https://github.com/features/actions |
+| Software Deployment (Frontend) | Vercel | SaaS | https://vercel.com |
+| Software Documentation (API) | springdoc-openapi / Swagger UI | Dependencia Maven | https://springdoc.org |
+| Software Documentation (Informe) | GitHub (Markdown) | SaaS | https://github.com |
+
 ### 5.2.2. Source Code Management
 
+El equipo utiliza **GitHub** como plataforma y sistema de control de versiones. La solución se organiza en repositorios independientes por producto digital:
+
+| Producto digital | Repositorio |
+| --- | --- |
+| Web Services (backend de microservicios) | https://github.com/1ASI0657-2610-7940-Final-Project/backend-microservices |
+| Frontend Web App | https://github.com/1ASI0657-2610-7940-Final-Project/frontend |
+| Landing Page | https://github.com/1ASI0657-2610-7940-Final-Project/landing-page |
+| Documentación del proyecto | https://github.com/1ASI0657-2610-7940-Final-Project/docs |
+
+En el caso de Web Services, el repositorio `backend-microservices` incluye tanto el proyecto de los cuatro microservicios como sus archivos de pruebas. Las pruebas unitarias e integración se ubican en `services/<microservicio>/src/test/java`; los archivos `.feature` de BDD se incorporarán en `services/<microservicio>/src/test/resources` (pendiente, ver 5.3.1.3).
+
+**Workflow de control de versiones — GitFlow.** El equipo adopta el modelo *GitFlow* descrito por Vincent Driessen. Las ramas que se mantienen son:
+
+| Rama | Propósito | Convención de nombre |
+| --- | --- | --- |
+| `main` | Rama principal; contiene el código estable y desplegable. | `main` |
+| `develop` | Rama de integración donde convergen las features completadas. | `develop` |
+| Feature branches | Una rama por funcionalidad o por microservicio en desarrollo. | `feature/<descripcion-en-kebab-case>` (ej. `feature/access-profile-service`, `feature/gig-marketplace-service`, `feature/main-app-logic`) |
+| Release branches | Preparación de una versión para publicación. | `release/<version-semver>` (ej. `release/1.0.0`) |
+| Hotfix branches | Corrección urgente sobre producción. | `hotfix/<version-semver>` (ej. `hotfix/1.0.1`) |
+
+Durante el Sprint 1, el repositorio backend trabajó con feature branches por microservicio (`feature/access-profile-service`, `feature/chat-notification-service`, `feature/gig-marketplace-service`, `feature/pull-engagement-service`) que se integraron en `feature/main-app-logic`, rama desde la cual se ejecutan los despliegues a Google Cloud Run.
+
+**Semantic Versioning.** Los releases se nombran siguiendo *Semantic Versioning 2.0.0* con el formato `MAJOR.MINOR.PATCH` (ej. `1.0.0`): se incrementa `MAJOR` ante cambios incompatibles de API, `MINOR` ante funcionalidad nueva retrocompatible y `PATCH` ante correcciones retrocompatibles.
+
+**Conventional Commits.** Los mensajes de commit siguen la especificación *Conventional Commits*, con el formato `<tipo>(<alcance>): <descripción>`. Los tipos utilizados por el equipo son `feat`, `fix`, `chore`, `docs`, `ci`, `refactor` y `merge`. Ejemplos reales del repositorio backend:
+
+- `feat(access): add access profile service`
+- `feat(marketplace): add gig marketplace service`
+- `fix(security): normalize CORS for authenticated cloud services`
+- `ci(cloud): add manual deploy workflows per microservice`
+- `refactor(pulls): remove legacy engagement service duplicate`
+
 ### 5.2.3. Source Code Style Guide & Conventions
+
+El equipo adopta las siguientes referencias de estilo y convenciones de codificación. Para todos los lenguajes se aplica nomenclatura en inglés.
+
+| Lenguaje / artefacto | Referencia de estilo | Convenciones principales |
+| --- | --- | --- |
+| Java (microservicios backend) | Google Java Style Guide | Clases en `PascalCase`, métodos y variables en `camelCase`, constantes en `UPPER_SNAKE_CASE`, paquetes en minúsculas. Organización por capas de Clean Architecture (`domain`, `application`, `infrastructure`, `interfaces`). |
+| TypeScript / Vue (frontend y landing) | Google TypeScript Style Guide | Variables y funciones en `camelCase`, clases y componentes en `PascalCase`, archivos de componentes Vue en `PascalCase.vue`, indentación de 2 espacios, comillas simples. |
+| Gherkin (archivos `.feature`) | Gherkin Conventions for Readable Specifications | Un `Feature` por archivo, escenarios declarativos en tercera persona, pasos `Given/When/Then` concisos y reutilizables, uso de `Scenario Outline` con `Examples` para casos parametrizados. |
+| Endpoints REST | API First / OpenAPI 3.0 | Rutas en minúsculas y plural (`/api/v1/marketplace/services`), versionado por path (`/api/v1`), verbos HTTP semánticos (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`). |
+| Commits y ramas | Conventional Commits + GitFlow | Ver convenciones de la sección 5.2.2. |
 
 ### 5.2.4. Software Deployment Configuration
 
@@ -2135,19 +2246,299 @@ Los secrets requeridos para despliegue desde GitHub Actions son:
 
 #### 5.3.1.1. Sprint Backlog 1
 
+El objetivo principal del Sprint 1 fue **implementar y desplegar el backbone funcional de la solución GigU**: los cuatro microservicios REST del backend (AccessProfileService, GigMarketplaceService, PullEngagementService y ChatNotificationService), la aplicación frontend y la landing page, junto con su configuración de despliegue en la nube (Google Cloud Run y Vercel).
+
+Siguiendo el enfoque Attribute-Driven Design, el **tablero Kanban del ADD** se desarrolla durante este Sprint: el proyecto de Jira `GigU Architecture Design` contiene los work-items resultantes de las iteraciones ADD del Capítulo IV —Primary User Stories (PUS), drivers de calidad (QA), restricciones (CON), concerns (CRN), Architecture Decision Records (ADR), Sketch Views y definición de contratos y esquemas—, agrupados bajo el Epic de producto al que afectan. Las 54 tarjetas (GIGU-8 a GIGU-61) constituyen el Sprint Backlog 1 y se ejecutan, prueban y despliegan en este Sprint.
+
+> **Nota:** Las estimaciones y asignaciones deben validarse contra el tablero real del equipo. El estado de cada tarjeta refleja lo efectivamente implementado y desplegado, evidenciado por los endpoints publicados en Swagger y los commits del repositorio.
+
+**Board del Sprint 1 (Jira — `GigU Architecture Design`):** https://miguelybaneze.atlassian.net/jira/software/projects/GIGU/boards/595
+
+El backlog del Sprint 1 en Jira, filtrado por estado al cierre del Sprint:
+
+_Tareas por hacer (To-do) — 4 actividades:_
+
+<img src="imgs/sprint1/sprint1-backlog-todo.png" alt="Sprint Backlog 1 - Tareas por hacer" title="Sprint Backlog 1 - To-do"/>
+
+_Tareas en curso (In-Process) — 5 actividades:_
+
+<img src="imgs/sprint1/sprint1-backlog-inprogress.png" alt="Sprint Backlog 1 - En curso" title="Sprint Backlog 1 - In-Process"/>
+
+_Tareas finalizadas (Done) — 45 actividades:_
+
+<img src="imgs/sprint1/sprint1-backlog-done-1.png" alt="Sprint Backlog 1 - Finalizadas (parte 1)" title="Sprint Backlog 1 - Done"/>
+
+<img src="imgs/sprint1/sprint1-backlog-done-2.png" alt="Sprint Backlog 1 - Finalizadas (parte 2)" title="Sprint Backlog 1 - Done"/>
+
+<img src="imgs/sprint1/sprint1-backlog-done-3.png" alt="Sprint Backlog 1 - Finalizadas (parte 3)" title="Sprint Backlog 1 - Done"/>
+
+| Sprint # | Sprint 1 | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **User Story / Epic** | | **Work-Item / Task** | | | | | |
+| **Id** | **Title** | **Id** | **Title** | **Description** | **Estimation (h)** | **Assigned To** | **Status** |
+| EP07 | Reputación y Reseñas Públicas | GIGU-8 | PUS-10: Cliente registra calificación al finalizar el proyecto | Endpoints de reseñas del proyecto (`GET`/`POST /projects/{id}/reviews`). | 5 | Oblitas Davila, Mariano | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-9 | PUS-06: Cliente envía solicitud de contratación | `POST /api/v1/engagement/requests`. | 6 | Oblitas Davila, Mariano | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-10 | PUS-07: Negociación y acuerdo cliente-freelancer | `PATCH /requests/{id}/decision` y creación del proyecto. | 5 | Oblitas Davila, Mariano | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-11 | QA-01: Seguridad y ownership en operaciones de contratación | Validación JWT + ownership en los endpoints de escritura. | 3 | Mio Mejia, Andy | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-12 | CON-02/03: Spring Boot + Clean Architecture (PullEngagementService) | Estructura del microservicio en cuatro capas. | 6 | Oblitas Davila, Mariano | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-13 | CON-09: Spring Security + JWT con validación de ownership | Filtro JWT y configuración de seguridad. | 4 | Ybañez Esquerre, Miguel | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-14 | CRN-03: Consistencia entre microservicios sin joins (IDs externos) | Referencias por ID externo, sin joins cross-schema. | 2 | Mio Mejia, Andy | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-15 | ADR-001: Adoptar Clean Architecture en cuatro capas | Decisión arquitectónica documentada y aplicada. | 2 | Oblitas Davila, Mariano | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-16 | ADR-003: Validación de ownership en el caso de uso | Ownership validado en el application service, no en el controller. | 2 | Ybañez Esquerre, Miguel | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-17 | ADR-005: Acceso a perfil y servicio vía REST (no DB compartida) | Comunicación REST entre microservicios. | 2 | Mio Mejia, Andy | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-18 | Sketch View: Component View C4 de PullEngagementService | Diagrama C4 nivel 3 (sección 4.3.1.6). | 3 | Ybañez Esquerre, Miguel | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-19 | Sketch View: Sequence Diagram aceptación de solicitud (PUS-07) | Diagrama de secuencia (sección 4.3.1.6). | 3 | Ybañez Esquerre, Miguel | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-20 | Definir contratos REST `/api/v1/engagement/*` (OpenAPI) | Contratos OpenAPI del microservicio. | 3 | Mio Mejia, Andy | Done |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-21 | PUS-08: Gestión del estado del proyecto (ciclo de vida) | `PATCH /projects/{id}/status` y `GET /projects`. | 5 | Oblitas Davila, Mariano | Done |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-22 | QA-03: Testabilidad del ciclo de vida del proyecto | Pruebas unitarias del ciclo de vida; aún pendiente en pulls-service. | 3 | Ybañez Esquerre, Miguel | In-Process |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-23 | QA-05: Disponibilidad ante fallas de notificación | El fallo de notificación no bloquea la operación principal; depende de la mensajería asíncrona. | 3 | Mio Mejia, Andy | In-Process |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-24 | CON-10: Eventos publicados en RabbitMQ | Publicación de eventos de dominio; reemplazado por Google Cloud Pub/Sub, no implementado. | 5 | Oblitas Davila, Mariano | To-do |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-25 | CRN-08: Testabilidad de reglas de negocio sin levantar todo el sistema | Tests aislados de reglas de negocio; parcialmente cubierto. | 3 | Ybañez Esquerre, Miguel | In-Process |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-26 | ADR-004: Outbox Pattern para eventos de dominio (`ProjectStatusChanged`) | Patrón Outbox; pendiente de implementación. | 4 | Oblitas Davila, Mariano | To-do |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-27 | ADR-006: CQRS Lite (separar comandos y queries en casos relevantes) | Decisión documentada y aplicada en los DTOs de comando/consulta. | 2 | Mio Mejia, Andy | Done |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-28 | Sketch View: State Diagram del agregado Project | Diagrama de estados (sección 4.3.1.6). | 3 | Mio Mejia, Andy | Done |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-29 | Sketch View: Domain Class Diagram del bounded context Engagement | Diagrama de clases de dominio (sección 4.3.1.6). | 3 | Ybañez Esquerre, Miguel | Done |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-30 | Definir esquema `engagement_schema` (project_requests, agreements, projects, ...) | Modelo de datos del bounded context. | 3 | Oblitas Davila, Mariano | Done |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-31 | Análisis de cumplimiento de drivers — cierre Iteración 1 | Revisión de drivers de la iteración (sección 4.3.1.7). | 2 | Oblitas Davila, Mariano | Done |
+| EP10 | Sugerencia de Precio Asistida | GIGU-32 | PUS-12: Sugerencia de precio basada en complejidad/tiempo/categoría | `POST /engagement/price-suggestions`. | 6 | Oblitas Davila, Mariano | Done |
+| EP10 | Sugerencia de Precio Asistida | GIGU-33 | QA-02: Modificabilidad — agregar reglas de pricing sin tocar otros servicios | Aislamiento de las reglas de pricing. | 3 | Ybañez Esquerre, Miguel | Done |
+| EP10 | Sugerencia de Precio Asistida | GIGU-34 | ADR-002: Strategy Pattern para `PriceSuggestionPolicy` y `ProjectStatusPolicy` | Patrón Strategy aplicado. | 3 | Mio Mejia, Andy | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-35 | PUS-04: Publicación de servicios con descripción, categoría, tarifa y plazo | `POST /marketplace/services`. | 6 | Mio Mejia, Andy | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-36 | QA-01: Seguridad y ownership en endpoints de escritura del catálogo | JWT + ownership en `POST`/`PATCH`/`DELETE`. | 3 | Oblitas Davila, Mariano | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-37 | CON-02/03: Spring Boot + Clean Architecture (GigMarketplaceService) | Estructura del microservicio en cuatro capas. | 6 | Oblitas Davila, Mariano | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-38 | CON-07: Persistencia en `marketplace_schema` (Supabase PostgreSQL) | Persistencia JPA del catálogo. | 3 | Mio Mejia, Andy | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-39 | CON-08: Media en Supabase Storage (referencia en DB) | `POST /services/{id}/media`. | 4 | Mio Mejia, Andy | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-40 | CON-11: API documentada con OpenAPI/Swagger | Swagger UI desplegado. | 2 | Ybañez Esquerre, Miguel | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-41 | CRN-11: Encapsular Supabase Storage como adaptador | Adaptador de storage sin contaminar el dominio. | 3 | Oblitas Davila, Mariano | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-42 | ADR-008: Separación `ServiceCardDTO` (listado) / `ServiceDetailDTO` (detalle) | DTOs diferenciados para listado y detalle. | 2 | Ybañez Esquerre, Miguel | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-43 | ADR-010: Soft delete (`unpublished_at`) en servicios | Baja lógica de servicios. | 2 | Mio Mejia, Andy | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-44 | ADR-011: `GET` públicos / `POST`-`PATCH`-`DELETE` protegidos por JWT + ownership | Política de acceso del catálogo. | 2 | Oblitas Davila, Mariano | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-45 | ADR-012: Encapsular Supabase Storage como adaptador (`MediaStoragePort`) | Puerto de almacenamiento de media. | 2 | Ybañez Esquerre, Miguel | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-46 | Sketch View: Component View C4 de GigMarketplaceService | Diagrama C4 nivel 3 (sección 4.3.2.6). | 3 | Ybañez Esquerre, Miguel | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-47 | Sketch View: Domain Class Diagram del bounded context Marketplace | Diagrama de clases de dominio (sección 4.3.2.6). | 3 | Ybañez Esquerre, Miguel | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-48 | Definir contratos REST `/api/v1/marketplace/*` (OpenAPI) | Contratos OpenAPI del microservicio. | 3 | Mio Mejia, Andy | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-49 | Definir esquema `marketplace_schema` + índices (categoría, precio, rating) | Modelo de datos e índices del catálogo. | 3 | Oblitas Davila, Mariano | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-50 | Configurar bucket `service-media` en Supabase Storage | Bucket de almacenamiento de media. | 2 | Mio Mejia, Andy | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-51 | Análisis de cumplimiento de drivers — cierre Iteración 2 | Revisión de drivers de la iteración (sección 4.3.2.7). | 2 | Oblitas Davila, Mariano | Done |
+| EP06 | Descubrimiento del Catálogo | GIGU-52 | PUS-05: Búsqueda y filtrado de servicios (categoría, precio, rating) | `GET /marketplace/services` con filtros y `GET /categories`. | 5 | Mio Mejia, Andy | Done |
+| EP06 | Descubrimiento del Catálogo | GIGU-53 | QA-02: Modificabilidad de categorías y atributos del catálogo | Atributos del catálogo extensibles. | 2 | Oblitas Davila, Mariano | Done |
+| EP06 | Descubrimiento del Catálogo | GIGU-54 | QA-04: Interoperabilidad con frontend (REST + OpenAPI + DTOs estables) | El frontend desplegado consume la API. | 3 | Ybañez Esquerre, Miguel | Done |
+| EP06 | Descubrimiento del Catálogo | GIGU-55 | QA-06: Performance de búsquedas paginadas | Paginación implementada; performance aún no medida. | 3 | Mio Mejia, Andy | In-Process |
+| EP06 | Descubrimiento del Catálogo | GIGU-56 | CRN-12: Performance al crecer el catálogo | Índices definidos; validación de performance pendiente. | 3 | Ybañez Esquerre, Miguel | In-Process |
+| EP06 | Descubrimiento del Catálogo | GIGU-57 | CRN-03: Reputación por evento (no por joins cross-schema) | Proyección de reputación por evento; depende de la mensajería asíncrona. | 4 | Oblitas Davila, Mariano | To-do |
+| EP06 | Descubrimiento del Catálogo | GIGU-58 | ADR-007: Specification Pattern para componer filtros de búsqueda | Patrón Specification aplicado en los filtros. | 3 | Mio Mejia, Andy | Done |
+| EP06 | Descubrimiento del Catálogo | GIGU-59 | ADR-009: Read model materializado `freelancer_reputation` (proyección de eventos) | Read model materializado; pendiente de implementación. | 4 | Oblitas Davila, Mariano | To-do |
+| EP06 | Descubrimiento del Catálogo | GIGU-60 | Sketch View: Sequence Diagram búsqueda paginada con filtros (PUS-05) | Diagrama de secuencia (sección 4.3.2.6). | 3 | Ybañez Esquerre, Miguel | Done |
+| EP06 | Descubrimiento del Catálogo | GIGU-61 | Sketch View: Sequence Diagram proyección de reputación por `ReviewCreated` | Diagrama de secuencia (sección 4.3.2.6). | 3 | Ybañez Esquerre, Miguel | Done |
+
+**Tareas adicionales del Sprint** (no asociadas a una tarjeta del tablero ADD; corresponden a microservicios de soporte y constraints generales que también se implementaron y desplegaron en este Sprint):
+
+| Id | Title | Description | Estimation (h) | Assigned To | Status |
+| --- | --- | --- | --- | --- | --- |
+| T-A1 | AccessProfileService — acceso y perfil freelance | Microservicio de acceso: `sign-up`, `login`, `me`, perfiles freelance y portafolio. | 10 | Oblitas Davila, Mariano | Done |
+| T-A2 | ChatNotificationService — chat y notificaciones | Microservicio de chat: conversaciones, mensajes, notificaciones, tickets y reportes. | 10 | Oblitas Davila, Mariano | Done |
+| T-A3 | Integración frontend (Vue 3 + Vite) | Shell de la app y flujos de acceso, marketplace, engagement y chat. | 12 | Ybañez Esquerre, Miguel | Done |
+| T-A4 | Landing page | Maquetación y publicación de la landing page. | 6 | Mio Mejia, Andy | Done |
+| T-A5 | Despliegue backend en Google Cloud Run | Workflows de GitHub Actions y scripts `gcloud` para los cuatro microservicios. | 5 | Ybañez Esquerre, Miguel | Done |
+| T-A6 | Despliegue frontend y landing en Vercel | Configuración de los proyectos en Vercel y routing de Vercel Rewrites hacia Cloud Run. | 3 | Mio Mejia, Andy | Done |
+
+> **Recomendación:** Estas tareas adicionales (AccessProfileService y ChatNotificationService) se implementaron y desplegaron pero aún no tienen tarjeta en el tablero `GigU Architecture Design`. Se recomienda crear las tarjetas correspondientes en Jira para que el tablero coincida con lo efectivamente entregado.
+
 #### 5.3.1.2. Development Evidence for Sprint Review
+
+Durante el Sprint 1 se implementó la totalidad del backbone de la solución. En el repositorio `backend-microservices` se desarrollaron los cuatro microservicios Spring Boot con arquitectura Clean Architecture, se estandarizó la configuración de errores, Swagger y CI, y se migró el despliegue a Google Cloud Run. En el repositorio `frontend` se construyó la aplicación Vue 3 + Vite con sus vistas de acceso, marketplace, engagement y chat. En el repositorio `landing-page` se publicó la landing page del producto.
+
+| Repository | Branch | Commit Id | Commit Message | Commit Message Body | Committed on |
+| --- | --- | --- | --- | --- | --- |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/access-profile-service | dce079e | feat(access): add access profile service | Implementación inicial del microservicio de acceso y perfiles. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/gig-marketplace-service | b1c902c | feat(marketplace): add gig marketplace service | Implementación inicial del microservicio de marketplace. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/pull-engagement-service | 9ceba60 | feat(engagement): add pull engagement service | Implementación inicial del microservicio de contratación y proyectos. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/chat-notification-service | 4640c70 | feat(chat): add chat notification service | Implementación inicial del microservicio de chat y notificaciones. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/access-profile-service | c630518 | feat(access): stabilize profile service authentication | Estabilización de la autenticación JWT y flujo de perfil. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/gig-marketplace-service | 25c5f4f | feat(marketplace): stabilize gig service workflow | Estabilización del flujo de publicación y búsqueda de servicios. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/pull-engagement-service | 452877a | feat(pulls): stabilize request and project workflow | Estabilización del flujo de solicitudes y proyectos. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/chat-notification-service | c9bb7bc | feat(chat): stabilize notifications and messaging | Estabilización de mensajería y notificaciones. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 8e60ed4 | chore(platform): standardize errors swagger and ci | Estandarización transversal de manejo de errores, Swagger y CI. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 213a2ed | fix(access): keep only canonical auth endpoints | Canonicalización de los endpoints de autenticación. | 12/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | d92410c | chore(cloud): migrate microservices deployment to Google Cloud Run | Migración del despliegue de Render a Google Cloud Run. | 11/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 1467a77 | ci(cloud): add manual deploy workflows per microservice | Workflows de despliegue manual por microservicio. | 13/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | b572372 | chore(frontend): add project baseline | Base del proyecto frontend Vue 3 + Vite. | 12/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | ad2f8ec | feat(ui): add application shell and shared components | Shell de la aplicación y componentes compartidos. | 12/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | 6d2e663 | feat(access): add authentication views and state | Vistas de autenticación y manejo de estado. | 12/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | 27e5b7c | feat(marketplace): add gig marketplace flow | Flujo de marketplace en el frontend. | 12/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | 46a3f30 | feat(engagement): add pulls engagement flow | Flujo de contratación y proyectos en el frontend. | 12/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | 8f95416 | feat(chat): add chat and notification flow | Flujo de chat y notificaciones en el frontend. | 12/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/landing-page | main | dfaf8e8 | chore: main landing web | Implementación de la landing page. | 12/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/landing-page | main | e17bfb9 | chore: clean project and prepare vercel deployment | Limpieza y preparación del despliegue en Vercel. | 12/05/2026 |
 
 #### 5.3.1.3. Testing Suite Evidence for Sprint Review
 
+Durante el Sprint 1 se estableció la infraestructura de pruebas en los cuatro microservicios (dependencias `spring-boot-starter-test`, `spring-security-test`, `mockito-core`, `testcontainers` y verificación de cobertura con JaCoCo al 85%). Se implementaron los primeros casos de prueba en el microservicio `access-profile-service`:
+
+| Archivo de prueba | Tipo | Descripción | User Stories relacionados |
+| --- | --- | --- | --- |
+| `AccessProfileApplicationServiceTest` | Unit Test (JUnit 5 + Mockito) | Verifica las reglas de negocio del servicio de aplicación de acceso y perfiles (registro, login, actualización de perfil). | US03, US04, US15, US16 |
+| `AccessIntegrationTest` | Integration Test (Testcontainers + PostgreSQL) | Levanta una base PostgreSQL en contenedor y valida los flujos de registro, autenticación y perfil de extremo a extremo. | US03, US04, US19 |
+
+| Repository | Branch | Commit Id | Commit Message | Commit Message Body | Committed on |
+| --- | --- | --- | --- | --- | --- |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/access-profile-service | c630518 | feat(access): stabilize profile service authentication | Incluye las pruebas unitaria e integración del servicio de acceso. | 10/05/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 8e60ed4 | chore(platform): standardize errors swagger and ci | Estandariza la configuración de testing y CI entre microservicios. | 10/05/2026 |
+
+> **Deuda de testing (pendiente para Sprint 2):** Implementar los archivos `.feature` de BDD en Gherkin para Integration/Acceptance Tests, y completar las suites de prueba de `gig-marketplace-service`, `pulls-service` y `chat-notification-service`. Los archivos `.feature` se ubicarán en `services/<microservicio>/src/test/resources` y se registrarán con commits de tipo `test:`.
+
 #### 5.3.1.4. Execution Evidence for Sprint Review
+
+En el Sprint 1 se logró desplegar y poner en funcionamiento la solución completa de extremo a extremo: la landing page y la aplicación frontend en Vercel consumen los cuatro microservicios desplegados en Google Cloud Run a través de Vercel Rewrites. A continuación se muestra evidencia de la solución en ejecución.
+
+**Landing page en producción** (`https://landing-page-nine-beryl-19.vercel.app/`):
+
+<img src="imgs/sprint1/landing-page-home.png" alt="Landing page de GigU en producción" title="Landing page GigU"/>
+
+**Aplicación frontend en producción — registro de cuenta** (`https://gigu-ivory.vercel.app/`):
+
+<img src="imgs/sprint1/frontend-register-view.png" alt="Vista de registro de la aplicación frontend de GigU" title="Frontend GigU - Registro"/>
+
+> **Pendiente:** Incluir los screenshots de las operaciones principales interactuando con los Web Services vía **Postman**, y el enlace al **video** que ilustre y explique la funcionalidad de los servicios logrados en este Sprint.
 
 #### 5.3.1.5. Microservices Documentation Evidence for Sprint Review
 
+Durante el Sprint 1 se documentaron con OpenAPI 3.0 (springdoc) los endpoints de los cuatro microservicios. Cada microservicio expone su documentación interactiva mediante Swagger UI en la ruta `/swagger-ui/index.html` de su despliegue en Google Cloud Run.
+
+**AccessProfileService** — `https://gigu-access-profile-service-149855215912.us-central1.run.app/swagger-ui/index.html`
+
+| Endpoint | Verbo HTTP | Acción |
+| --- | --- | --- |
+| `/api/v1/access/sign-up` | POST | Registrar un nuevo usuario (correo y contraseña) y emitir JWT. |
+| `/api/v1/access/login` | POST | Autenticar credenciales y devolver el token de acceso. |
+| `/api/v1/access/me` | GET | Obtener el perfil del usuario autenticado. |
+| `/api/v1/access/freelancer-profiles/me` | PATCH | Actualizar habilidades, descripción y datos del perfil freelance propio. |
+| `/api/v1/access/freelancer-profiles/{userId}` | GET | Consultar el perfil freelance público de un usuario. |
+| `/api/v1/access/freelancer-profiles/me/portfolio-items` | POST | Añadir un ítem al portafolio del freelancer. |
+| `/api/v1/access/freelancer-profiles/me/portfolio-items/{itemId}` | DELETE | Eliminar un ítem del portafolio del freelancer. |
+
+Ejemplo de uso — `POST /api/v1/access/login`:
+```json
+// Request body
+{ "email": "lucia.vargas@gigu.test", "password": "Passw0rd!" }
+// Response 200 OK
+{ "token": "eyJhbGciOiJIUzI1NiJ9...", "userId": "a1b2c3", "role": "FREELANCER" }
+```
+El response devuelve el JWT que debe enviarse en la cabecera `Authorization: Bearer <token>` para los endpoints protegidos.
+
+<img src="imgs/sprint1/access-profile-api.png" alt="Swagger UI de AccessProfileService" title="AccessProfileService API"/>
+
+**GigMarketplaceService** — `https://gigu-gig-marketplace-service-149855215912.us-central1.run.app/swagger-ui/index.html`
+
+| Endpoint | Verbo HTTP | Acción |
+| --- | --- | --- |
+| `/api/v1/marketplace/services` | GET | Listar/buscar servicios publicados (búsqueda paginada con filtros). |
+| `/api/v1/marketplace/services` | POST | Publicar un nuevo servicio. |
+| `/api/v1/marketplace/services/{id}` | GET | Obtener el detalle de un servicio. |
+| `/api/v1/marketplace/services/{id}` | PATCH | Editar un servicio propio. |
+| `/api/v1/marketplace/services/{id}` | DELETE | Eliminar o pausar un servicio propio. |
+| `/api/v1/marketplace/services/mine` | GET | Listar los servicios del usuario autenticado. |
+| `/api/v1/marketplace/services/{id}/media` | POST | Adjuntar imágenes o archivos a un servicio. |
+| `/api/v1/marketplace/services/{id}/media/{mediaId}` | DELETE | Eliminar un archivo multimedia de un servicio. |
+| `/api/v1/marketplace/categories` | GET | Listar las categorías de servicios disponibles. |
+
+Ejemplo de uso — `GET /api/v1/marketplace/services?keyword=figma&page=0&size=10`: devuelve una página de servicios cuyo título o descripción coincide con la palabra clave, con metadatos de paginación (`totalElements`, `totalPages`).
+
+<img src="imgs/sprint1/gig-marketplace-api.png" alt="Swagger UI de GigMarketplaceService" title="GigMarketplaceService API"/>
+
+**PullEngagementService** — `https://gigu-pulls-service-149855215912.us-central1.run.app/swagger-ui/index.html`
+
+| Endpoint | Verbo HTTP | Acción |
+| --- | --- | --- |
+| `/api/v1/engagement/requests` | POST | Crear una solicitud de contratación desde el perfil de un freelancer. |
+| `/api/v1/engagement/requests/incoming` | GET | Listar las solicitudes de contratación recibidas. |
+| `/api/v1/engagement/requests/outgoing` | GET | Listar las solicitudes de contratación enviadas. |
+| `/api/v1/engagement/requests/{id}/decision` | PATCH | Aceptar o rechazar una solicitud de contratación. |
+| `/api/v1/engagement/projects` | GET | Listar los proyectos activos del usuario. |
+| `/api/v1/engagement/projects/{id}/status` | PATCH | Actualizar el estado del proyecto (seguimiento / finalización). |
+| `/api/v1/engagement/projects/{id}/reviews` | GET | Consultar las reseñas de un proyecto. |
+| `/api/v1/engagement/projects/{id}/reviews` | POST | Calificar al freelancer o al cliente al finalizar el proyecto. |
+| `/api/v1/engagement/price-suggestions` | POST | Obtener una sugerencia de precio inteligente para un servicio. |
+
+Ejemplo de uso — `PATCH /api/v1/engagement/requests/{id}/decision` con body `{ "decision": "ACCEPTED" }`: al aceptar una solicitud se crea el proyecto asociado y se devuelve su identificador y estado inicial.
+
+<img src="imgs/sprint1/pulls-service-api.png" alt="Swagger UI de PullEngagementService" title="PullEngagementService API"/>
+
+**ChatNotificationService** — `https://gigu-chat-notification-service-149855215912.us-central1.run.app/swagger-ui/index.html`
+
+| Endpoint | Verbo HTTP | Acción |
+| --- | --- | --- |
+| `/api/v1/chat/conversations` | GET | Listar las conversaciones del usuario autenticado. |
+| `/api/v1/chat/conversations` | POST | Crear una nueva conversación con otro usuario. |
+| `/api/v1/chat/conversations/{id}/messages` | GET | Obtener los mensajes de una conversación. |
+| `/api/v1/chat/conversations/{id}/messages` | POST | Enviar un mensaje dentro de una conversación. |
+| `/api/v1/chat/notifications/{id}/read` | PATCH | Marcar una notificación como leída. |
+| `/api/v1/chat/notifications/read-all` | PATCH | Marcar todas las notificaciones como leídas. |
+| `/api/v1/chat/support-tickets` | POST | Crear un ticket de soporte. |
+| `/api/v1/chat/reports` | POST | Reportar a un usuario desde el chat. |
+| `/api/v1/chat/internal/notifications` | POST | Endpoint interno para que otros microservicios generen notificaciones. |
+
+Ejemplo de uso — `POST /api/v1/chat/conversations/{id}/messages` con body `{ "content": "Hola, ¿sigues disponible?" }`: registra el mensaje y genera una notificación para el destinatario.
+
+<img src="imgs/sprint1/chat-notification-api.png" alt="Swagger UI de ChatNotificationService" title="ChatNotificationService API"/>
+
+Repositorio de Web Services: `https://github.com/1ASI0657-2610-7940-Final-Project/backend-microservices`. Commits relacionados con documentación: `8e60ed4` (chore(platform): standardize errors swagger and ci) y `c6ba4eb` (fix(cloud): honor forwarded https scheme in swagger).
+
 #### 5.3.1.6. Software Deployment Evidence for Sprint Review
+
+Durante el Sprint 1 el equipo configuró y ejecutó el despliegue completo de la solución. Para el backend se creó el proyecto en Google Cloud, se configuró la cuenta de servicio y los secrets, se crearon los workflows de GitHub Actions de despliegue manual por microservicio y los scripts `gcloud` de soporte local, y se desplegaron los cuatro microservicios en Cloud Run (región `us-central1`). Para el frontend y la landing page se configuraron dos proyectos en Vercel con Vercel Rewrites apuntando a los microservicios de Cloud Run.
+
+**Microservicios desplegados en Google Cloud Run:**
+
+<img src="imgs/sprint1/cloudrun-services-list.png" alt="Listado de servicios en Google Cloud Run" title="Servicios en Cloud Run"/>
+
+<img src="imgs/sprint1/access-profile-service-cloudrun.png" alt="Detalle de AccessProfileService en Cloud Run" title="AccessProfileService en Cloud Run"/>
+
+<img src="imgs/sprint1/gig-marketplace-service-cloudrun.png" alt="Detalle de GigMarketplaceService en Cloud Run" title="GigMarketplaceService en Cloud Run"/>
+
+<img src="imgs/sprint1/pulls-service-cloudrun.png" alt="Detalle de PullEngagementService en Cloud Run" title="PullEngagementService en Cloud Run"/>
+
+<img src="imgs/sprint1/chat-notification-service-cloudrun.png" alt="Detalle de ChatNotificationService en Cloud Run" title="ChatNotificationService en Cloud Run"/>
+
+**Frontend y landing page desplegados en Vercel:**
+
+<img src="imgs/sprint1/vercel-projects-overview.png" alt="Proyectos de GigU en Vercel" title="Proyectos en Vercel"/>
+
+<img src="imgs/sprint1/vercel-frontend-deployment.png" alt="Despliegue de producción del frontend en Vercel" title="Despliegue del frontend en Vercel"/>
+
+<img src="imgs/sprint1/vercel-landing-deployment.png" alt="Despliegue de producción de la landing page en Vercel" title="Despliegue de la landing page en Vercel"/>
+
+Commits relacionados con despliegue: `d92410c` (migración a Cloud Run), `1467a77` (workflows de despliegue manual), `ffbae30` (scripts `gcloud`), `b394402` (documentación del despliegue manual), `ce24716` y `aae960d` (configuración de routing de Vercel hacia Cloud Run).
 
 #### 5.3.1.7. Team Collaboration Insights during Sprint
 
+El trabajo del Sprint 1 se distribuyó entre los tres integrantes del equipo, con participación de todos en la implementación de los productos. La implementación del backend de microservicios y la lógica de contratación, chat y perfiles se concentró en los repositorios `backend-microservices`; el frontend y la integración con los servicios cloud, junto con la configuración de despliegue; y la landing page del producto.
+
+| Integrante | Usuario GitHub | Principales aportes en el Sprint 1 |
+| --- | --- | --- |
+| Oblitas Davila, Mariano Moises | `Sigilo-dev` / `vr700` | Implementación de los cuatro microservicios backend, estandarización de errores/Swagger/CI, migración a Cloud Run y workflows de despliegue. |
+| Ybañez Esquerre, Miguel Angel | `Miguel080902` | Integración del frontend con los microservicios, configuración de routing de Vercel hacia Cloud Run y configuración de despliegue. |
+| Mio Mejia, Andy Alejandro | `AndyMio` | Implementación del shell de la aplicación frontend, vistas de dashboard y flujo de marketplace. |
+
+> **Nota:** La correspondencia entre integrantes y usuarios de GitHub debe confirmarse con el equipo. Las cuentas `Sigilo-dev` y `vr700` corresponden al mismo autor.
+
+**Pendiente:** Incluir los screenshots de los analíticos de colaboración y commits de GitHub (pestaña *Insights → Contributors*) de cada repositorio del Sprint 1.
+
 #### 5.3.1.8. Kanban Board
+
+El tablero Kanban del Sprint 1 se gestiona en Jira sobre el proyecto `GigU Architecture Design`, en la vista *Tablero*, con las columnas **Por Hacer**, **En Curso** y **Hecho**. Al cierre del Sprint, el avance de las 54 tarjetas (GIGU-8 a GIGU-61) es el siguiente:
+
+| Estado | Cantidad | Tarjetas |
+| --- | --- | --- |
+| Hecho (Done) | 45 | GIGU-8 a GIGU-21, GIGU-27 a GIGU-54, GIGU-58, GIGU-60, GIGU-61 |
+| En Curso (In-Process) | 5 | GIGU-22, GIGU-23, GIGU-25, GIGU-55, GIGU-56 |
+| Por Hacer (To-do) | 4 | GIGU-24, GIGU-26, GIGU-57, GIGU-59 |
+
+Las tarjetas en **En Curso** corresponden a testabilidad parcial (solo `access-profile-service` tiene pruebas implementadas) y a métricas de performance aún no medidas. Las tarjetas en **Por Hacer** corresponden a la mensajería asíncrona de eventos de dominio y a las proyecciones de reputación que dependen de ella; su implementación queda planificada para el Sprint 2.
+
+<img src="imgs/sprint1/sprint1-kanban-board.png" alt="Kanban Board del Sprint 1 en Jira" title="Kanban Board Sprint 1"/>
+
+URL del tablero: https://miguelybaneze.atlassian.net/jira/software/projects/GIGU/boards/595
 
 ### 5.3.2. Sprint 2
 
@@ -2283,6 +2674,22 @@ También puede utilizarse:
 
 # Conclusiones y recomendaciones
 
+**Resultados frente a los Problem Statements.** El problema central identificado fue la ausencia de plataformas efectivas y especializadas que conecten a estudiantes universitarios peruanos con oportunidades laborales formales, flexibles y alineadas a sus carreras. Al cierre de este avance, GigU cuenta con el backbone funcional que ataca directamente ese problema: cuatro microservicios REST desplegados en producción que soportan los procesos core del negocio —acceso y perfiles freelance verificables, publicación y búsqueda de servicios, contratación y gestión de proyectos, y mensajería con notificaciones—, además de procesos de soporte como tickets de ayuda, reportes de usuarios y sugerencia inteligente de precios. La solución ya es accesible públicamente a través de la landing page y la aplicación frontend, lo que constituye una base concreta sobre la cual validar la propuesta de valor con usuarios reales.
+
+**Assumptions frente al comportamiento real de los segmentos.** Los assumptions del proceso Lean UX —que el usuario es el estudiante universitario que busca ingresos y experiencia compatibles con sus horarios, y que valora perfiles con historial académico y de proyectos, oportunidades verificadas y un sistema de reputación— guiaron el modelado del dominio y la priorización del Product Backlog. Estos assumptions se reflejan hoy en capacidades implementadas (perfil freelance con portafolio, calificaciones y reseñas por proyecto, chat seguro). Sin embargo, al tratarse de un avance académico sin tráfico real, el contraste de estos assumptos contra el comportamiento efectivo de los segmentos aún no puede realizarse y queda como trabajo de validación posterior al despliegue abierto.
+
+**Hypothesis Statements y criterios de éxito.** Las tres hipótesis Lean UX establecieron criterios de éxito medibles: más del 50% de usuarios activos completando una tarea remunerada en su primer mes, un tiempo de uso semanal superior a 45 minutos, y al menos un 70% de usuarios calificando como alta la relevancia de las recomendaciones. Estos criterios aún no son medibles porque dependen de la operación con usuarios reales; lo alcanzado en este avance es la **condición habilitante** para medirlos: los flujos de contratación, gamificación incipiente (reputación y reseñas) y recomendación de precios ya están desplegados. La instrumentación de métricas (analítica de uso, embudos de conversión, encuestas de relevancia) queda como paso siguiente para poder confirmar o refutar las hipótesis.
+
+**Recomendaciones y siguientes pasos del Roadmap.**
+
+- **Completar la cobertura de pruebas:** implementar los archivos `.feature` de BDD en Gherkin y las suites de prueba de `gig-marketplace-service`, `pulls-service` y `chat-notification-service`, alcanzando el umbral de cobertura del 85% en los cuatro microservicios.
+- **Implementar la mensajería asíncrona:** desplegar Google Cloud Pub/Sub para los eventos de dominio que hoy están modelados pero no publicados (notificaciones, cambios de estado, proyecciones de reputación).
+- **Resolver el almacenamiento de binarios:** consolidar el adaptador de Supabase Storage para portafolios, imágenes de servicios y adjuntos en todos los microservicios que lo requieran.
+- **Extraer la librería compartida `gigu-platform-commons:`** centralizar los componentes transversales (jerarquía de excepciones, `RestExceptionHandler`, `OpenApiConfig`, seguridad JWT) para reducir duplicación.
+- **Instrumentar métricas de producto:** incorporar analítica de uso y embudos de conversión para poder evaluar los criterios de éxito de las hipótesis Lean UX.
+- **Evolucionar las capacidades diferenciales:** avanzar hacia el emparejamiento inteligente tarea-habilidad, los badges de gamificación y la integración con LinkedIn/portafolios, que constituyen el siguiente bloque de valor del Product Backlog.
+- **Automatizar el despliegue:** evolucionar los workflows manuales de GitHub Actions hacia un pipeline CI/CD con despliegue automático y validación previa por pruebas.
+
 <div style="page-break-before: always;"></div>
 
 # Video About-The-Team
@@ -2352,3 +2759,18 @@ Vercel. (s. f.-b). [*Vercel Hobby Plan*](https://vercel.com/docs/plans/hobby). V
 <div style="page-break-before: always;"></div>
 
 # Links
+
+**Repositorios GitHub**
+
+- Backend de microservicios: https://github.com/1ASI0657-2610-7940-Final-Project/backend-microservices
+- Frontend Web App: https://github.com/1ASI0657-2610-7940-Final-Project/frontend
+- Landing Page: https://github.com/1ASI0657-2610-7940-Final-Project/landing-page
+
+**Despliegues en producción**
+
+- Landing Page (Vercel): https://landing-page-nine-beryl-19.vercel.app/
+- Frontend Web App (Vercel): https://gigu-ivory.vercel.app/
+- AccessProfileService (Swagger UI): https://gigu-access-profile-service-149855215912.us-central1.run.app/swagger-ui/index.html
+- GigMarketplaceService (Swagger UI): https://gigu-gig-marketplace-service-149855215912.us-central1.run.app/swagger-ui/index.html
+- PullEngagementService (Swagger UI): https://gigu-pulls-service-149855215912.us-central1.run.app/swagger-ui/index.html
+- ChatNotificationService (Swagger UI): https://gigu-chat-notification-service-149855215912.us-central1.run.app/swagger-ui/index.html
