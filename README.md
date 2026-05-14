@@ -2360,7 +2360,9 @@ En el Sprint 1 se logró desplegar y poner en funcionamiento la solución comple
 
 <img src="imgs/sprint1/frontend-register-view.png" alt="Vista de registro de la aplicación frontend de GigU" title="Frontend GigU - Registro"/>
 
-> **Pendiente:** Incluir los screenshots de las operaciones principales interactuando con los Web Services vía **Postman**, y el enlace al **video** que ilustre y explique la funcionalidad de los servicios logrados en este Sprint.
+<img src="imgs/cap1.png"/>
+<img src="imgs/cap2.png"/>
+
 
 #### 5.3.1.5. Microservices Documentation Evidence for Sprint Review
 
