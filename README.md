@@ -2572,7 +2572,7 @@ El flujo de notificación en tiempo real implementado en este Sprint es el sigui
 8. El frontend, suscrito al WebSocket, actualiza las notificaciones del usuario.
 ```
 
-**Board del Sprint 2 (Notion):** https://www.notion.so/38aff0862f2c8003a48fe4e04ad6e4e0?v=38aff0862f2c814091b6000c19f27ab5
+**Board del Sprint 2 (Notion):** https://www.notion.so/38aff0862f2c806bb608c55f679d64f6?v=38aff0862f2c81f2a7d0000cdfffa458&source=copy_link
 
 El Sprint Backlog 2 está compuesto por (a) los work-items arrastrados del Sprint 1 que dependían de la mensajería asíncrona, ahora resueltos, y (b) las 10 nuevas tarjetas de tiempo real y corrección de defectos (GIGU-63 a GIGU-65 y GIGU-67 a GIGU-73).
 
