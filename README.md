@@ -2842,11 +2842,7 @@ En el Sprint 3 se puso en funcionamiento el **almacenamiento de imágenes de ext
 
 <img src="imgs/sprint3/frontend-service-gallery.png" alt="Galería de imágenes del servicio en GigU" title="Frontend GigU - Service Gallery"/>
 
-**Subida de imágenes de evidencia al portafolio del freelancer** (bucket `portfolio`):
-
-<img src="imgs/sprint3/frontend-portfolio-upload.png" alt="Subida de imágenes al portafolio del freelancer en GigU" title="Frontend GigU - Portfolio Upload"/>
-
-Las imágenes se almacenan bajo rutas determinísticas (`services/{serviceId}/{uuid}-{archivo}` y `freelancers/{userId}/{uuid}-{archivo}`) y se sirven mediante la URL pública `{SUPABASE_URL}/storage/v1/object/public/{bucket}/{objectPath}`.
+Las imágenes se almacenan bajo rutas determinísticas (`services/{serviceId}/{uuid}-{archivo}` para la media de los servicios y `freelancers/{userId}/{uuid}-{archivo}` para el portafolio del freelancer) y se sirven mediante la URL pública `{SUPABASE_URL}/storage/v1/object/public/{bucket}/{objectPath}`.
 
 #### 5.3.3.5. Microservices Documentation Evidence for Sprint Review
 
