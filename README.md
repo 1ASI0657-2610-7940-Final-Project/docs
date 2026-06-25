@@ -172,6 +172,17 @@
       * [5.3.2.7. Team Collaboration Insights during Sprint](#5327-team-collaboration-insights-during-sprint)
       * [5.3.2.8. Kanban Board](#5328-kanban-board)
 
+    * [5.3.3. Sprint 3](#533-sprint-3)
+
+      * [5.3.3.1. Sprint Backlog 3](#5331-sprint-backlog-3)
+      * [5.3.3.2. Development Evidence for Sprint Review](#5332-development-evidence-for-sprint-review)
+      * [5.3.3.3. Testing Suite Evidence for Sprint Review](#5333-testing-suite-evidence-for-sprint-review)
+      * [5.3.3.4. Execution Evidence for Sprint Review](#5334-execution-evidence-for-sprint-review)
+      * [5.3.3.5. Microservices Documentation Evidence for Sprint Review](#5335-microservices-documentation-evidence-for-sprint-review)
+      * [5.3.3.6. Software Deployment Evidence for Sprint Review](#5336-software-deployment-evidence-for-sprint-review)
+      * [5.3.3.7. Team Collaboration Insights during Sprint](#5337-team-collaboration-insights-during-sprint)
+      * [5.3.3.8. Kanban Board](#5338-kanban-board)
+
   * [5.4. Microservices Deployment](#54-microservices-deployment)
 
     * [5.4.1. Cloud Architecture Diagram](#541-cloud-architecture-diagram)
@@ -195,7 +206,7 @@ ABET – EAC - Student Outcome 7: Aprendizaje Continuo y Autónomo.
 
 | Criterio específico                                                                                                                         | Acciones realizadas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Conclusiones                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Actualiza conceptos y conocimientos necesarios para su desarrollo profesional y en especial para su proyecto en soluciones de software.** | **Oblitas Davila, Mariano Moises** **AV1:** Elaboré la carátula del informe y desarrollé el Capítulo I, adaptando la estructura previa del proyecto GigU al nuevo curso de Fundamentos de Arquitectura de Software y reorganizando la información inicial de la startup, la solución y los segmentos objetivo.<br><br>**Oblitas Davila, Mariano Moises** **AV2:** Desarrollé y revisé secciones del Capítulo IV relacionadas con Product Architecture Design, incluyendo principios de diseño, enfoques arquitectónicos, diagramas, architectural drivers, restricciones, concerns, trazabilidad entre Primary User Stories y User Stories, y coherencia entre las iteraciones ADD, los microservicios, los endpoints y los eventos de dominio.<br><br>**Ybañez Esquerre, Miguel Angel** **AV1:** Desarrollé la estructura base del Capítulo II, alineando los apartados de Competidores, Entrevistas y Needfinding con la guía del nuevo curso para preparar la siguiente fase de análisis del producto.<br><br>**Ybañez Esquerre, Miguel Angel** **AV2:** Completé y refiné el Capítulo IV, consolidando las iteraciones ADD, la organización de los Epics de producto, la trazabilidad entre Primary User Stories y User Stories reales del Product Backlog, y el ajuste del alcance del portafolio dentro de la gestión del perfil freelancer para evitar redundancias funcionales.<br><br>**Mio Mejia, Andy Alejandro** **AV1:** Desarrollé la estructura base del Capítulo III, organizando las secciones de To-Be Scenario Mapping, User Stories, Impact Map y Product Backlog conforme a los requerimientos del curso.<br><br>**Mio Mejia, Andy Alejandro** **AV2:** Desarrollé contenido de ADD Iteration 1 para `PullEngagementService`, incluyendo backlog arquitectónico, selección de drivers, refinamiento de elementos, conceptos de diseño, asignación de responsabilidades, definición de interfaces y relación entre atributos de calidad y decisiones arquitectónicas.<br><br>**Oblitas Davila, Mariano Moises** **TB1:** Implementé los cuatro microservicios del backend en Spring Boot con Clean Architecture y desarrollé las evidencias de implementación, ejecución y despliegue del Sprint 1, aplicando nuevos conocimientos de Google Cloud Run, contenedores y despliegue serverless.<br><br>**Ybañez Esquerre, Miguel Angel** **TB1:** Desarrollé el Capítulo V en sus secciones de Software Configuration Management y configuración de despliegue, integrando el frontend con los microservicios y configurando la publicación en Vercel y GitHub Actions, lo que implicó aprender sobre GitFlow, CI/CD y Vercel Rewrites.<br><br>**Mio Mejia, Andy Alejandro** **TB1:** Elaboré el Sprint Backlog 1 y el tablero Kanban en Jira, las evidencias de testing y la documentación de los servicios, aplicando nuevos conocimientos sobre suites de pruebas (JUnit, Testcontainers) y documentación de APIs con OpenAPI/Swagger.<br><br>**Oblitas Davila, Mariano Moises** **AV3:** Implementé la comunicación en tiempo real del Sprint 2 (WebSocket + STOMP en Spring Boot), el endpoint de recepción de eventos por Google Cloud Pub/Sub push y el webhook interno de notificaciones entre `PullEngagementService` y `ChatNotificationService`, aplicando nuevos conocimientos de mensajería asíncrona y comunicación bidireccional.<br><br>**Ybañez Esquerre, Miguel Angel** **AV3:** Integré el frontend con el WebSocket de notificaciones y chat en tiempo real, corregí el botón *Send Request* del portal del cliente y configuré los Vercel Rewrites y la variable `VITE_CHAT_WS_URL`, aprendiendo sobre clientes STOMP/WebSocket y enrutamiento de tiempo real.<br><br>**Mio Mejia, Andy Alejandro** **AV3:** Configuré el topic y la suscripción push de Google Cloud Pub/Sub, redesplegué el servicio de chat en Cloud Run con su trigger y verifiqué el flujo de extremo a extremo, aplicando nuevos conocimientos sobre Pub/Sub y entrega push por webhook. | En AV1, el equipo actualizó la estructura del proyecto para alinearlo con el enfoque de arquitectura de software del nuevo curso. Se reorganizó el informe según la guía oficial y se establecieron bases claras para continuar el desarrollo de los capítulos de análisis, especificación y arquitectura.<br><br>En AV2, el equipo aplicó nuevos conocimientos de arquitectura de software para desarrollar el Capítulo IV, conectando requisitos funcionales, atributos de calidad, restricciones, microservicios, bounded contexts, ADD, vistas C4/UML y decisiones arquitectónicas. Esta entrega permitió fortalecer la coherencia técnica del informe y mantener trazabilidad entre el Product Backlog y el diseño arquitectónico propuesto.<br><br>En TB1, el equipo aplicó conocimientos nuevos de implementación, configuración y despliegue de software para desarrollar el Capítulo V, llevando la arquitectura diseñada a un producto desplegado y validado: cuatro microservicios en Google Cloud Run, frontend y landing en Vercel, con evidencias de desarrollo, testing, ejecución y documentación para el Sprint 1.<br><br>En AV3 (Sprint 2), el equipo aplicó aprendizaje continuo al incorporar mensajería asíncrona y comunicación en tiempo real —Google Cloud Pub/Sub con entrega push, WebSocket + STOMP y un webhook interno entre microservicios—, cerrando los work-items que dependían de la mensajería y dejando la solución con notificaciones y chat en tiempo real desplegados y verificados. |
+| **Actualiza conceptos y conocimientos necesarios para su desarrollo profesional y en especial para su proyecto en soluciones de software.** | **Oblitas Davila, Mariano Moises** **AV1:** Elaboré la carátula del informe y desarrollé el Capítulo I, adaptando la estructura previa del proyecto GigU al nuevo curso de Fundamentos de Arquitectura de Software y reorganizando la información inicial de la startup, la solución y los segmentos objetivo.<br><br>**Oblitas Davila, Mariano Moises** **AV2:** Desarrollé y revisé secciones del Capítulo IV relacionadas con Product Architecture Design, incluyendo principios de diseño, enfoques arquitectónicos, diagramas, architectural drivers, restricciones, concerns, trazabilidad entre Primary User Stories y User Stories, y coherencia entre las iteraciones ADD, los microservicios, los endpoints y los eventos de dominio.<br><br>**Ybañez Esquerre, Miguel Angel** **AV1:** Desarrollé la estructura base del Capítulo II, alineando los apartados de Competidores, Entrevistas y Needfinding con la guía del nuevo curso para preparar la siguiente fase de análisis del producto.<br><br>**Ybañez Esquerre, Miguel Angel** **AV2:** Completé y refiné el Capítulo IV, consolidando las iteraciones ADD, la organización de los Epics de producto, la trazabilidad entre Primary User Stories y User Stories reales del Product Backlog, y el ajuste del alcance del portafolio dentro de la gestión del perfil freelancer para evitar redundancias funcionales.<br><br>**Mio Mejia, Andy Alejandro** **AV1:** Desarrollé la estructura base del Capítulo III, organizando las secciones de To-Be Scenario Mapping, User Stories, Impact Map y Product Backlog conforme a los requerimientos del curso.<br><br>**Mio Mejia, Andy Alejandro** **AV2:** Desarrollé contenido de ADD Iteration 1 para `PullEngagementService`, incluyendo backlog arquitectónico, selección de drivers, refinamiento de elementos, conceptos de diseño, asignación de responsabilidades, definición de interfaces y relación entre atributos de calidad y decisiones arquitectónicas.<br><br>**Oblitas Davila, Mariano Moises** **TB1:** Implementé los cuatro microservicios del backend en Spring Boot con Clean Architecture y desarrollé las evidencias de implementación, ejecución y despliegue del Sprint 1, aplicando nuevos conocimientos de Google Cloud Run, contenedores y despliegue serverless.<br><br>**Ybañez Esquerre, Miguel Angel** **TB1:** Desarrollé el Capítulo V en sus secciones de Software Configuration Management y configuración de despliegue, integrando el frontend con los microservicios y configurando la publicación en Vercel y GitHub Actions, lo que implicó aprender sobre GitFlow, CI/CD y Vercel Rewrites.<br><br>**Mio Mejia, Andy Alejandro** **TB1:** Elaboré el Sprint Backlog 1 y el tablero Kanban en Notion, las evidencias de testing y la documentación de los servicios, aplicando nuevos conocimientos sobre suites de pruebas (JUnit, Testcontainers) y documentación de APIs con OpenAPI/Swagger.<br><br>**Oblitas Davila, Mariano Moises** **AV3:** Implementé la comunicación en tiempo real del Sprint 2 (WebSocket + STOMP en Spring Boot), el endpoint de recepción de eventos por Google Cloud Pub/Sub push y el webhook interno de notificaciones entre `PullEngagementService` y `ChatNotificationService`, aplicando nuevos conocimientos de mensajería asíncrona y comunicación bidireccional.<br><br>**Ybañez Esquerre, Miguel Angel** **AV3:** Integré el frontend con el WebSocket de notificaciones y chat en tiempo real, corregí el botón *Send Request* del portal del cliente y configuré los Vercel Rewrites y la variable `VITE_CHAT_WS_URL`, aprendiendo sobre clientes STOMP/WebSocket y enrutamiento de tiempo real.<br><br>**Mio Mejia, Andy Alejandro** **AV3:** Configuré el topic y la suscripción push de Google Cloud Pub/Sub, redesplegué el servicio de chat en Cloud Run con su trigger y verifiqué el flujo de extremo a extremo, aplicando nuevos conocimientos sobre Pub/Sub y entrega push por webhook. | En AV1, el equipo actualizó la estructura del proyecto para alinearlo con el enfoque de arquitectura de software del nuevo curso. Se reorganizó el informe según la guía oficial y se establecieron bases claras para continuar el desarrollo de los capítulos de análisis, especificación y arquitectura.<br><br>En AV2, el equipo aplicó nuevos conocimientos de arquitectura de software para desarrollar el Capítulo IV, conectando requisitos funcionales, atributos de calidad, restricciones, microservicios, bounded contexts, ADD, vistas C4/UML y decisiones arquitectónicas. Esta entrega permitió fortalecer la coherencia técnica del informe y mantener trazabilidad entre el Product Backlog y el diseño arquitectónico propuesto.<br><br>En TB1, el equipo aplicó conocimientos nuevos de implementación, configuración y despliegue de software para desarrollar el Capítulo V, llevando la arquitectura diseñada a un producto desplegado y validado: cuatro microservicios en Google Cloud Run, frontend y landing en Vercel, con evidencias de desarrollo, testing, ejecución y documentación para el Sprint 1.<br><br>En AV3 (Sprint 2), el equipo aplicó aprendizaje continuo al incorporar mensajería asíncrona y comunicación en tiempo real —Google Cloud Pub/Sub con entrega push, WebSocket + STOMP y un webhook interno entre microservicios—, cerrando los work-items que dependían de la mensajería y dejando la solución con notificaciones y chat en tiempo real desplegados y verificados. |
 | **Reconoce la necesidad del aprendizaje permanente para el desempeño profesional y el desarrollo de proyectos en soluciones de software.**  | **Oblitas Davila, Mariano Moises** **AV1:** Reconocí la necesidad de revisar y adaptar el trabajo previo a una nueva estructura académica orientada a arquitectura, lo que implicó reforzar conceptos de formulación del problema, Lean UX y organización formal de entregables.<br><br>**Oblitas Davila, Mariano Moises** **AV2:** Reconocí la necesidad de revisar documentación previa, detectar inconsistencias entre capítulos y actualizar el diseño arquitectónico conforme avanzaban las decisiones del equipo, especialmente en la relación entre Product Backlog, Primary User Stories, architectural drivers, microservicios e iteraciones ADD.<br><br>**Ybañez Esquerre, Miguel Angel** **AV1:** Identifiqué la importancia de seguir aprendiendo sobre técnicas de análisis de competidores, entrevistas y needfinding para sustentar correctamente la fase de levantamiento y análisis de requisitos del proyecto.<br><br>**Ybañez Esquerre, Miguel Angel** **AV2:** Reconocí la importancia de profundizar en ADD, bounded contexts, trazabilidad PUS-US y refinamiento de Epics para adaptar la arquitectura del producto a las exigencias del curso y evitar duplicidades funcionales en el informe.<br><br>**Mio Mejia, Andy Alejandro** **AV1:** Reconocí la necesidad de profundizar en la especificación de requisitos, especialmente en la construcción de artefactos como User Stories, Impact Map y Product Backlog, para adaptar el proyecto a las exigencias del curso.<br><br>**Mio Mejia, Andy Alejandro** **AV2:** Reconocí la necesidad de profundizar en métodos de diseño arquitectónico, especialmente ADD, para transformar requisitos funcionales y atributos de calidad en componentes, responsabilidades, interfaces y decisiones justificadas dentro de una arquitectura basada en microservicios.<br><br>**Oblitas Davila, Mariano Moises** **TB1:** Reconocí la necesidad de profundizar en despliegue en la nube, contenedores y configuración de servicios administrados para llevar los microservicios diseñados a un entorno productivo real.<br><br>**Ybañez Esquerre, Miguel Angel** **TB1:** Reconocí la importancia de dominar prácticas de Software Configuration Management —GitFlow, Conventional Commits, semantic versioning y automatización de despliegue— para mantener consistencia durante el ciclo de vida del producto.<br><br>**Mio Mejia, Andy Alejandro** **TB1:** Reconocí la necesidad de aprender sobre estrategias de testing automatizado y documentación de APIs para sustentar la calidad y la trazabilidad de los servicios implementados.<br><br>**Oblitas Davila, Mariano Moises** **AV3:** Reconocí la necesidad de profundizar en patrones de mensajería asíncrona y comunicación en tiempo real (Pub/Sub, WebSocket/STOMP y webhooks) para desacoplar las notificaciones del flujo principal sin comprometer la disponibilidad.<br><br>**Ybañez Esquerre, Miguel Angel** **AV3:** Reconocí la importancia de aprender sobre integración de WebSocket en el frontend y enrutamiento de tiempo real, así como sobre diagnóstico de defectos en producción para corregir el flujo de solicitudes del cliente.<br><br>**Mio Mejia, Andy Alejandro** **AV3:** Reconocí la necesidad de profundizar en la configuración de servicios de mensajería administrados (Google Cloud Pub/Sub) y triggers push para sostener un flujo de eventos confiable entre microservicios. | El equipo evidenció desde AV1 que continuar el mismo producto en un nuevo curso exige aprendizaje permanente, reorganización técnica y comprensión de nuevos enfoques de arquitectura. Esta adaptación permitió establecer una base más sólida para el desarrollo progresivo del trabajo final.<br><br>En AV2, el equipo demostró aprendizaje continuo al aplicar conceptos arquitectónicos más avanzados, como ADD, DDD, bounded contexts, microservicios, quality attribute scenarios, tácticas, patrones, eventos de dominio y decisiones arquitectónicas. Esto permitió que el informe evolucione desde una especificación funcional hacia una propuesta arquitectónica más coherente, trazable y defendible.<br><br>En TB1, el equipo demostró aprendizaje continuo al incorporar prácticas de implementación, configuración y despliegue —Clean Architecture aplicada, GitFlow, CI/CD, despliegue en la nube, testing automatizado y documentación OpenAPI—, completando el ciclo desde la especificación y el diseño hasta un producto desplegado, probado y documentado.<br><br>En AV3 (Sprint 2), el equipo reforzó el aprendizaje continuo al adoptar mensajería asíncrona y comunicación en tiempo real —Google Cloud Pub/Sub, WebSocket + STOMP y webhooks internos entre microservicios—, cerrando las tarjetas pendientes del Sprint 1 y consolidando un producto con notificaciones y chat en tiempo real operando en la nube. |
 
 <div style="page-break-before: always;"></div>
@@ -1273,6 +1284,8 @@ El impact map de GigU para las personas y emprendimientos que buscan contratar s
 ## 3.4. Product Backlog
 Se utilizó la escala Fibonacci para la estimación de los Story Points. En total se tuvieron **197** Story Points.
 
+**Tablero del Product Backlog (Notion):** https://www.notion.so/38aff0862f2c8064a987e23cf2b39555?v=38aff0862f2c8116a822000c80166dd1
+
 | # Orden | User Story ID | Título                                                      | Story Points |
 | :-----: | :-----------: | ----------------------------------------------------------- | :----------: |
 |  **1**  |    **US01**   | Navegación intuitiva en la landing page                     |       3      |
@@ -1698,7 +1711,7 @@ Supabase se mantiene como plataforma administrada de PostgreSQL para reducir car
 
 El diseño arquitectónico de GigU se desarrolla aplicando ADD v3 sobre los dos microservicios de mayor impacto del backend: `PullEngagementService` (Iteración 1) y `GigMarketplaceService` (Iteración 2).
 
-Cada iteración aplica los siete pasos del método sobre un foco acotado del sistema y se gestiona como un Kanban de diseño en Jira, en el que cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir. El siguiente cronograma resume los Epics de producto cubiertos por ambas iteraciones, importados al proyecto Jira `GigU Architecture Design`.
+Cada iteración aplica los siete pasos del método sobre un foco acotado del sistema y se gestiona como un Kanban de diseño en Notion, en el que cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir. El siguiente cronograma resume los Epics de producto cubiertos por ambas iteraciones, importados a las bases de datos de Notion del proyecto GigU.
 
 La funcionalidad de portafolio ya no se modela como un Epic independiente dentro de este capítulo, porque fue integrada dentro de la gestión del perfil freelancer en `AccessProfileService`. Por ello, no se refina como una iteración separada de ADD.
 
@@ -1861,7 +1874,9 @@ Para esta iteración se generaron cuatro vistas que sustentan las decisiones tom
 
 #### 4.3.1.7. Analysis of Current Design and Review Iteration Goal: Kanban Board
 
-El tablero Kanban de la Iteración 1 se gestiona en Jira sobre el proyecto `GigU Architecture Design`. Cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir, agrupada bajo el Epic de producto al que afecta. La siguiente captura muestra las tarjetas filtradas por la etiqueta de iteración correspondiente.
+El tablero Kanban de la Iteración 1 se gestiona en Notion (base de datos `sprint-1-backlog`). Cada tarjeta representa un driver, una decisión arquitectónica (ADR) o una vista a producir, agrupada bajo el Epic de producto al que afecta. La siguiente captura muestra las tarjetas filtradas por la etiqueta de iteración correspondiente.
+
+**Tablero (Notion):** https://www.notion.so/38aff0862f2c80a19670ecc018555760?v=38aff0862f2c8176bd1d000cba93e333
 
 ![4.3.1.7.KanbanBoardIteration1](imgs/add/4.3.1.7.KanbanBoardIteration1.png)
 
@@ -2021,7 +2036,9 @@ Para esta iteración se generaron cuatro vistas que sustentan las decisiones tom
 
 #### 4.3.2.7. Analysis of Current Design and Review Iteration Goal: Kanban Board
 
-El tablero Kanban de la Iteración 2 se gestiona en el mismo proyecto Jira `GigU Architecture Design`, filtrado para mostrar las tarjetas correspondientes a `GigMarketplaceService`. Cada tarjeta se agrupa bajo el Epic de producto al que afecta dentro del catálogo y descubrimiento de servicios.
+El tablero Kanban de la Iteración 2 se gestiona en Notion (base de datos `sprint-1-backlog`), filtrado para mostrar las tarjetas correspondientes a `GigMarketplaceService`. Cada tarjeta se agrupa bajo el Epic de producto al que afecta dentro del catálogo y descubrimiento de servicios.
+
+**Tablero (Notion):** https://www.notion.so/38aff0862f2c80a19670ecc018555760?v=38aff0862f2c8176bd1d000cba93e333
 
 ![4.3.2.7.KanbanBoardIteration2](imgs/add/4.3.2.7.KanbanBoardIteration2.png)
 
@@ -2228,11 +2245,11 @@ Los secrets requeridos para despliegue desde GitHub Actions son:
 
 El objetivo principal del Sprint 1 fue **implementar y desplegar el backbone funcional de la solución GigU**: los cuatro microservicios REST del backend (AccessProfileService, GigMarketplaceService, PullEngagementService y ChatNotificationService), la aplicación frontend y la landing page, junto con su configuración de despliegue en la nube (Google Cloud Run y Vercel).
 
-Siguiendo el enfoque Attribute-Driven Design, el **tablero Kanban del ADD** se desarrolla durante este Sprint: el proyecto de Jira `GigU Architecture Design` contiene los work-items resultantes de las iteraciones ADD del Capítulo IV —Primary User Stories (PUS), drivers de calidad (QA), restricciones (CON), concerns (CRN), Architecture Decision Records (ADR), Sketch Views y definición de contratos y esquemas—, agrupados bajo el Epic de producto al que afectan. Las 54 tarjetas (GIGU-8 a GIGU-61) constituyen el Sprint Backlog 1 y se ejecutan, prueban y despliegan en este Sprint.
+Siguiendo el enfoque Attribute-Driven Design, el **tablero Kanban del ADD** se desarrolla durante este Sprint: la base de datos de Notion `sprint-1-backlog` contiene los work-items resultantes de las iteraciones ADD del Capítulo IV —Primary User Stories (PUS), drivers de calidad (QA), restricciones (CON), concerns (CRN), Architecture Decision Records (ADR), Sketch Views y definición de contratos y esquemas—, agrupados bajo el Epic de producto al que afectan. Las 54 tarjetas (GIGU-8 a GIGU-61) constituyen el Sprint Backlog 1 y se ejecutan, prueban y despliegan en este Sprint.
 
-**Board del Sprint 1 (Jira — `GigU Architecture Design`):** https://miguelybaneze.atlassian.net/jira/software/projects/GIGU/boards/595
+**Board del Sprint 1 (Notion):** https://www.notion.so/38aff0862f2c80a19670ecc018555760?v=38aff0862f2c8176bd1d000cba93e333
 
-El backlog del Sprint 1 en Jira, filtrado por estado al cierre del Sprint:
+El backlog del Sprint 1 en Notion, filtrado por estado al cierre del Sprint:
 
 _Tareas por hacer (To-do) — 4 actividades:_
 
@@ -2521,7 +2538,7 @@ El trabajo del Sprint 1 se distribuyó entre los tres integrantes del equipo, co
 
 #### 5.3.1.8. Kanban Board
 
-El tablero Kanban del Sprint 1 se gestiona en Jira sobre el proyecto `GigU Architecture Design`, en la vista *Tablero*, con las columnas **Por Hacer**, **En Curso** y **Hecho**. Al cierre del Sprint, el avance de las 54 tarjetas (GIGU-8 a GIGU-61) es el siguiente:
+El tablero Kanban del Sprint 1 se gestiona en Notion (base de datos `sprint-1-backlog`), en una vista *Board* agrupada por estado, con las columnas **Por Hacer**, **En Curso** y **Hecho**. Al cierre del Sprint, el avance de las 54 tarjetas (GIGU-8 a GIGU-61) es el siguiente:
 
 | Estado | Cantidad | Tarjetas |
 | --- | --- | --- |
@@ -2531,9 +2548,9 @@ El tablero Kanban del Sprint 1 se gestiona en Jira sobre el proyecto `GigU Archi
 
 Las tarjetas en **En Curso** corresponden a testabilidad parcial (solo `access-profile-service` tiene pruebas implementadas) y a métricas de performance aún no medidas. Las tarjetas en **Por Hacer** corresponden a la mensajería asíncrona de eventos de dominio y a las proyecciones de reputación que dependen de ella; su implementación queda planificada para el Sprint 2.
 
-<img src="imgs/sprint1/sprint1-kanban-board.png" alt="Kanban Board del Sprint 1 en Jira" title="Kanban Board Sprint 1"/>
+<img src="imgs/sprint1/sprint1-kanban-board.png" alt="Kanban Board del Sprint 1 en Notion" title="Kanban Board Sprint 1"/>
 
-URL del tablero: https://miguelybaneze.atlassian.net/jira/software/projects/GIGU/boards/595
+URL del tablero (Notion): https://www.notion.so/38aff0862f2c80a19670ecc018555760?v=38aff0862f2c8176bd1d000cba93e333
 
 ### 5.3.2. Sprint 2
 
@@ -2554,7 +2571,7 @@ El flujo de notificación en tiempo real implementado en este Sprint es el sigui
 8. El frontend, suscrito al WebSocket, actualiza las notificaciones del usuario.
 ```
 
-**Board del Sprint 2 (Jira — `GigU Architecture Design`):** https://miguelybaneze.atlassian.net/jira/software/projects/GIGU/boards/595
+**Board del Sprint 2 (Notion):** https://www.notion.so/38aff0862f2c8003a48fe4e04ad6e4e0?v=38aff0862f2c814091b6000c19f27ab5
 
 El Sprint Backlog 2 está compuesto por (a) los work-items arrastrados del Sprint 1 que dependían de la mensajería asíncrona, ahora resueltos, y (b) las 10 nuevas tarjetas de tiempo real y corrección de defectos (GIGU-63 a GIGU-65 y GIGU-67 a GIGU-73).
 
@@ -2591,7 +2608,7 @@ El Sprint Backlog 2 está compuesto por (a) los work-items arrastrados del Sprin
 | EP11 | Mensajería Coordinada Cliente-Freelancer | GIGU-72 | Configuración de rewrites y variables de entorno en Vercel | Rewrites `/api/*` por microservicio y `VITE_CHAT_WS_URL` para el WebSocket. | 3 | Ybañez Esquerre, Miguel | Done |
 | EP11 | Mensajería Coordinada Cliente-Freelancer | GIGU-73 | Despliegue de ChatNotificationService con trigger Pub/Sub | Redepliegue en Cloud Run con la suscripción push apuntando a `/internal/pubsub/chat-events`. | 3 | Mio Mejia, Andy | Done |
 
-El backlog del Sprint 2 en Jira, al cierre del Sprint (todas las tarjetas en estado *Hecho*):
+El backlog del Sprint 2 en Notion, al cierre del Sprint (todas las tarjetas en estado *Hecho*):
 
 <img src="imgs/sprint2/sprint2-backlog-done-1.png" alt="Sprint Backlog 2 - Finalizadas (parte 1)" title="Sprint Backlog 2 - Done"/>
 
@@ -2736,7 +2753,7 @@ Durante el Sprint 2, la implementación de la mensajería en tiempo real (Google
 
 #### 5.3.2.8. Kanban Board
 
-El tablero Kanban del Sprint 2 se gestiona en el mismo proyecto de Jira `GigU Architecture Design`, con las columnas **Por Hacer**, **En Curso** y **Hecho**. El tablero del Sprint 2 agrupa las **19 tarjetas del alcance del Sprint** —las 9 arrastradas del Sprint 1 (GIGU-22, GIGU-23, GIGU-24, GIGU-25, GIGU-26, GIGU-55, GIGU-56, GIGU-57, GIGU-59) y las 10 nuevas (GIGU-63 a GIGU-65 y GIGU-67 a GIGU-73)—, todas en estado **Hecho** al cierre:
+El tablero Kanban del Sprint 2 se gestiona en Notion (base de datos `sprint-2-backlog`), con las columnas **Por Hacer**, **En Curso** y **Hecho**. El tablero del Sprint 2 agrupa las **19 tarjetas del alcance del Sprint** —las 9 arrastradas del Sprint 1 (GIGU-22, GIGU-23, GIGU-24, GIGU-25, GIGU-26, GIGU-55, GIGU-56, GIGU-57, GIGU-59) y las 10 nuevas (GIGU-63 a GIGU-65 y GIGU-67 a GIGU-73)—, todas en estado **Hecho** al cierre:
 
 | Estado | Cantidad | Tarjetas |
 | --- | --- | --- |
@@ -2748,9 +2765,163 @@ Sumando las 45 tarjetas ya finalizadas durante el Sprint 1, las **64 tarjetas** 
 
 Con el cierre del Sprint 2, todas las tarjetas derivadas de las iteraciones ADD y de la implementación de la solución quedan en estado **Hecho**: se completó la mensajería asíncrona de eventos de dominio (Google Cloud Pub/Sub), la comunicación en tiempo real (WebSocket + STOMP) y el webhook interno de notificaciones, además de la corrección del defecto del botón de solicitud del cliente.
 
-<img src="imgs/sprint2/sprint2-kanban-board.png" alt="Kanban Board del Sprint 2 en Jira" title="Kanban Board Sprint 2"/>
+<img src="imgs/sprint2/sprint2-kanban-board.png" alt="Kanban Board del Sprint 2 en Notion" title="Kanban Board Sprint 2"/>
 
-URL del tablero: https://miguelybaneze.atlassian.net/jira/software/projects/GIGU/boards/595
+URL del tablero (Notion): https://www.notion.so/38aff0862f2c8003a48fe4e04ad6e4e0?v=38aff0862f2c814091b6000c19f27ab5
+
+### 5.3.3. Sprint 3
+
+#### 5.3.3.1. Sprint Backlog 3
+
+El objetivo principal del Sprint 3 fue **endurecer técnicamente la solución GigU y completar el almacenamiento de imágenes**, una vez que la funcionalidad de cara al usuario había quedado cerrada en los Sprints 1 y 2. En concreto se implementó: (a) el **almacenamiento de imágenes** en **Supabase Storage** mediante un puerto/adaptador hexagonal (`StoragePort` + `SupabaseStorageAdapter`) para el portafolio del freelancer (bucket `portfolio`) y la media de los servicios del marketplace (bucket `gig-media`), con subida binaria real y persistencia de la URL pública en base de datos; (b) **resiliencia ante fallos de servicios externos** con **Resilience4j** (Circuit Breaker en `gig-marketplace-service` hacia Supabase Storage y en `pulls-service` hacia la notificación de Chat); (c) la **externalización de la configuración de Pub/Sub** a un archivo JSON alojado en Cloud Storage (`ExternalEdaConfigLoader`); (d) el **rediseño y pulido del frontend** (vista de mensajes, páginas de dashboard y perfil del freelancer, flujo de subida de media del gig) buscando fidelidad con el Figma; y (e) la **migración del tablero Kanban a Notion** (product backlog y sprints).
+
+A diferencia de los Sprints 1 y 2, el Sprint 3 **no cierra al 100%**: dos work-items quedan en estado *En Curso* al cierre del Sprint —los **tests basados en contratos** entre microservicios (SP10) y la **optimización de velocidad del frontend** (SP13, lazy-loading/code-splitting/debounce)—, y su finalización se planifica para una iteración posterior.
+
+**Board del Sprint 3 (Notion):** https://www.notion.so/38aff0862f2c806bb608c55f679d64f6?v=38aff0862f2c81f2a7d0000cdfffa458
+
+El Sprint Backlog 3 está compuesto por **11 tarjetas nuevas** (GIGU-74 a GIGU-84); no hay tarjetas arrastradas, ya que el Sprint 2 cerró todos sus work-items.
+
+| Sprint # | Sprint 3 | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **User Story / Epic** | | **Work-Item / Task** | | | | | |
+| **Id** | **Title** | **Id** | **Title** | **Description** | **Estimation (h)** | **Assigned To** | **Status** |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-74 | SP12: Storage de imágenes en Supabase (`StoragePort` + `SupabaseStorageAdapter`) | Puerto y adaptador hexagonal de almacenamiento; subida binaria a Supabase Storage y persistencia de la URL pública en BD. | 6 | Oblitas Davila, Mariano | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-75 | US51: Soporte de media en el marketplace (subir, principal, eliminar) | Endpoints multipart `POST`/`DELETE` de media del servicio (hasta 5 imágenes, máx 5MB, imagen principal). | 5 | Oblitas Davila, Mariano | Done |
+| EP04 | Portafolio y Evidencias del Freelancer | GIGU-76 | US52: Storage de imágenes del portafolio freelance (bucket `portfolio`) | Subida de imágenes de portafolio a Supabase Storage en `access-profile-service` y persistencia de metadatos. | 4 | Oblitas Davila, Mariano | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-77 | SP09: Circuit Breaker (Resilience4j) en marketplace → Supabase Storage | `@CircuitBreaker` sobre `upload`/`delete` de storage con fallback; instancia `supabaseStorage` (50%, 15s). | 3 | Oblitas Davila, Mariano | Done |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-78 | SP09: Circuit Breaker (Resilience4j) en pulls → chat (notification client) | `@CircuitBreaker` sobre la notificación best-effort hacia Chat con fallback; instancia `chatNotificationService` (50%, 10s). | 3 | Oblitas Davila, Mariano | Done |
+| EP11 | Mensajería Coordinada Cliente-Freelancer | GIGU-79 | SP11: Externalización de config Pub/Sub (JSON en Cloud Storage) | `ExternalEdaConfigLoader` carga `gs://gigu-external-config/prod/eda-pubsub-config.json` (project, topics, subs, webhook, estrategia de credenciales) al arranque. | 5 | Oblitas Davila, Mariano | Done |
+| EP06 | Descubrimiento del Catálogo | GIGU-80 | Frontend: rediseño de chat y páginas de dashboard/perfil (fidelidad Figma) | Rediseño de la vista de mensajes y páginas de dashboard y perfil del freelancer alineadas al Figma. | 6 | Mio Mejia, Andy | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-81 | US51: Mejora del flujo de subida de media del gig (preview, principal, eliminar) | `GigMediaManager`: previsualización con blob URL, marcado de imagen principal y eliminación. | 4 | Mio Mejia, Andy | Done |
+| EP06 | Descubrimiento del Catálogo | GIGU-82 | Migración y actualización del Kanban a Notion (product backlog + sprints) | Migración de los tableros de Jira a Notion (`product-backlog`, `sprint-1`, `sprint-2`) y actualización de enlaces en el informe. | 4 | Ybañez Esquerre, Miguel | Done |
+| EP06 | Descubrimiento del Catálogo | GIGU-83 | SP13: Optimización de velocidad del frontend (lazy-loading, code-splitting, debounce) | Lazy-loading de rutas, code-splitting (`manualChunks`), `loading="lazy"` en imágenes y debounce en búsqueda; pendiente de implementar. | 4 | Mio Mejia, Andy | In-Process |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-84 | SP10: Tests basados en contratos entre microservicios (Spring Cloud Contract) | Contratos consumidor/productor entre microservicios; aún no implementado en el repositorio. | 5 | Ybañez Esquerre, Miguel | In-Process |
+
+#### 5.3.3.2. Development Evidence for Sprint Review
+
+Durante el Sprint 3 el trabajo se concentró en `gig-marketplace-service` y `access-profile-service` (almacenamiento de imágenes en Supabase Storage y circuit breaker sobre el storage), en `pulls-service` (circuit breaker sobre la notificación a Chat), en `chat-notification-service` (carga de la configuración EDA/Pub/Sub desde Cloud Storage) y en el `frontend` (rediseño de la vista de chat, páginas de dashboard/perfil y mejora del flujo de subida de media del gig).
+
+| Repository | Branch | Commit Id | Commit Message | Commit Message Body | Committed on |
+| --- | --- | --- | --- | --- | --- |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | bed24da | feat(marketplace): add Supabase storage media support | Soporte de media en el marketplace con almacenamiento en Supabase Storage. | 18/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 0003c54 | fix(marketplace): correct Supabase storage upload request | Corrección de la petición de subida a Supabase Storage. | 18/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 6a199a1 | fix(marketplace): wire Supabase storage adapter constructor | Cableado del constructor del adaptador de Supabase Storage. | 18/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 1cfa93d | feat(marketplace): add circuit breaker for storage uploads | Circuit Breaker (Resilience4j) sobre las subidas a storage. | 18/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 0cde3a6 | feat(pulls): add circuit breaker for notification client | Circuit Breaker sobre el cliente de notificaciones hacia Chat. | 18/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 64bbe47 | feat(chat): load EDA config from Cloud Storage | Carga de la configuración EDA/Pub/Sub desde Cloud Storage (JSON). | 18/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 7dd2f87 | fix(chat): resolve real participant display names | Resolución de los nombres reales de los participantes de la conversación. | 20/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 38e5792 | merge: feature/chat-notification-service into feature/main-app-logic | Integración del Sprint 3 a la rama de despliegue. | 20/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | 5e6a379 | feat(marketplace): improve gig media upload flow | Mejora del flujo de subida de media del gig (preview, principal, eliminar). | 18/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | d87b8c9 | feat(ui): implement messages chat redesign and freelancer profile dashboard pages | Rediseño de la vista de mensajes y páginas de dashboard/perfil del freelancer. | 19/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | be02deb | fix(chat): make thread viewport responsive and sticky-bottom | Viewport del hilo de chat responsive y anclado al fondo. | 19/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | 5f527f9 | fix(build): sync npm lockfile for Vercel | Sincronización del lockfile de npm para el build de Vercel. | 19/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | 364c838 | fix(chat): select conversation counterpart display name | Selección del nombre de la contraparte en la conversación. | 20/06/2026 |
+
+#### 5.3.3.3. Testing Suite Evidence for Sprint Review
+
+Durante el Sprint 3, el aseguramiento de calidad se apoyó en las suites de pruebas existentes de los microservicios (unitarias e integración con Testcontainers) ampliadas en los Sprints 1 y 2, complementadas con la validación manual de los nuevos flujos de subida de imágenes. La introducción de **pruebas basadas en contratos** (`SP10`, *Spring Cloud Contract*) entre microservicios quedó **planificada pero no implementada** en el repositorio al cierre del Sprint, por lo que la tarjeta `GIGU-84` permanece en estado *En Curso*.
+
+| Archivo de prueba | Tipo | Descripción | User Stories relacionados |
+| --- | --- | --- | --- |
+| `MarketplaceApplicationServiceTest` | Unit Test (JUnit 5 + Mockito) | Verifica las reglas de publicación y de gestión de media del servicio (límite de 5 imágenes, tipos permitidos, imagen principal), invocando el `StoragePort` mockeado. | US51, US24 |
+| `AccessProfileApplicationServiceTest` | Unit Test (JUnit 5 + Mockito) | Verifica la carga de imágenes de portafolio y la persistencia de metadatos sobre el `StoragePort` mockeado. | US52, US18 |
+| _Contract tests (Spring Cloud Contract)_ | _Planificado_ | Contratos consumidor/productor entre microservicios; **no implementado** al cierre del Sprint 3. | SP10 |
+
+> Nota: las pruebas basadas en contratos (`SP10`) son el trabajo pendiente más relevante del Sprint 3; su tarjeta queda explícitamente *En Curso* para no sobre-reportar el avance.
+
+#### 5.3.3.4. Execution Evidence for Sprint Review
+
+En el Sprint 3 se puso en funcionamiento el **almacenamiento de imágenes de extremo a extremo**: el freelancer sube imágenes a su servicio o a su portafolio desde el frontend, el backend las almacena en **Supabase Storage** (subida binaria) y persiste la **URL pública** en base de datos, y las imágenes se muestran en el catálogo y en el detalle del servicio. La resiliencia se valida observando que, ante un fallo del storage o de la notificación, el **Circuit Breaker** abre el circuito y aplica el `fallback` sin tumbar la operación principal.
+
+**Subida de media del servicio (`GigMediaManager`)** — previsualización, marcado de imagen principal y eliminación (hasta 5 imágenes; JPEG/PNG/WebP):
+
+<img src="imgs/sprint3/frontend-gig-media-upload.png" alt="Flujo de subida de media del gig en GigU" title="Frontend GigU - Gig Media Upload"/>
+
+**Imágenes del servicio en el catálogo y detalle** (servidas desde Supabase Storage vía URL pública):
+
+<img src="imgs/sprint3/frontend-service-gallery.png" alt="Galería de imágenes del servicio en GigU" title="Frontend GigU - Service Gallery"/>
+
+**Subida de imágenes de evidencia al portafolio del freelancer** (bucket `portfolio`):
+
+<img src="imgs/sprint3/frontend-portfolio-upload.png" alt="Subida de imágenes al portafolio del freelancer en GigU" title="Frontend GigU - Portfolio Upload"/>
+
+Las imágenes se almacenan bajo rutas determinísticas (`services/{serviceId}/{uuid}-{archivo}` y `freelancers/{userId}/{uuid}-{archivo}`) y se sirven mediante la URL pública `{SUPABASE_URL}/storage/v1/object/public/{bucket}/{objectPath}`.
+
+#### 5.3.3.5. Microservices Documentation Evidence for Sprint Review
+
+Durante el Sprint 3 se documentaron en `gig-marketplace-service` y `access-profile-service` los nuevos endpoints de gestión de imágenes (multipart), que se mantienen en Swagger UI (`/swagger-ui/index.html`) de cada despliegue en Google Cloud Run.
+
+**GigMarketplaceService** — endpoints de media del servicio:
+
+| Endpoint | Verbo HTTP | Acción |
+| --- | --- | --- |
+| `/api/v1/marketplace/services/{id}/media` | POST | Subir una imagen del servicio (multipart; `file`, `primary`). Máx. 5 imágenes, 5MB, tipos `jpeg`/`png`/`webp`. |
+| `/api/v1/marketplace/services/{id}/media/{mediaId}` | DELETE | Eliminar una imagen del servicio y su objeto en Supabase Storage. |
+
+**AccessProfileService** — endpoint de media del portafolio:
+
+| Endpoint | Verbo HTTP | Acción |
+| --- | --- | --- |
+| `/api/v1/access/freelancer-profiles/me/portfolio-items` | POST | Subir un ítem de portafolio con imagen (multipart; `title`, `description`, `file`). Tipos `jpeg`/`png`. |
+
+Ejemplo de uso — `POST /api/v1/marketplace/services/{id}/media` (multipart/form-data):
+```text
+file=<binary image/png|jpeg|webp>
+primary=true
+```
+La respuesta incluye el `mediaId` y la `publicUrl` del objeto almacenado en Supabase Storage; los metadatos (`bucket`, `objectPath`, `contentType`, `sizeBytes`, `primary`, `sortOrder`) quedan persistidos en `marketplace_schema.service_media`.
+
+<img src="imgs/sprint3/marketplace-api-media-endpoints.png" alt="Swagger UI de GigMarketplaceService con los endpoints de media" title="GigMarketplaceService API - Media"/>
+
+#### 5.3.3.6. Software Deployment Evidence for Sprint Review
+
+Durante el Sprint 3 se redesplegaron en Google Cloud Run los microservicios afectados (`gigu-gig-marketplace-service`, `gigu-access-profile-service`, `gigu-pulls-service` y `gigu-chat-notification-service`), se configuraron los buckets de **Supabase Storage** (`portfolio` y `gig-media`) y se externalizó la configuración de Pub/Sub a un objeto JSON en **Google Cloud Storage** (`gs://gigu-external-config/prod/eda-pubsub-config.json`), cargado al arranque por `ExternalEdaConfigLoader`.
+
+**Configuración de almacenamiento (Supabase Storage):** buckets `portfolio` (portafolio del freelancer) y `gig-media` (media de los servicios), con credenciales `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` provistas como variables de entorno en Cloud Run.
+
+<img src="imgs/sprint3/supabase-storage-buckets.png" alt="Buckets de Supabase Storage portfolio y gig-media" title="Supabase Storage - Buckets"/>
+
+**Externalización de la configuración de Pub/Sub:** el objeto `eda-pubsub-config.json` (project, topic `gigu-chat-events`, suscripción `gigu-chat-events-push-chat`, webhook y `credentialsStrategy: cloud-run-service-account`) se aloja en el bucket `gigu-external-config` de Google Cloud Storage y se carga al arranque. El log de Cloud Run de `gigu-chat-notification-service` confirma la carga: `c.g.c.i.eda.ExternalEdaConfigLoader : Loaded external EDA config from gs://gigu-external-config/prod/eda-pubsub-config.json`:
+
+<img src="imgs/sprint3/cloudrun-eda-config-loaded.png" alt="Log de Cloud Run confirmando la carga de la config EDA/Pub/Sub desde Google Cloud Storage" title="Cloud Run - EDA Config cargada desde Cloud Storage"/>
+
+Commits relacionados con el despliegue del Sprint 3: `64bbe47` (carga de la config EDA desde Cloud Storage), `1cfa93d` y `0cde3a6` (circuit breakers) y `bed24da` (soporte de media en Supabase Storage) en `backend-microservices`; `5f527f9` (sincronización del lockfile para el build de Vercel) en `frontend`.
+
+#### 5.3.3.7. Team Collaboration Insights during Sprint
+
+El trabajo del Sprint 3 se distribuyó entre los tres integrantes del equipo. El almacenamiento de imágenes, la resiliencia (Circuit Breaker) y la externalización de la configuración de Pub/Sub se concentraron en el backend; el rediseño y pulido del frontend (fidelidad con el Figma) y la mejora del flujo de subida de media; y la migración del tablero Kanban a Notion.
+
+| Integrante | Usuario GitHub | Principales aportes en el Sprint 3 |
+| --- | --- | --- |
+| Oblitas Davila, Mariano Moises | `Sigilo-dev` / `vr700` | Almacenamiento de imágenes en Supabase Storage (`StoragePort`/`SupabaseStorageAdapter`) para portafolio y marketplace, Circuit Breaker (Resilience4j) en marketplace y pulls, y externalización de la configuración de Pub/Sub a un JSON en Cloud Storage. |
+| Mio Mejia, Andy Alejandro | `AndyMio17` / `AndyMio` | Rediseño de la vista de mensajes y de las páginas de dashboard/perfil del freelancer (fidelidad con el Figma) y mejora del flujo de subida de media del gig. |
+| Ybañez Esquerre, Miguel Angel | `Miguel080902` | Migración y actualización del tablero Kanban a Notion (product backlog y sprints). Los tests basados en contratos (`SP10`) quedan a su cargo, **en curso** al cierre del Sprint. |
+
+**Análisis de colaboración y commits de GitHub (Sprint 3).** Las estadísticas de contribución de GitHub (*Insights → Contributors*, rama principal de cada repositorio, ventana del Sprint 3 — 18 al 20 de junio de 2026, excluyendo merge commits) son las siguientes:
+
+| Repositorio | Rama | Contribuidor (GitHub) | Commits |
+| --- | --- | --- | --- |
+| backend-microservices | `feature/main-app-logic` | `vr700` / `Sigilo-dev` (Oblitas Davila, Mariano) | 11 |
+| frontend | `feature/main-app` | `vr700` / `Sigilo-dev` (Oblitas Davila, Mariano) | 8 |
+| frontend | `feature/main-app` | `AndyMio` (Mio Mejia, Andy) | 1 |
+
+Durante el Sprint 3, la implementación del backend (storage, resiliencia y configuración externalizada) se integró principalmente a través de la cuenta `vr700`/`Sigilo-dev`, mientras que el rediseño del frontend y la migración del Kanban a Notion se realizaron de forma colaborativa por el equipo. La verificación funcional de la subida de imágenes y del comportamiento del Circuit Breaker se realizó sobre los despliegues en Google Cloud Run.
+
+#### 5.3.3.8. Kanban Board
+
+El tablero Kanban del Sprint 3 se gestiona en Notion (base de datos `sprint-3-backlog`), con las columnas **Por Hacer**, **En Curso** y **Hecho**. El tablero del Sprint 3 agrupa las **11 tarjetas nuevas del alcance del Sprint** (GIGU-74 a GIGU-84); a diferencia de los Sprints 1 y 2, **no cierra al 100%**: dos tarjetas quedan en estado *En Curso* al cierre.
+
+| Estado | Cantidad | Tarjetas |
+| --- | --- | --- |
+| Hecho (Done) | 9 | GIGU-74, GIGU-75, GIGU-76, GIGU-77, GIGU-78, GIGU-79, GIGU-80, GIGU-81, GIGU-82 |
+| En Curso (In-Process) | 2 | GIGU-83 (optimización de velocidad del frontend), GIGU-84 (tests basados en contratos) |
+| Por Hacer (To-do) | 0 | — |
+
+Sumando las 64 tarjetas finalizadas en los Sprints 1 y 2, el proyecto acumula **73 tarjetas en estado *Hecho*** al cierre del Sprint 3, con 2 tarjetas en curso (`GIGU-83` y `GIGU-84`) planificadas para una iteración posterior.
+
+<img src="imgs/sprint3/sprint3-kanban-board.png" alt="Kanban Board del Sprint 3 en Notion" title="Kanban Board Sprint 3"/>
+
+URL del tablero (Notion): https://www.notion.so/38aff0862f2c806bb608c55f679d64f6?v=38aff0862f2c81f2a7d0000cdfffa458
 
 ## 5.4. Microservices Deployment
 
