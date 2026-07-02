@@ -1487,39 +1487,99 @@ El despliegue backend actual utiliza Google Cloud Run en el proyecto `dosys-rest
 | Google Cloud Pub/Sub | Servicio administrado de mensajería asíncrona para eventos secundarios. | Seleccionado / pendiente de implementación |
 | Storage | Capacidad para almacenar binarios de portafolio, imágenes y adjuntos. | Pendiente de implementación |
 
+
 ### 4.1.3. Context Diagram
+El diagrama de contexto representa a GigU como sistema de software y muestra cómo se relaciona con sus actores principales. Los usuarios identificados son el visitante, el estudiante universitario freelancer, el cliente o emprendimiento y el administrador de plataforma. Esta vista permite delimitar el alcance del sistema desde una perspectiva externa, mostrando qué responsabilidades de negocio son soportadas por GigU sin exponer todavía su estructura interna.
 
-El diagrama de contexto representa a GigU como sistema de software y muestra su relación con los usuarios principales y servicios externos. El proyecto identifica como actores principales al estudiante universitario freelancer, al cliente o emprendimiento que contrata servicios y al administrador de plataforma. Las funcionalidades principales incluyen creación de perfil, publicación de servicios, búsqueda, contratación, gestión de proyectos, calificaciones, mensajería y sugerencia de precios (GigU, 2026).
+Desde esta perspectiva, GigU actúa como una plataforma web que permite conocer la propuesta de valor, publicar servicios, buscar freelancers, enviar solicitudes de contratación, gestionar proyectos, intercambiar mensajes, recibir notificaciones y consultar calificaciones. Esta vista responde a la pregunta arquitectónica: **¿qué sistema se está construyendo y quiénes interactúan con él?**
 
-![4.1.3.ContextDiagram](imgs/add/4.1.3.ContextDiagram.png)
+![4.1.3. Context Diagram](imgs/add/4.1.3.ContextDiagram.png)
 
 ### 4.1.4. Approach-driven ViewPoints Diagrams
 
-Para comunicar la arquitectura de GigU se utilizarán vistas C4 y UML. El C4 Model permite representar el sistema en distintos niveles de abstracción: contexto, contenedores, componentes y código. Para este punto se incluyen vistas de contexto, contenedores, componentes, actividad, estado y clases, coherentes con la estructura solicitada para el capítulo.
+Para comunicar la arquitectura de GigU se utilizan vistas C4 y UML. Las vistas C4 permiten representar el sistema en diferentes niveles de abstracción: contexto, contenedores, componentes, comportamiento en tiempo de ejecución y despliegue físico. Las vistas UML complementan la documentación al mostrar el flujo funcional, el ciclo de vida de entidades y la estructura de clases del dominio.
 
-#### Viewpoint 01: Container View
+De acuerdo con el enfoque de vistas arquitectónicas, no se documenta toda la arquitectura en un solo diagrama. Cada vista responde una pregunta distinta: cómo se estructura el sistema en unidades ejecutables, cómo se organizan los componentes internos de los microservicios, cómo se comporta el sistema en tiempo de ejecución, cómo se despliega físicamente en la nube y cómo se estructura la información persistente.
 
-La vista de contenedores muestra los elementos ejecutables principales de GigU: frontend, gateway, microservicios backend, broker de eventos, base de datos y almacenamiento. Esta vista permite observar la distribución de responsabilidades en tiempo de ejecución.
+#### ViewPoint 01: Container View
 
-![4.1.4.ContainerView](imgs/add/4.1.4.ContainerView.png)
+La vista de contenedores muestra las unidades ejecutables principales de GigU. El sistema está compuesto por un frontend web desarrollado con Vue, TypeScript y Vite, desplegado en Vercel; y cuatro microservicios backend desarrollados con Spring Boot y desplegados en Google Cloud Run: `AccessProfileService`, `GigMarketplaceService`, `PullEngagementService` y `ChatNotificationService`.
 
-#### Viewpoint 02: Component View - PullEngagementService
+El frontend consume las APIs backend mediante HTTPS/REST a través de Vercel Rewrites. Los microservicios persisten información en Supabase PostgreSQL, separando los datos por esquemas asociados a cada bounded context. Los archivos de portafolio y media de servicios se almacenan en Supabase Storage. La comunicación asíncrona y los eventos secundarios se soportan mediante Google Cloud Pub/Sub. Además, Google Cloud Storage se utiliza para externalizar configuración relacionada con eventos y Pub/Sub.
 
-El PullEngagementService concentra las reglas transaccionales más relevantes de GigU: solicitudes de contratación, acuerdos, proyectos, cambios de estado, reseñas y sugerencias de precio. Este servicio refleja historias críticas del producto, como contratar desde el perfil del freelancer, aceptar o rechazar solicitudes, visualizar proyectos activos, marcar proyectos como finalizados y registrar calificaciones (GigU, 2026).
+Esta vista responde a la pregunta: **¿cuáles son las principales unidades ejecutables del sistema y cómo se comunican?**
 
-![4.1.4.ComponentViewPullEngagement](imgs/add/4.1.4.ComponentViewPullEngagement.png)
+![4.1.4. Container View](imgs/add/4.1.4.1.ContainerView.png)
 
-#### Viewpoint 03: Activity Diagram - contratación de servicio
+#### ViewPoint 02: Component View - PullEngagementService
 
-![4.1.4.ActivityHiringFlow](imgs/add/4.1.4.ActivityHiringFlow.png)
+El `PullEngagementService` concentra las reglas transaccionales más relevantes del flujo de contratación de GigU. Este microservicio gestiona solicitudes de contratación, aceptación o rechazo de solicitudes, acuerdos, proyectos, cambios de estado, reseñas y sugerencias de precio. Por ello, representa el núcleo del flujo cliente-freelancer después de que un cliente decide solicitar un servicio.
 
-#### Viewpoint 04: State Diagram - ciclo de vida de proyecto
+Internamente, el microservicio se organiza siguiendo Clean Architecture. La capa de interfaz expone controladores REST; la capa de aplicación contiene los casos de uso; la capa de dominio contiene agregados, entidades, reglas e invariantes; y la capa de infraestructura implementa persistencia JPA, publicación de eventos hacia Google Cloud Pub/Sub, cliente HTTP interno hacia `ChatNotificationService` y tolerancia a fallos mediante Resilience4j.
 
-![4.1.4.StateProjectLifecycleOverview](imgs/add/4.1.4.StateProjectLifecycleOverview.png)
+Esta vista responde a la pregunta: **¿cómo está estructurado internamente el microservicio que gestiona solicitudes, acuerdos y proyectos?**
 
-#### Viewpoint 05: Domain Class Diagram
+![4.1.4. Component View - PullEngagementService](imgs/add/4.1.4.2.ComponentViewPullEngagementService.png)
 
-![4.1.4.DomainClassDiagram](imgs/add/4.1.4.DomainClassDiagram.png)
+#### ViewPoint 03: Component View - ChatNotificationService
+
+El `ChatNotificationService` concentra las capacidades de comunicación y coordinación entre usuarios. Este microservicio gestiona conversaciones, mensajes, notificaciones, reportes, tickets, webhook interno, recepción de eventos desde Google Cloud Pub/Sub y entrega de notificaciones en tiempo real mediante WebSocket/STOMP.
+
+La vista muestra la separación entre controladores REST, controladores WebSocket, controladores internos para webhook, casos de uso de aplicación, entidades de dominio y adaptadores de infraestructura. Esta separación permite que la lógica de notificación no dependa directamente del mecanismo de transporte utilizado, ya sea REST, Pub/Sub o WebSocket.
+
+Esta vista responde a la pregunta: **¿cómo está estructurado internamente el microservicio que gestiona chat, notificaciones y comunicación en tiempo real?**
+
+![4.1.4. Component View - ChatNotificationService](imgs/add/4.1.4.3.ComponentViewChatNotificationService.png)
+
+#### ViewPoint 04: Runtime / Behavior View - Request and Real-Time Notification
+
+La vista dinámica describe el comportamiento en tiempo de ejecución para un flujo crítico de GigU: la creación de una solicitud de contratación y la notificación en tiempo real al freelancer. El cliente inicia la solicitud desde el frontend web. Luego, el frontend envía la petición al `PullEngagementService` mediante HTTPS/REST a través de Vercel Rewrites. El microservicio registra la solicitud en Supabase PostgreSQL y solicita al `ChatNotificationService` la creación de una notificación interna mediante un webhook protegido con Resilience4j.
+
+Después, `ChatNotificationService` persiste la notificación en el esquema correspondiente de Supabase PostgreSQL y la entrega al freelancer mediante WebSocket/STOMP. Además, el flujo se complementa con Google Cloud Pub/Sub para eventos asíncronos secundarios, permitiendo desacoplar operaciones de notificación y procesamiento de eventos.
+
+Esta vista responde a la pregunta: **¿cómo interactúan los contenedores del sistema durante un flujo real de contratación y notificación?**
+
+![4.1.4. Runtime Request Notification View](imgs/add/4.1.4.4.RuntimeRequestNotificationView.png)
+
+#### ViewPoint 05: Activity Diagram - contratación de servicio
+
+El diagrama de actividad describe el flujo funcional de contratación de un servicio freelance dentro de GigU. El proceso inicia cuando el cliente busca freelancers o servicios, revisa perfiles, portafolios, tarifas y calificaciones, y luego envía una solicitud de contratación. Posteriormente, el freelancer revisa la solicitud y puede aceptarla o rechazarla.
+
+Si la solicitud es aceptada, el sistema genera un acuerdo preliminar, permite revisar condiciones y crea un proyecto activo cuando ambas partes confirman. Luego, el freelancer desarrolla el servicio, marca la entrega como finalizada, el cliente revisa el resultado y puede aprobarlo o solicitar ajustes. Finalmente, el sistema marca el proyecto como completado y permite registrar la calificación.
+
+Esta vista responde a la pregunta: **¿cuál es el flujo funcional completo de contratación desde el punto de vista del negocio?**
+
+![4.1.4. Activity Hiring Flow](imgs/add/4.1.4.ActivityHiringFlow.png)
+
+#### ViewPoint 06: State Diagram - ciclo de vida de proyecto
+
+El diagrama de estado muestra el ciclo de vida de un proyecto dentro de GigU. El flujo inicia en el estado `Requested`, cuando el cliente envía una solicitud de contratación. A partir de allí, el freelancer puede aceptar o rechazar la solicitud. Si la acepta, el proyecto puede pasar por revisión de condiciones, confirmación de acuerdo, ejecución, entrega, solicitud de revisión, completado, reseñado y cerrado.
+
+Esta vista permite verificar que los estados principales del proyecto estén controlados y que las transiciones dependan de acciones explícitas del cliente o del freelancer. También ayuda a evitar estados inválidos, como completar un proyecto que no fue entregado o registrar una reseña antes de finalizar el trabajo.
+
+Esta vista responde a la pregunta: **¿qué estados atraviesa un proyecto y qué eventos provocan sus transiciones?**
+
+![4.1.4. State Project Lifecycle Overview](imgs/add/4.1.4.StateProjectLifecycleOverview.png)
+
+#### ViewPoint 07: Domain Class Diagram
+
+El diagrama de clases de dominio muestra las entidades principales del modelo de GigU y sus relaciones. Entre las entidades más relevantes se encuentran `User`, `FreelancerProfile`, `Skill`, `PortfolioItem`, `ServiceOffering`, `ProjectRequest`, `Agreement`, `Project`, `Review`, `Conversation`, `Message`, `PriceSuggestion` y `Money`.
+
+Esta vista permite observar cómo se estructuran los conceptos principales del dominio freelance universitario. El modelo separa perfiles, servicios publicados, solicitudes, acuerdos, proyectos, reseñas y conversaciones. Además, permite ubicar qué entidades pertenecen a cada bounded context y qué relaciones conceptuales existen entre ellas.
+
+Esta vista responde a la pregunta: **¿cuáles son las entidades principales del dominio y cómo se relacionan?**
+
+![4.1.4. Domain Class Diagram](imgs/add/4.1.4.DomainClassDiagram.png)
+
+#### ViewPoint 08: Physical / Deployment View - Cloud Deployment Architecture
+
+La vista física o de despliegue muestra cómo los contenedores de software se ubican sobre infraestructura cloud real. El frontend web se aloja en Vercel y utiliza Vercel Rewrites para enrutar las llamadas `/api/*` hacia los microservicios backend desplegados en Google Cloud Run. Cada microservicio se ejecuta de forma independiente como servicio administrado.
+
+La persistencia relacional se resuelve mediante Supabase PostgreSQL, organizado por esquemas asociados a bounded contexts. El almacenamiento de archivos se gestiona mediante Supabase Storage para portafolios y media de servicios. La comunicación asíncrona se implementa mediante Google Cloud Pub/Sub y la configuración externa de eventos se aloja en Google Cloud Storage. Finalmente, GitHub Actions automatiza los procesos de construcción y despliegue hacia Vercel y Google Cloud Run.
+
+Esta vista responde a la pregunta: **¿dónde se ejecuta físicamente cada parte del sistema y mediante qué infraestructura cloud se comunican?**
+
+![4.1.4. Physical Deployment View](imgs/add/4.1.4.8.PhysicalDeploymentView.png)
 
 ### 4.1.5. Relational/Non-Relational Database Diagram
 
