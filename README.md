@@ -184,6 +184,17 @@
       * [5.3.3.7. Team Collaboration Insights during Sprint](#5337-team-collaboration-insights-during-sprint)
       * [5.3.3.8. Kanban Board](#5338-kanban-board)
 
+    * [5.3.4. Sprint 4](#534-sprint-4)
+
+      * [5.3.4.1. Sprint Backlog 4](#5341-sprint-backlog-4)
+      * [5.3.4.2. Development Evidence for Sprint Review](#5342-development-evidence-for-sprint-review)
+      * [5.3.4.3. Testing Suite Evidence for Sprint Review](#5343-testing-suite-evidence-for-sprint-review)
+      * [5.3.4.4. Execution Evidence for Sprint Review](#5344-execution-evidence-for-sprint-review)
+      * [5.3.4.5. Microservices Documentation Evidence for Sprint Review](#5345-microservices-documentation-evidence-for-sprint-review)
+      * [5.3.4.6. Software Deployment Evidence for Sprint Review](#5346-software-deployment-evidence-for-sprint-review)
+      * [5.3.4.7. Team Collaboration Insights during Sprint](#5347-team-collaboration-insights-during-sprint)
+      * [5.3.4.8. Kanban Board](#5348-kanban-board)
+
   * [5.4. Microservices Deployment](#54-microservices-deployment)
 
     * [5.4.1. Cloud Architecture Diagram](#541-cloud-architecture-diagram)
@@ -2980,11 +2991,84 @@ Sumando las 64 tarjetas finalizadas en los Sprints 1 y 2, el proyecto acumula **
 
 URL del tablero (Notion): https://www.notion.so/38aff0862f2c806bb608c55f679d64f6?v=38aff0862f2c81f2a7d0000cdfffa458
 
+### 5.3.4. Sprint 4
+
+> **[PENDIENTE — ANDAMIAJE]** Esta sección está estructurada pero aún sin evidencia real. Al cierre del Sprint 3 quedaron **dos work-items *En Curso*** que constituyen el núcleo del alcance del Sprint 4: `GIGU-83` (optimización de velocidad del frontend — lazy-loading, code-splitting, debounce) y `GIGU-84` (tests basados en contratos entre microservicios — Spring Cloud Contract). Reemplazar cada marcador `[PENDIENTE: ...]` con la evidencia real (hashes de commit, screenshots en `imgs/sprint4/`, URL del board de Notion) una vez ejecutado el trabajo en los repos `backend-microservices` y `frontend`.
+
+#### 5.3.4.1. Sprint Backlog 4
+
+El Sprint 4 es la iteración de cierre del proyecto (TF1). Su objetivo es **completar los work-items que quedaron *En Curso* al cierre del Sprint 3** y **consolidar el despliegue cloud** de la solución. El alcance planificado es:
+
+- `GIGU-83` — Optimización de velocidad del frontend (lazy-loading de rutas, code-splitting, debounce en búsquedas).
+- `GIGU-84` — Tests basados en contratos entre microservicios (Spring Cloud Contract: contratos consumidor/productor).
+- **[PENDIENTE: listar tarjetas nuevas del Sprint 4 — GIGU-85 en adelante]** (p. ej. consolidación de la arquitectura de despliegue cloud para TF1).
+
+**Board del Sprint 4 (Notion):** **[PENDIENTE: URL del board del Sprint 4 en Notion]**
+
+| Sprint # | Sprint 4 | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **User Story / Work-Item** | **ID** | **Trabajo (Task)** | **Descripción** | **Responsable** | **Estimación** | **Estado** | |
+| Optimización de velocidad del frontend | GIGU-83 | *[PENDIENTE]* | Lazy-loading, code-splitting y debounce | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE: Hecho / En Curso]* | |
+| Tests basados en contratos | GIGU-84 | *[PENDIENTE]* | Contratos consumidor/productor entre microservicios | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE: Hecho / En Curso]* | |
+
+> **[PENDIENTE: screenshots del backlog del Sprint 4 en Notion]** — colocar en `imgs/sprint4/` (p. ej. `sprint4-backlog-done-1.png`) y enlazarlos aquí, siguiendo el patrón de los Sprints anteriores.
+
+#### 5.3.4.2. Development Evidence for Sprint Review
+
+> **[PENDIENTE]** Describir el trabajo de desarrollo del Sprint 4. Actividad candidata detectada en los repos posterior al cierre del Sprint 3 (18–20 jun): backend `test(pulls): add engagement business rule tests` (26/06/2026) en `feature/pull-engagement-service`/`feature/main-app-logic`; frontend `feat(marketplace): refine gig tags and pricing controls` y `fix(marketplace): remove gig create defaults and add price calculator` (25/06/2026) en `feature/frontend-marketplace`/`feature/main-app`. **Confirmar y ampliar** con los commits que cierren GIGU-83 y GIGU-84.
+
+| Repositorio | Rama | Commit (SHA) | Mensaje | Descripción | Fecha |
+| --- | --- | --- | --- | --- | --- |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE]* |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE]* |
+
+#### 5.3.4.3. Testing Suite Evidence for Sprint Review
+
+> **[PENDIENTE]** Evidencia de la suite de pruebas del Sprint 4. El foco esperado es cerrar `GIGU-84` (tests basados en contratos con **Spring Cloud Contract** — contratos productor/consumidor entre microservicios), que quedó *Planificado / En Curso* al cierre del Sprint 3 (README §5.3.3.3). Incluir la tabla de casos de prueba y los screenshots de ejecución (`imgs/sprint4/`).
+
+| Suite / Caso de prueba | Estado | Descripción | Work-item |
+| --- | --- | --- | --- |
+| Contract tests (Spring Cloud Contract) | *[PENDIENTE: Hecho / En Curso]* | Contratos consumidor/productor entre microservicios | GIGU-84 / SP10 |
+
+#### 5.3.4.4. Execution Evidence for Sprint Review
+
+> **[PENDIENTE]** Evidencia de la solución en ejecución tras el Sprint 4 (p. ej. mejora de tiempos de carga del frontend por GIGU-83). Añadir screenshots/GIFs en `imgs/sprint4/` y enlazarlos aquí.
+
+#### 5.3.4.5. Microservices Documentation Evidence for Sprint Review
+
+> **[PENDIENTE]** Documentación de microservicios actualizada en el Sprint 4 (Swagger UI `/swagger-ui/index.html` de cada despliegue en Google Cloud Run). Si el Sprint 4 no agrega ni modifica endpoints, indicarlo explícitamente y referenciar la documentación vigente de Sprints anteriores.
+
+#### 5.3.4.6. Software Deployment Evidence for Sprint Review
+
+> **[PENDIENTE]** Evidencia de despliegue del Sprint 4 (redepliegue en Google Cloud Run de los servicios afectados y del frontend en Vercel). Para TF1, esta subsección se articula con la §5.4 (Cloud Architecture Diagram y Cloud Architecture Deployment). Incluir listado de servicios en Cloud Run, despliegue de producción en Vercel y los commits de despliegue.
+
+#### 5.3.4.7. Team Collaboration Insights during Sprint
+
+> **[PENDIENTE]** Distribución del trabajo del Sprint 4 entre los tres integrantes y análisis de colaboración (GitHub *Insights → Contributors*, ventana del Sprint 4, excluyendo merge commits). Colocar los screenshots de Insights en `imgs/sprint4/`.
+
+| Integrante | Usuario GitHub | Principales aportes en el Sprint 4 |
+| --- | --- | --- |
+| Oblitas Davila, Mariano Moises | *[PENDIENTE]* | *[PENDIENTE]* |
+| Ybañez Esquerre, Miguel Angel | *[PENDIENTE]* | *[PENDIENTE]* |
+| Mio Mejia, Andy Alejandro | *[PENDIENTE]* | *[PENDIENTE]* |
+
+#### 5.3.4.8. Kanban Board
+
+El tablero Kanban del Sprint 4 se gestiona en Notion (base de datos `sprint-4-backlog`), con las columnas **Por Hacer**, **En Curso** y **Hecho**.
+
+| Estado | Cantidad | Tarjetas |
+| --- | --- | --- |
+| Hecho (Done) | *[PENDIENTE]* | *[PENDIENTE]* |
+| En Curso (In-Process) | *[PENDIENTE]* | *[PENDIENTE]* |
+| Por Hacer (To-do) | *[PENDIENTE]* | *[PENDIENTE]* |
+
+> **[PENDIENTE: screenshot `imgs/sprint4/sprint4-kanban-board.png` y URL del board en Notion]**. Recordar exportar el `sprint-4-backlog.csv` a `migration/notion/` para mantener la trazabilidad de la migración Jira → Notion.
+
 ## 5.4. Microservices Deployment
 
 ### 5.4.1. Cloud Architecture Diagram
 
-La arquitectura cloud actual de GigU distribuye la aplicación en servicios administrados para reducir carga operativa y permitir despliegues independientes. Vercel aloja la landing page y la aplicación frontend. Vercel Rewrites funciona como capa pública de routing para reenviar solicitudes `/api/*` hacia los microservicios backend desplegados en Google Cloud Run. Supabase PostgreSQL se utiliza como base de datos relacional administrada.
+La arquitectura cloud actual de GigU distribuye la aplicación en servicios administrados para reducir carga operativa y permitir despliegues independientes. Vercel aloja la landing page y la aplicación frontend. Vercel Rewrites funciona como capa pública de routing para reenviar solicitudes `/api/*` hacia los microservicios backend desplegados en Google Cloud Run. Supabase PostgreSQL se utiliza como base de datos relacional administrada, Supabase Storage para binarios de portafolio y media de servicios, Google Cloud Pub/Sub para la mensajería asíncrona de eventos de dominio y Google Cloud Storage para externalizar la configuración de eventos (EDA/Pub/Sub).
 
 ```text
 Usuario
@@ -3003,24 +3087,22 @@ Google Cloud Run
   |-- gigu-pulls-service
   |-- gigu-chat-notification-service
   |
-  v
-Supabase PostgreSQL
-
-Capacidades pendientes:
-  |-- Google Cloud Pub/Sub para mensajería asíncrona
-  |-- Storage para binarios de portafolio, imágenes y adjuntos
-
-  | Elemento               | Tecnología           | Estado                      |
-| ---------------------- | -------------------- | --------------------------- |
-| Landing page           | Vercel               | Implementado                |
-| Frontend web app       | Vercel               | Implementado                |
-| API routing            | Vercel Rewrites      | Implementado                |
-| Backend microservices  | Google Cloud Run     | Implementado                |
-| Database               | Supabase PostgreSQL  | Implementado                |
-| Asynchronous messaging | Google Cloud Pub/Sub | Pendiente de implementación |
-| Storage                | Por definir          | Pendiente de implementación |
-
+  |-- Persistencia         --> Supabase PostgreSQL (esquemas por bounded context)
+  |-- Almacenamiento       --> Supabase Storage (portfolio, gig-media)
+  |-- Mensajería asíncrona --> Google Cloud Pub/Sub (entrega push por webhook)
+  |-- Config externalizada --> Google Cloud Storage (gs://gigu-external-config/prod/eda-pubsub-config.json)
 ```
+
+| Elemento               | Tecnología           | Estado                                  |
+| ---------------------- | -------------------- | --------------------------------------- |
+| Landing page           | Vercel               | Implementado                            |
+| Frontend web app       | Vercel               | Implementado                            |
+| API routing            | Vercel Rewrites      | Implementado                            |
+| Backend microservices  | Google Cloud Run     | Implementado                            |
+| Database               | Supabase PostgreSQL  | Implementado                            |
+| Storage                | Supabase Storage     | Implementado (Sprint 3)                 |
+| Asynchronous messaging | Google Cloud Pub/Sub | Implementado (Sprint 2)                 |
+| Config externa (EDA)   | Google Cloud Storage | Implementado (Sprint 3)                 |
 
 ### 5.4.2. Cloud Architecture Deployment
 
