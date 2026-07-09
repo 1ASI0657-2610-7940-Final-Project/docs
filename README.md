@@ -3193,6 +3193,11 @@ También puede utilizarse:
 
 # Video About-The-Team
 
+En esta sección se presenta el video **About-The-Team** del proyecto **GigU**, en el cual cada integrante expone brevemente su rol dentro del equipo, sus principales aportes durante el desarrollo del Trabajo Final y los aprendizajes obtenidos durante el proceso de implementación, documentación, testing, despliegue y validación del producto.
+
+**Enlace del video:** [Video About-The-Team - GigU](https://upcedupe-my.sharepoint.com/:v:/g/personal/u202310222_upc_edu_pe/IQBiZa8IFvOdQr8H70ySMlL_AUqKnNzHHfFWmdEXbWu7dtM?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=h2wYOt)
+
+
 <div style="page-break-before: always;"></div>
 
 # Referencias bibliográficas
