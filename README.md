@@ -3260,6 +3260,12 @@ Vercel. (s. f.-b). [*Vercel Hobby Plan*](https://vercel.com/docs/plans/hobby). V
 
 # Anexos
 
+En este anexo se presenta el video demo del producto **GigU**, donde se evidencia el funcionamiento principal de la plataforma desplegada. La demostración muestra el flujo de uso del sistema desde la perspectiva del usuario, incluyendo el acceso a la plataforma, navegación por el marketplace, visualización de servicios, solicitud de contratación y validación de las funcionalidades principales implementadas durante el Trabajo Final.
+
+El video permite comprobar que GigU no se limita a una propuesta documentada, sino que cuenta con una versión funcional y desplegada, integrada con frontend, microservicios backend, persistencia, almacenamiento, mensajería, comunicación en tiempo real y servicios cloud.
+
+**Enlace del video demo:** [Video Demo - GigU](https://upcedupe-my.sharepoint.com/:v:/g/personal/u202310222_upc_edu_pe/IQCmGv-D_1RWSZys-0xCVsJcAaeb0nv_KXcBPnqOd1oe7fs?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBQHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=GmytOD)
+
 <div style="page-break-before: always;"></div>
 
 # Links
