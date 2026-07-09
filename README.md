@@ -38,6 +38,7 @@
 | TB1 | 14/05/2026 | Oblitas Davila, Mariano Moises; Ybañez Esquerre, Miguel Angel; Mio Mejia, Andy Alejandro | Se actualizó el informe con el Capítulo V: Product Implementation, Validation & Deployment. Se desarrollaron las secciones de Testing Suites & General Patterns, Software Configuration Management (configuración del entorno de desarrollo, Source Code Management con GitFlow, convenciones de estilo y configuración de despliegue) y la implementación de microservicios para el Sprint 1, incluyendo Sprint Backlog, evidencias de desarrollo, testing, ejecución, documentación OpenAPI y despliegue en Google Cloud Run y Vercel, junto con el tablero Kanban y los insights de colaboración del equipo. Se incluyeron además las Conclusiones y recomendaciones del proyecto. |
 | AV3 | 06/06/2026 | Oblitas Davila, Mariano Moises; Ybañez Esquerre, Miguel Angel; Mio Mejia, Andy Alejandro | Se actualizó el informe con el Sprint 2 (sección 5.3.2 del Capítulo V): se implementó y desplegó la mensajería asíncrona y la comunicación en tiempo real de GigU —notificaciones en tiempo real y base del chat por eventos— usando Google Cloud Pub/Sub (entrega push por webhook), WebSocket + STOMP (Spring Boot) y un webhook interno entre PullEngagementService y ChatNotificationService. Se corrigió además el botón de envío de solicitudes (Send Request) del portal del cliente. Se documentaron el Sprint Backlog 2, las evidencias de desarrollo, testing, ejecución, documentación OpenAPI y despliegue (Cloud Run, Pub/Sub y Vercel), los insights de colaboración del equipo y el tablero Kanban, cerrando todas las tarjetas pendientes del Sprint 1. Se actualizó el Student Outcome con las acciones de aprendizaje del Sprint 2. |
 | AV4 | 20/06/2026 | Oblitas Davila, Mariano Moises; Ybañez Esquerre, Miguel Angel; Mio Mejia, Andy Alejandro | Se actualizó el informe con el Sprint 3 (sección 5.3.3 del Capítulo V), centrado en el endurecimiento técnico de GigU: almacenamiento de imágenes en Supabase Storage mediante un puerto/adaptador hexagonal (portafolio del freelancer y media de los servicios), resiliencia ante fallos de servicios externos con Resilience4j (Circuit Breaker en GigMarketplaceService y PullEngagementService), externalización de la configuración de Pub/Sub a un archivo JSON en Google Cloud Storage (ExternalEdaConfigLoader) y rediseño/pulido del frontend con fidelidad al Figma. Se documentaron el Sprint Backlog 3, las evidencias de desarrollo, testing, ejecución, documentación OpenAPI y despliegue, los insights de colaboración del equipo y el tablero Kanban (9 tarjetas Done y 2 In-Process: tests basados en contratos y optimización de velocidad del frontend). Adicionalmente se migraron los tableros Kanban de Jira a Notion (product backlog y sprints), se ampliaron las User Stories y Technical Stories del Product Backlog (US51–US52, SP09–SP13) y se actualizó el Student Outcome con las acciones de aprendizaje del Sprint 3. |
+| TF1 | 09/07/2026 | Oblitas Davila, Mariano Moises; Ybañez Esquerre, Miguel Angel; Mio Mejia, Andy Alejandro | Se actualizó el informe con el Sprint 4 (sección 5.3.4 del Capítulo V), iteración de cierre del proyecto: se completaron los dos work-items que quedaron *En Curso* al cierre del Sprint 3 —los tests basados en contratos entre microservicios con Spring Cloud Contract (`GIGU-84`) y la optimización de velocidad del frontend mediante lazy-loading de rutas y code-splitting (`GIGU-83`)— y se incorporaron el refinamiento de tags y controles de precio del gig (`GIGU-85`), los tests de reglas de negocio de engagement (`GIGU-86`) y la consolidación del despliegue cloud (`GIGU-87`). Se documentaron el Sprint Backlog 4, las evidencias de desarrollo, testing, ejecución, documentación y despliegue, los insights de colaboración del equipo y el tablero Kanban (5 tarjetas Done, cierre al 100%). Adicionalmente se actualizó el Capítulo IV para reflejar la arquitectura vigente: se reemplazaron las referencias a Caddy, RabbitMQ, Docker Compose y Oracle Cloud Always Free por Vercel Rewrites, Google Cloud Pub/Sub y Google Cloud Run, y se corrigió el estado de las capacidades de mensajería asíncrona y storage, ya implementadas en los Sprints 2 y 3. Se actualizó también la sección 5.1.1 con el estado real de la suite de pruebas (17 clases, incluidos los tests de contrato). |
 <div style="page-break-before: always;"></div>
 
 # Tabla de Contenidos
@@ -1427,17 +1428,17 @@ GigU gestionará información de usuarios, perfiles públicos, conversaciones, s
 
 Las operaciones críticas se resolverán mediante REST cuando el usuario requiera respuesta inmediata. Las operaciones secundarias, como notificaciones internas, eventos de cambio de estado, actualización de vistas derivadas o avisos de nuevos mensajes, se diseñarán para integrarse mediante Google Cloud Pub/Sub como servicio administrado de mensajería asíncrona dentro de GCP. Esta decisión reemplaza la alternativa previa basada en RabbitMQ.
 
-En el estado actual del proyecto, la mensajería asíncrona con Google Cloud Pub/Sub se mantiene como una decisión arquitectónica seleccionada, pero pendiente de implementación. Por ello, no debe presentarse como evidencia de despliegue finalizado. El backend actualmente prioriza APIs REST entre microservicios y deja la publicación/consumo de eventos como extensión de infraestructura para una siguiente fase.
+La mensajería asíncrona con Google Cloud Pub/Sub quedó **implementada en el Sprint 2** sobre `ChatNotificationService`, mediante entrega push por webhook, y su configuración se externalizó a Cloud Storage en el Sprint 3. El resto de la integración entre microservicios se resuelve mediante APIs REST: `PullEngagementService` notifica a `ChatNotificationService` a través de un cliente HTTP protegido con Circuit Breaker (táctica *Graceful Degradation*). La publicación de los eventos de dominio restantes desde los otros tres microservicios permanece diseñada y no implementada.
 
 | Evento | Publicador previsto | Consumidor previsto | Estado |
 | --- | --- | --- | --- |
-| `UserRegistered` | AccessProfileService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
-| `FreelancerProfileUpdated` | AccessProfileService | GigMarketplaceService | Diseñado / pendiente de implementación con Pub/Sub |
-| `ServicePublished` | GigMarketplaceService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
-| `ProjectRequestCreated` | PullEngagementService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
-| `ProjectStatusChanged` | PullEngagementService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
-| `MessageSent` | ChatNotificationService | ChatNotificationService | Diseñado / pendiente de implementación con Pub/Sub |
-| `ReviewCreated` | PullEngagementService | GigMarketplaceService | Diseñado / pendiente de implementación con Pub/Sub |
+| `UserRegistered` | AccessProfileService | ChatNotificationService | Diseñado / no implementado |
+| `FreelancerProfileUpdated` | AccessProfileService | GigMarketplaceService | Diseñado / no implementado |
+| `ServicePublished` | GigMarketplaceService | ChatNotificationService | Diseñado / no implementado |
+| `ProjectRequestCreated` | PullEngagementService | ChatNotificationService | Implementado vía REST (cliente HTTP con Circuit Breaker), no vía Pub/Sub |
+| `ProjectStatusChanged` | PullEngagementService | ChatNotificationService | Implementado vía REST (cliente HTTP con Circuit Breaker), no vía Pub/Sub |
+| `MessageSent` | ChatNotificationService | ChatNotificationService | **Implementado con Google Cloud Pub/Sub** (Sprint 2, entrega push por webhook) |
+| `ReviewCreated` | PullEngagementService | GigMarketplaceService | Diseñado / no implementado |
 
 
 #### Despliegue reproducible
@@ -1462,7 +1463,7 @@ El despliegue backend actual utiliza Google Cloud Run en el proyecto `dosys-rest
 | Domain-Driven Design | Se utilizará para definir bounded contexts alineados con capacidades de negocio: acceso/perfiles, marketplace, contratación/proyectos y chat/notificaciones. |
 | Clean Architecture | Se aplicará dentro de cada microservicio para separar dominio, casos de uso, interfaces e infraestructura. |
 | API First | Se diseñarán contratos REST claros y versionados antes de acoplar el frontend al backend. |
-| Event-Driven Integration | Se utilizarán eventos asíncronos para notificaciones, cambios de estado y actualización de vistas derivadas. La tecnología seleccionada para esta capacidad es Google Cloud Pub/Sub, pero su implementación queda pendiente. |
+| Event-Driven Integration | Se utilizan eventos asíncronos para notificaciones y mensajería. La tecnología seleccionada es Google Cloud Pub/Sub, implementada en `ChatNotificationService` (Sprint 2); los eventos de los demás contextos permanecen diseñados. |
 | Cloud Native Deployment | El frontend y la landing page se alojan en Vercel. Los microservicios backend se despliegan en Google Cloud Run mediante workflows manuales de GitHub Actions y scripts locales `gcloud`. |
 
 #### Architectural Styles
@@ -1472,7 +1473,7 @@ El despliegue backend actual utiliza Google Cloud Run en el proyecto `dosys-rest
 | Microservices Architecture | El backend se divide en servicios independientes por capacidad de negocio. | Permite modularidad, despliegue separado, testabilidad y alineación con DDD. |
 | Client-Server | El frontend Vue consume APIs REST expuestas por el backend. | Separa experiencia de usuario de lógica de negocio. |
 | Layered / Clean Architecture | Cada microservicio se organiza en capas internas con dependencias hacia el dominio. | Reduce acoplamiento, facilita pruebas y evita que el dominio dependa de frameworks o proveedores externos. |
-| Event-Driven Architecture | Google Cloud Pub/Sub queda seleccionado para soportar eventos secundarios entre microservicios. | Reduce dependencia temporal entre servicios, aunque su implementación queda pendiente. |
+| Event-Driven Architecture | Google Cloud Pub/Sub soporta los eventos secundarios de chat y notificaciones, con entrega push por webhook. | Reduce la dependencia temporal entre servicios; su alcance actual cubre `ChatNotificationService`. |
 | Cloud Native Deployment | La solución se despliega con frontend, backend y base de datos distribuidos en servicios cloud administrados. | Permite acceso público, despliegue independiente por microservicio y validación académica incremental. |
 
 #### Architectural Patterns
@@ -1481,11 +1482,11 @@ El despliegue backend actual utiliza Google Cloud Run en el proyecto `dosys-rest
 | --- | --- |
 | Vercel Rewrites as Public API Routing | Vercel Rewrites actúa como capa pública de enrutamiento para que el frontend consuma rutas relativas `/api/*` y estas sean reenviadas a los microservicios desplegados en Google Cloud Run. |
 | Database per Service lógico | Supabase PostgreSQL contendrá esquemas separados por microservicio. |
-| Managed Messaging with Google Cloud Pub/Sub | Google Cloud Pub/Sub queda seleccionado como servicio de mensajería asíncrona administrada para eventos internos, reemplazando la alternativa previa basada en RabbitMQ. Su implementación queda pendiente. |
+| Managed Messaging with Google Cloud Pub/Sub | Google Cloud Pub/Sub es el servicio de mensajería asíncrona administrada para eventos internos, reemplazando la alternativa previa basada en RabbitMQ. Implementado en `ChatNotificationService` (Sprint 2). |
 | Independent Cloud Run Deployment | Cada microservicio backend se despliega de forma independiente en Google Cloud Run. |
 | Backend for Frontend parcial | Vercel Rewrites expone rutas estables para el frontend sin exponer directamente la topología interna completa. |
 | RESTful API | Los microservicios exponen recursos mediante APIs HTTP documentadas con OpenAPI. |
-| Domain Events | Cambios relevantes del negocio serán modelados como eventos internos para su publicación futura mediante Google Cloud Pub/Sub. |
+| Domain Events | Los cambios relevantes del negocio se modelan como eventos internos; los de chat y notificaciones se publican mediante Google Cloud Pub/Sub. |
 
 #### Servicios externos seleccionados
 
@@ -1495,8 +1496,9 @@ El despliegue backend actual utiliza Google Cloud Run en el proyecto `dosys-rest
 | Google Cloud Run | Alojamiento de los microservicios backend como servicios independientes. | Implementado |
 | GitHub Actions | Despliegue manual por microservicio hacia Google Cloud Run mediante `workflow_dispatch`. | Implementado |
 | Supabase PostgreSQL | Base de datos relacional administrada con esquemas lógicos por microservicio. | Implementado |
-| Google Cloud Pub/Sub | Servicio administrado de mensajería asíncrona para eventos secundarios. | Seleccionado / pendiente de implementación |
-| Storage | Capacidad para almacenar binarios de portafolio, imágenes y adjuntos. | Pendiente de implementación |
+| Google Cloud Pub/Sub | Servicio administrado de mensajería asíncrona para eventos secundarios de chat y notificaciones. | Implementado (Sprint 2) |
+| Supabase Storage | Almacenamiento de binarios de portafolio (bucket `portfolio`) y media de servicios (bucket `gig-media`). | Implementado (Sprint 3) |
+| Google Cloud Storage | Configuración externalizada de la integración EDA/Pub/Sub (`eda-pubsub-config.json`). | Implementado (Sprint 3) |
 
 
 ### 4.1.3. Context Diagram
@@ -1619,7 +1621,7 @@ GigU utilizará una base de datos relacional administrada con PostgreSQL en Supa
 | Outbox Pattern | Los eventos críticos podrán registrarse junto con la transacción local antes de publicarse en Google Cloud Pub/Sub cuando la mensajería asíncrona sea implementada. | Reduce riesgo de pérdida de eventos y permite reintentos controlados sin bloquear operaciones principales. |
 | Adapter Pattern | Integraciones con Supabase PostgreSQL, Google Cloud Pub/Sub, storage pendiente y clientes HTTP entre microservicios se encapsularán como adaptadores. | Mantiene el dominio independiente de proveedores externos y facilita sustitución de infraestructura. |
 | Dependency Injection  | Los casos de uso dependerán de interfaces y no de implementaciones concretas.                                                                       | Facilita pruebas unitarias y sustitución de infraestructura.                 |
-| API Gateway Pattern   | Caddy centralizará el ingreso HTTP y enrutará hacia microservicios.                                                                                 | Oculta la topología interna y simplifica el consumo del frontend.            |
+| Public API Routing    | Vercel Rewrites centraliza el ingreso HTTP `/api/*` y lo enruta hacia los microservicios en Cloud Run.                                              | Oculta la topología interna y simplifica el consumo del frontend.            |
 | CQRS Lite             | Se separarán comandos y queries en casos de uso relevantes, como búsqueda, contratación y mensajería.                                               | Mejora claridad de responsabilidades sin introducir complejidad innecesaria. |
 
 ### 4.1.7. Tactics
@@ -1635,7 +1637,7 @@ Las tácticas seleccionadas responden a los atributos de calidad más relevantes
 | Modificabilidad     | Increase Semantic Coherence     | Cada microservicio agrupa responsabilidades de un bounded context específico.                                                                                                                                                  |
 | Modificabilidad     | Encapsulate                     | Reglas de perfil, marketplace, contratación y chat se encapsulan en sus respectivos servicios.                                                                                                                                 |
 | Modificabilidad     | Restrict Dependencies           | Los microservicios no consultan directamente tablas de otros contextos; usan IDs externos, APIs o eventos.                                                                                                                     |
-| Modificabilidad     | Use an Intermediary             | RabbitMQ desacopla eventos secundarios entre microservicios.                                                                                                                                                                   |
+| Modificabilidad     | Use an Intermediary             | Google Cloud Pub/Sub desacopla los eventos secundarios de chat y notificaciones entre microservicios.                                                                                                                          |
 | Interoperabilidad   | Tailor Interface                | Cada microservicio expone contratos REST específicos para su contexto.                                                                                                                                                         |
 | Interoperabilidad   | Orchestrate                     | PullEngagementService coordina el flujo de solicitud, acuerdo, proyecto, entrega y reseña.                                                                                                                                     |
 | Interoperabilidad   | Maintain Contract Documentation | OpenAPI documenta endpoints, requests, responses y errores esperados.                                                                                                                                                          |
@@ -1673,7 +1675,7 @@ El propósito del diseño arquitectónico de GigU es definir una estructura téc
 
 GigU será diseñado como una aplicación empresarial basada en microservicios, aplicando Domain-Driven Design para separar capacidades de negocio y Clean Architecture dentro de cada microservicio. El frontend y la landing page se despliegan en Vercel, el routing público de la API se resuelve mediante Vercel Rewrites, los microservicios backend se ejecutan en Google Cloud Run y la base de datos principal se gestiona mediante Supabase PostgreSQL.
 
-La arquitectura anterior basada en Caddy, RabbitMQ, Docker Compose y Oracle Cloud Always Free fue reemplazada por una estrategia cloud native alineada con el estado actual del desarrollo. El deployment backend ya cuenta con workflows manuales de GitHub Actions por microservicio y con scripts PowerShell locales en la carpeta `gcloud`. Google Cloud Pub/Sub queda seleccionado como servicio de mensajería asíncrona administrada, pero su implementación todavía está pendiente. La capacidad de storage también permanece pendiente de implementación y no debe tratarse como evidencia completada.
+La arquitectura anterior basada en Caddy, RabbitMQ, Docker Compose y Oracle Cloud Always Free fue reemplazada por una estrategia cloud native alineada con el estado actual del desarrollo. El deployment backend cuenta con workflows manuales de GitHub Actions por microservicio y con scripts PowerShell locales en la carpeta `gcloud`. Google Cloud Pub/Sub quedó implementado como servicio de mensajería asíncrona administrada en `ChatNotificationService` (Sprint 2), y la capacidad de storage se implementó sobre Supabase Storage mediante un puerto/adaptador hexagonal (Sprint 3).
 
 | Categoría | Detalle |
 | --- | --- |
@@ -1683,10 +1685,11 @@ La arquitectura anterior basada en Caddy, RabbitMQ, Docker Compose y Oracle Clou
 | Enfoque de arquitectura | Microservices Architecture, Domain-Driven Design y Clean Architecture. |
 | Modelo de despliegue | Landing page y frontend en Vercel; routing público mediante Vercel Rewrites; backend en Google Cloud Run; base de datos en Supabase PostgreSQL. |
 | Deployment backend | Workflows manuales de GitHub Actions por microservicio y scripts PowerShell locales en `/gcloud`. |
-| Mensajería asíncrona | Google Cloud Pub/Sub seleccionado como decisión arquitectónica pendiente de implementación. |
-| Storage | Capacidad pendiente de implementación. |
+| Mensajería asíncrona | Google Cloud Pub/Sub, implementado en `ChatNotificationService` con entrega push por webhook (Sprint 2). |
+| Storage | Supabase Storage mediante `StoragePort` + `SupabaseStorageAdapter`; buckets `portfolio` y `gig-media` (Sprint 3). |
+| Resiliencia | Circuit Breaker (Resilience4j) en las integraciones hacia Supabase Storage y hacia `ChatNotificationService`. |
 | Alcance funcional principal | Perfiles, portafolios, publicación de servicios, búsqueda, solicitudes, acuerdos, proyectos, chat, notificaciones y reseñas. |
-| Alcance técnico principal | RESTful API documentada, microservicios independientes, persistencia relacional por ownership lógico, despliegue independiente en Cloud Run, CI/CD manual con GitHub Actions y mensajería asíncrona pendiente. |
+| Alcance técnico principal | RESTful API documentada, microservicios independientes, persistencia relacional por ownership lógico, despliegue independiente en Cloud Run, CI/CD manual con GitHub Actions y mensajería asíncrona sobre Pub/Sub. |
 | Limitación inicial | El sistema modelará acuerdos y estados de pago para validación académica; la integración con una pasarela de pagos real queda fuera del primer alcance implementable. |
 
 La decisión de utilizar Google Cloud Run responde a la necesidad de desplegar microservicios backend de forma independiente, pública y verificable sin administrar una máquina virtual propia. Vercel Rewrites reemplaza a Caddy como mecanismo de routing público para el frontend, permitiendo que las rutas relativas `/api/*` sean reenviadas hacia los servicios backend correspondientes. GitHub Actions permite ejecutar despliegues manuales por microservicio mediante `workflow_dispatch`, manteniendo control sobre cuándo se despliega cada servicio.
@@ -1717,7 +1720,7 @@ Los escenarios de atributos de calidad se redactan como requisitos medibles. El 
 
 | ID    | Atributo de calidad | Fuente del estímulo                           | Estímulo                                                                                   | Ambiente                                            | Artefacto                                                            | Respuesta                                                                                                                                       | Medida de respuesta                                                                                                                                                         |
 | ----- | ------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| QA-01 | Seguridad           | Usuario no autenticado o usuario sin permisos | Intenta crear, modificar o consultar un recurso protegido                                  | Operación normal del sistema                        | Caddy Gateway, microservicio correspondiente, endpoints REST         | El sistema valida JWT, rol y ownership antes de ejecutar el caso de uso; si la solicitud no cumple, la rechaza y registra el intento relevante. | El 100% de endpoints protegidos rechaza solicitudes sin token válido o sin permisos; las operaciones críticas quedan registradas en auditoría.                              |
+| QA-01 | Seguridad           | Usuario no autenticado o usuario sin permisos | Intenta crear, modificar o consultar un recurso protegido                                  | Operación normal del sistema                        | Vercel Rewrites, microservicio correspondiente, endpoints REST       | El sistema valida JWT, rol y ownership antes de ejecutar el caso de uso; si la solicitud no cumple, la rechaza y registra el intento relevante. | El 100% de endpoints protegidos rechaza solicitudes sin token válido o sin permisos; las operaciones críticas quedan registradas en auditoría.                              |
 | QA-02 | Modificabilidad     | Equipo de desarrollo                          | Solicita agregar una nueva categoría de servicio o una nueva regla de sugerencia de precio | Sprint de evolución funcional                       | GigMarketplaceService y PullEngagementService                        | El cambio se implementa dentro del microservicio dueño del contexto sin modificar otros microservicios ni romper contratos existentes.          | El cambio afecta como máximo un microservicio principal y sus pruebas asociadas; las APIs existentes mantienen compatibilidad.                                              |
 | QA-03 | Testabilidad        | Desarrollador backend                         | Agrega o modifica una regla de negocio de solicitud, acuerdo, proyecto o reseña            | Desarrollo local o pipeline de integración continua | Domain Layer y Application Layer del microservicio afectado          | El sistema permite probar la regla mediante pruebas unitarias y pruebas de integración del endpoint correspondiente.                            | Las reglas críticas del dominio tienen pruebas unitarias; los endpoints principales tienen pruebas de integración automatizadas.                                            |
 | QA-04 | Interoperabilidad | Frontend web o consumidor API | Consume funcionalidades de perfil, marketplace, engagement o chat | Operación normal desde navegador | RESTful API, Vercel Rewrites y microservicios backend en Google Cloud Run | El sistema expone contratos HTTP consistentes, versionados y documentados con OpenAPI; Vercel Rewrites enruta las solicitudes `/api/*` hacia los servicios Cloud Run correspondientes. | El 100% de endpoints públicos principales se documenta con OpenAPI y responde usando DTOs JSON estandarizados. |
@@ -1738,9 +1741,9 @@ Las restricciones representan decisiones con bajo o nulo grado de libertad para 
 | CON-05 | Vercel Rewrites funcionará como routing público de API para el frontend. | Infraestructura | Las rutas `/api/*` se centralizan desde el frontend sin mantener un gateway propio con Caddy. |
 | CON-06 | Los microservicios backend se desplegarán en Google Cloud Run. | Despliegue | Cada microservicio puede desplegarse y validarse de forma independiente. |
 | CON-07 | La persistencia principal se realizará con Supabase PostgreSQL. | Datos | Se adopta una base relacional administrada con esquemas lógicos por microservicio. |
-| CON-08 | La capacidad de storage para portafolio, imágenes y adjuntos queda pendiente de implementación. | Datos / almacenamiento | Los binarios no deben presentarse como capacidad implementada hasta que exista integración real. |
+| CON-08 | El storage de portafolio, imágenes y adjuntos se implementa sobre Supabase Storage mediante un puerto/adaptador hexagonal. | Datos / almacenamiento | Los binarios se almacenan fuera de la base relacional; el dominio permanece agnóstico al proveedor. |
 | CON-09 | La autenticación y autorización se implementarán con Spring Security y JWT. | Seguridad | Cada microservicio validará acceso a operaciones protegidas y ownership de recursos. |
-| CON-10 | La mensajería asíncrona se diseñará sobre Google Cloud Pub/Sub, pero queda pendiente de implementación. | Integración | Las notificaciones, cambios de estado y eventos secundarios se desacoplarán del flujo principal cuando la infraestructura de eventos sea implementada. |
+| CON-10 | La mensajería asíncrona se implementa sobre Google Cloud Pub/Sub con entrega push por webhook. | Integración | Los eventos de chat y notificaciones se procesan fuera del flujo principal; la notificación entre `pulls` y `chat` se resuelve por REST con Circuit Breaker. |
 | CON-11 | Las APIs REST serán documentadas con OpenAPI/Swagger. | Documentación / interoperabilidad | Se asegura trazabilidad de contratos, endpoints y DTOs. |
 | CON-12 | El proyecto deberá mantenerse en servicios gratuitos o free tier durante la validación académica. | Económica / despliegue | Se priorizan Vercel, Google Cloud Run, Supabase y herramientas cloud administradas compatibles con validación académica. |
 | CON-13 | No se integrará una pasarela de pagos real en la primera versión implementable. | Alcance | El sistema modelará acuerdos y estados relacionados al pago, pero la integración financiera real queda como extensión futura. |
@@ -1754,15 +1757,15 @@ Supabase se mantiene como plataforma administrada de PostgreSQL para reducir car
 | ------ | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | CRN-01 | Delimitación correcta de bounded contexts | Existe riesgo de mezclar responsabilidades de perfil, marketplace, contratación y chat en un mismo módulo.                                           | Separar el backend en cuatro microservicios alineados al dominio.                                              |
 | CRN-02 | Evitar sobrearquitectura                  | Una cantidad excesiva de microservicios aumentaría la complejidad operativa y reduciría la probabilidad de completar el proyecto.                    | Mantener cuatro microservicios principales y evitar servicios adicionales no esenciales.                       |
-| CRN-03 | Consistencia entre servicios              | Las solicitudes, proyectos, reseñas y notificaciones cruzan límites de microservicios.                                                               | Usar identificadores externos, contratos REST y eventos RabbitMQ para sincronización eventual.                 |
+| CRN-03 | Consistencia entre servicios              | Las solicitudes, proyectos, reseñas y notificaciones cruzan límites de microservicios.                                                               | Usar identificadores externos, contratos REST verificados con Spring Cloud Contract y eventos Pub/Sub.        |
 | CRN-04 | Seguridad y ownership                     | Los usuarios deben acceder solo a recursos propios o permitidos por rol.                                                                             | Implementar Spring Security, JWT, roles y validación de ownership en casos de uso.                             |
 | CRN-05 | Gestión del chat                          | El chat debe funcionar sin depender de servicios externos pagos ni introducir complejidad excesiva.                                                  | Implementar ChatNotificationService con REST para historial y WebSocket/SSE para actualización en tiempo real. |
 | CRN-06 | Persistencia relacional por microservicio | Usar una sola base administrada podría generar acoplamiento si los servicios comparten tablas indiscriminadamente.                                   | Separar esquemas y ownership lógico por microservicio en Supabase PostgreSQL.                                  |
-| CRN-07 | Despliegue gratuito sostenible            | El backend debe estar disponible para validación sin depender de plataformas que duermen servicios o expiran bases de datos rápidamente.             | Alojar backend en Oracle Cloud Always Free y delegar base de datos a Supabase.                                 |
+| CRN-07 | Despliegue gratuito sostenible            | El backend debe estar disponible para validación sin depender de plataformas que duermen servicios o expiran bases de datos rápidamente.             | Alojar el backend en Google Cloud Run (free tier) y delegar la base de datos a Supabase.                       |
 | CRN-08 | Testabilidad de reglas de negocio         | Las reglas de contratación, estados, reseñas y pricing deben ser comprobables sin levantar todo el sistema.                                          | Aplicar Clean Architecture, interfaces, mocks, pruebas unitarias y pruebas de integración.                     |
 | CRN-09 | Trazabilidad para evaluación académica    | El curso exige evidencias de arquitectura, testing, microservicios, despliegue y documentación.                                                      | Usar GitHub, GitHub Actions, Swagger, commits por microservicio y documentación técnica por sprint.            |
 | CRN-10 | Evolución hacia pagos reales              | La solución contempla acuerdos y pagos seguros como parte del dominio, pero la integración con pasarelas reales puede aumentar riesgo y complejidad. | Modelar estados de acuerdo/pago en la primera versión y dejar pasarela real como extensión posterior.          |
-| CRN-11 | Dependencia de proveedores externos       | Vercel, Oracle Cloud y Supabase facilitan el despliegue, pero no deben contaminar el dominio.                                                        | Encapsular integraciones en Infrastructure Layer mediante adapters.                                            |
+| CRN-11 | Dependencia de proveedores externos       | Vercel, Google Cloud y Supabase facilitan el despliegue, pero no deben contaminar el dominio.                                                        | Encapsular integraciones en Infrastructure Layer mediante adapters.                                            |
 | CRN-12 | Performance en búsquedas                  | La búsqueda de servicios y freelancers puede degradarse al crecer el catálogo.                                                                       | Usar paginación, filtros, índices y DTOs ligeros en GigMarketplaceService.                                     |
 
 #### Resumen de drivers por decisión arquitectónica
@@ -1771,11 +1774,11 @@ Supabase se mantiene como plataforma administrada de PostgreSQL para reducir car
 | --------------------------------------------- | ----------------------------------------------------------------------------- |
 | Microservicios por bounded context            | Modificabilidad, testabilidad, escalabilidad organizacional y mantenibilidad. |
 | Clean Architecture por microservicio          | Testabilidad, modificabilidad e independencia tecnológica.                    |
-| Caddy como gateway liviano                    | Interoperabilidad, simplicidad operativa y disponibilidad.                    |
+| Vercel Rewrites como routing público de API   | Interoperabilidad, simplicidad operativa y disponibilidad.                    |
 | Supabase PostgreSQL con esquemas por servicio | Persistencia relacional, ownership de datos y mantenibilidad.                 |
-| RabbitMQ para eventos internos                | Modificabilidad, disponibilidad parcial y desacoplamiento.                    |
+| Google Cloud Pub/Sub para eventos internos    | Modificabilidad, disponibilidad parcial y desacoplamiento.                    |
 | Spring Security + JWT                         | Seguridad, control de acceso y auditoría.                                     |
-| Docker Compose en Oracle Cloud                | Despliegue reproducible, evidencia cloud y control operativo.                 |
+| Google Cloud Run + GitHub Actions             | Despliegue reproducible e independiente por microservicio, evidencia cloud.   |
 | OpenAPI/Swagger                               | Interoperabilidad, documentación, pruebas manuales y automatizadas.           |
 | GitHub Actions                                | Testabilidad, trazabilidad y evidencia de calidad.                            |
 
@@ -1819,7 +1822,7 @@ El backlog de diseño selecciona los drivers funcionales, de calidad y restricci
 | CON-02 | Restricción | El microservicio se implementa con Java + Spring Boot. | Fija |
 | CON-03 | Restricción | Aplica Clean Architecture (Domain → Application → Interface → Infrastructure). | Fija |
 | CON-09 | Restricción | Autenticación con Spring Security + JWT y validación de ownership en cada caso de uso. | Fija |
-| CON-10 | Restricción | Eventos relevantes (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`) se diseñan para publicación futura mediante Google Cloud Pub/Sub. | Fija / pendiente de implementación |
+| CON-10 | Restricción | Eventos relevantes (`ProjectRequestCreated`, `AgreementSigned`, `ProjectStatusChanged`, `ReviewCreated`) se diseñan para publicación mediante Google Cloud Pub/Sub. | Fija (la notificación hacia Chat se implementó por REST con Circuit Breaker; Pub/Sub cubre los eventos de chat) |
 | CRN-03 | Concern | Consistencia entre microservicios: las referencias a usuario y servicio publicado son IDs externos, no joins. | Alta |
 | CRN-08 | Concern | Testabilidad de reglas de negocio sin levantar todo el sistema. | Alta |
 
@@ -1850,7 +1853,7 @@ La iteración descompone este contenedor en sus componentes internos siguiendo C
 | `PullEngagementService` | Contenedor | Centro transaccional del dominio y mayor concentración de drivers seleccionados. |
 | Esquema `engagement_schema` | Componente de datos | Soporta el modelo agregado de solicitud, acuerdo, proyecto, historial, reseña y sugerencia de precio. |
 | Contrato REST `/api/v1/engagement/*` | Interfaz pública | Punto de acoplamiento para el frontend Vue mediante Vercel Rewrites y para los consumidores HTTP del backend. |
-| Eventos diseñados para Google Cloud Pub/Sub | Interfaz asíncrona futura | Punto de acoplamiento eventual hacia `ChatNotificationService` y `GigMarketplaceService`, pendiente de implementación. |
+| Eventos diseñados para Google Cloud Pub/Sub | Interfaz asíncrona | Punto de acoplamiento hacia `ChatNotificationService` y `GigMarketplaceService`. Implementado en el contexto de chat; la notificación desde `PullEngagementService` se resuelve por REST con Circuit Breaker. |
 
 No se refinan en esta iteración los componentes internos de los otros microservicios: solo se acuerda la forma de los contratos que `PullEngagementService` consume o produce.
 
@@ -1940,7 +1943,7 @@ Para esta iteración se generaron cuatro vistas que sustentan las decisiones tom
 | ADR-001 | Aplicar Clean Architecture en cuatro capas dentro de `PullEngagementService`. | Aceptada | QA-03 | Reglas de dominio testeables sin Spring; mayor número de archivos y mappers explícitos. |
 | ADR-002 | Usar Strategy Pattern para `PriceSuggestionPolicy` y `ProjectStatusPolicy`. | Aceptada | QA-02 | Permite agregar reglas sin modificar casos de uso; introduce una interfaz adicional por política. |
 | ADR-003 | Validar ownership en cada caso de uso, no en el controller. | Aceptada | QA-01 | El controller queda fino; las pruebas unitarias del caso de uso cubren el caso "usuario no dueño". |
-| ADR-004 | Publicar eventos de dominio mediante Outbox Pattern (`engagement_outbox`) + worker hacia RabbitMQ. | Aceptada | QA-05 | Garantía at-least-once incluso ante caída del broker; requiere tabla adicional y un scheduler. |
+| ADR-004 | Publicar eventos de dominio mediante Outbox Pattern (`engagement_outbox`) + worker hacia Google Cloud Pub/Sub. | Aceptada | QA-05 | Garantía at-least-once incluso ante caída del broker; requiere tabla adicional y un scheduler. |
 | ADR-005 | Acceder a perfil y a servicio publicado mediante REST, no mediante lectura directa de tablas externas. | Aceptada | CRN-03 | Mantiene ownership de datos; introduce dependencia de red y obliga a manejar timeouts y reintentos. |
 | ADR-006 | No introducir CQRS completo; se usa CQRS Lite separando comandos y queries solo en casos relevantes. | Aceptada | Simplicidad | Reduce complejidad para el alcance académico; queries y comandos comparten modelo de persistencia. |
 
@@ -1987,7 +1990,7 @@ Una vez cerrada la Iteración 1, donde quedaron definidos los contratos transacc
 | CON-02 | Restricción | El microservicio se implementa con Java + Spring Boot. | Fija |
 | CON-03 | Restricción | Aplica Clean Architecture en cuatro capas. | Fija |
 | CON-07 | Restricción | Persistencia con Supabase PostgreSQL bajo el esquema `marketplace_schema`. | Fija |
-| CON-08 | Restricción | La capacidad de storage para binarios de portafolio y media de servicios queda pendiente de implementación; en el diseño se mantiene un puerto de almacenamiento para evitar acoplamiento con un proveedor específico. | Pendiente |
+| CON-08 | Restricción | El storage de binarios de portafolio y media de servicios se resuelve mediante un puerto de almacenamiento que evita el acoplamiento con un proveedor específico. | Fija (implementada sobre Supabase Storage en el Sprint 3) |
 | CRN-11 | Concern | Encapsular dependencias futuras de storage en adaptadores, no en el dominio. | Media |
 | CRN-12 | Concern | Performance en búsquedas: la búsqueda puede degradarse al crecer el catálogo. | Alta |
 | CRN-03 | Concern | Consistencia entre microservicios: la reputación promedio se actualiza por eventos, no por joins. | Alta |
@@ -2016,7 +2019,7 @@ Quedan fuera del foco: la lógica transaccional de contratación, resuelta en la
 | Esquema `marketplace_schema` | Componente de datos | Aloja `service_offerings`, `service_categories`, `service_media` y la vista derivada `freelancer_reputation`. |
 | Contrato REST `/api/v1/marketplace/*` | Interfaz pública | Punto de acoplamiento del frontend Vue para listado, detalle, publicación, edición y despublicación de servicios. |
 | Consumidor de eventos `ReviewCreated` | Interfaz asíncrona futura | Punto de entrada diseñado para mantener actualizada la proyección de reputación promedio cuando Google Cloud Pub/Sub sea implementado. |
-| Puerto de storage de media | Adaptador externo futuro | Permite diseñar el almacenamiento de archivos asociados a servicios sin guardar binarios dentro de la base de datos relacional; la implementación real queda pendiente. |
+| Puerto de storage de media | Adaptador externo | Permite almacenar los archivos asociados a servicios sin guardar binarios dentro de la base de datos relacional; implementado como `SupabaseStorageAdapter` en el Sprint 3. |
 
 #### 4.3.2.4. Choose One or More Design Concepts That Satisfy the Selected Drivers
 
@@ -2029,9 +2032,9 @@ Quedan fuera del foco: la lógica transaccional de contratación, resuelta en la
 | QA-02 Modificabilidad | Encapsulate: la taxonomía de categorías es un agregado independiente de `ServiceOffering`. | Permite agregar o renombrar categorías sin modificar la entidad principal. |
 | QA-04 Interoperabilidad | API First + DTOs explícitos + OpenAPI/Swagger. | El frontend consume contratos versionados y validables; la entidad de dominio nunca se expone directamente. |
 | QA-01 Seguridad | Authorize Actors: endpoints `GET` públicos, endpoints `POST/PATCH/DELETE` protegidos por JWT + ownership. | Visitantes pueden navegar el catálogo; solo el dueño del servicio puede modificarlo. |
-| PUS-03 | Adapter Pattern para `MediaStoragePort`. | Mantiene el dominio agnóstico al proveedor de storage; permite implementar Supabase Storage, Google Cloud Storage u otro proveedor sin tocar reglas de negocio. La implementación real queda pendiente. |
+| PUS-03 | Adapter Pattern para `MediaStoragePort`. | Mantiene el dominio agnóstico al proveedor de storage; permite sustituir Supabase Storage, Google Cloud Storage u otro proveedor sin tocar reglas de negocio. Implementado sobre Supabase Storage en el Sprint 3. |
 | PUS-04 | Specification Pattern + DTOs de lectura. | Permite que la búsqueda y visualización del catálogo evolucionen sin afectar publicación, contratación ni perfil. |
-| ReviewCreated consumer | Event Handler + Materialized Read Model `freelancer_reputation`. | Calcular el promedio de reseñas en cada lectura sería costoso; mantener una proyección actualizada por evento sirve a QA-06. La integración asíncrona queda diseñada para Google Cloud Pub/Sub, pendiente de implementación. |
+| ReviewCreated consumer | Event Handler + Materialized Read Model `freelancer_reputation`. | Calcular el promedio de reseñas en cada lectura sería costoso; mantener una proyección actualizada por evento sirve a QA-06. La integración asíncrona queda diseñada para Google Cloud Pub/Sub y no se implementó dentro del alcance del proyecto. |
 | CRN-11 | Hexagonal ports/adapters dentro del microservicio. | Separa storage futuro, Supabase PostgreSQL y Google Cloud Pub/Sub del dominio. |
 
 #### 4.3.2.5. Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
@@ -2142,9 +2145,12 @@ El núcleo de pruebas del backend se apoya en el stack de testing de Spring Boot
 | Unit Testing | JUnit 5 + Mockito | Verificar reglas de negocio y servicios de aplicación de forma aislada. |
 | Application / Security Testing | spring-boot-starter-test + spring-security-test | Validar el comportamiento de la capa de aplicación y la seguridad basada en JWT. |
 | Integration Testing | Testcontainers (PostgreSQL) | Levantar una base de datos PostgreSQL real en contenedor para validar la persistencia y los flujos de extremo a extremo. |
+| Contract Testing | Spring Cloud Contract + Stub Runner | Verificar los contratos productor/consumidor del webhook interno de notificaciones entre microservicios. |
 | Code Coverage | JaCoCo | Aplicar un umbral mínimo de 85% de cobertura de instrucciones, excluyendo modelos de dominio y DTOs. |
 
-**Estado actual de la suite:** `access-profile-service` cuenta con una prueba unitaria del servicio de aplicación (`AccessProfileApplicationServiceTest`) y una prueba de integración basada en Testcontainers (`AccessIntegrationTest`). Los microservicios `gig-marketplace-service`, `pulls-service` y `chat-notification-service` ya tienen la infraestructura de pruebas configurada (dependencias y JaCoCo), pero la implementación de sus casos de prueba queda pendiente para el siguiente Sprint. Los archivos `.feature` de BDD (Gherkin) para Integration/Acceptance Tests también quedan pendientes y se registran como deuda de testing en la sección 5.3.1.3.
+**Estado actual de la suite (cierre del Sprint 4):** el backend cuenta con **17 clases de prueba** distribuidas en los cuatro microservicios y organizadas en cuatro niveles. (a) *Unitarias de dominio*, sin contexto de Spring: `ProjectStatusPolicyTest` y `DeterministicPriceSuggestionPolicyTest`. (b) *Unitarias de aplicación*, con puertos mockeados (JUnit 5 + Mockito): `AccessProfileApplicationServiceTest`, `MarketplaceApplicationServiceTest`, `EngagementApplicationServiceTest`, `ChatNotificationApplicationServiceTest`, además de pruebas de adaptadores (`SupabaseStorageAdapterTest`, `NotificationClientAdapterTest`, `ExternalEdaConfigLoaderTest`). (c) *Integración* con PostgreSQL real en contenedor vía Testcontainers: `AccessIntegrationTest`, `MarketplaceIntegrationTest`, `EngagementIntegrationTest` y `ChatNotificationIntegrationTest`. (d) *Contratos* entre microservicios con Spring Cloud Contract: tres contratos del productor en `chat-notification-service` (`shouldCreateInternalNotification`, `shouldRejectInvalidBody`, `shouldRejectMissingServiceToken`) verificados mediante `ContractVerifierBase`, y la verificación del consumidor en `pulls-service` (`NotificationClientContractTest`).
+
+Las pruebas basadas en contratos, implementadas en el Sprint 4 (`GIGU-84`), cierran el riesgo `CRN-03`: la consistencia entre microservicios deja de depender de acuerdos informales y pasa a estar respaldada por un contrato versionado que rompe el build de ambos lados si se incumple. Los archivos `.feature` de BDD (Gherkin) para Acceptance Tests permanecen como deuda de testing registrada en la sección 5.3.1.3.
 
 ### 5.1.2. Pattern Based Backend Application(s)
 
@@ -2184,7 +2190,7 @@ Durante la implementación se realizaron varios refactorings orientados a consol
 | Migración de plataforma de despliegue | Se migró el despliegue de los microservicios de Render a Google Cloud Run. | `d92410c` chore(cloud): migrate microservices deployment to Google Cloud Run |
 | Soporte de esquema HTTPS reenviado en Swagger | Se ajustó la configuración para respetar el esquema HTTPS detrás del proxy de Cloud Run. | `c6ba4eb` fix(cloud): honor forwarded https scheme in swagger |
 
-Refactoring pendiente recomendado: extracción de los componentes transversales descritos en 5.1.3 a una librería compartida `gigu-platform-commons`, e implementación de las suites de prueba faltantes en los tres microservicios que aún no las tienen.
+Refactoring pendiente recomendado: extracción de los componentes transversales descritos en 5.1.3 a una librería compartida `gigu-platform-commons`. Las suites de prueba de los cuatro microservicios quedaron implementadas al cierre del Sprint 4 (ver 5.1.1).
 
 ## 5.2. Software Configuration Management
 
@@ -2271,7 +2277,7 @@ La configuración de despliegue del proyecto se organiza separando frontend, bac
 | Backend Deployment | GitHub Actions manuales por microservicio | Implementado | Cada workflow se ejecuta mediante `workflow_dispatch` y despliega un servicio específico. |
 | Local Deployment Support | Scripts PowerShell en `/gcloud` | Implementado | Permiten desplegar manualmente desde una estación local usando `gcloud run deploy --source`. |
 | Database | Supabase PostgreSQL | Implementado | Base de datos relacional administrada con esquemas lógicos por microservicio. |
-| Asynchronous Messaging | Google Cloud Pub/Sub | Seleccionado / pendiente | Servicio elegido para eventos asíncronos entre microservicios; aún no implementado. |
+| Asynchronous Messaging | Google Cloud Pub/Sub | Implementado (Sprint 2) | Eventos asíncronos de chat y notificaciones con entrega push por webhook. |
 | Storage | Por definir | Pendiente | Capacidad futura para binarios de portafolio, imágenes y adjuntos. |
 
 Los workflows de despliegue backend se encuentran en el repositorio `backend-microservices` bajo `.github/workflows`:
@@ -2993,76 +2999,102 @@ URL del tablero (Notion): https://www.notion.so/38aff0862f2c806bb608c55f679d64f6
 
 ### 5.3.4. Sprint 4
 
-> **[PENDIENTE — ANDAMIAJE]** Esta sección está estructurada pero aún sin evidencia real. Al cierre del Sprint 3 quedaron **dos work-items *En Curso*** que constituyen el núcleo del alcance del Sprint 4: `GIGU-83` (optimización de velocidad del frontend — lazy-loading, code-splitting, debounce) y `GIGU-84` (tests basados en contratos entre microservicios — Spring Cloud Contract). Reemplazar cada marcador `[PENDIENTE: ...]` con la evidencia real (hashes de commit, screenshots en `imgs/sprint4/`, URL del board de Notion) una vez ejecutado el trabajo en los repos `backend-microservices` y `frontend`.
-
 #### 5.3.4.1. Sprint Backlog 4
 
-El Sprint 4 es la iteración de cierre del proyecto (TF1). Su objetivo es **completar los work-items que quedaron *En Curso* al cierre del Sprint 3** y **consolidar el despliegue cloud** de la solución. El alcance planificado es:
+El Sprint 4 es la iteración de cierre del proyecto (TF1). Su objetivo fue **completar los dos work-items que quedaron *En Curso* al cierre del Sprint 3** —`GIGU-83` (optimización de velocidad del frontend) y `GIGU-84` (tests basados en contratos entre microservicios con Spring Cloud Contract)— y **consolidar el despliegue cloud** de la solución para la entrega final. Adicionalmente se incorporaron tres tarjetas nuevas surgidas del trabajo de cierre: el refinamiento de tags y controles de precio del gig en el marketplace (`GIGU-85`), los tests de reglas de negocio de engagement en `pulls-service` (`GIGU-86`) y la consolidación del despliegue cloud con la documentación TF1 (`GIGU-87`).
 
-- `GIGU-83` — Optimización de velocidad del frontend (lazy-loading de rutas, code-splitting, debounce en búsquedas).
-- `GIGU-84` — Tests basados en contratos entre microservicios (Spring Cloud Contract: contratos consumidor/productor).
-- **[PENDIENTE: listar tarjetas nuevas del Sprint 4 — GIGU-85 en adelante]** (p. ej. consolidación de la arquitectura de despliegue cloud para TF1).
+**Board del Sprint 4 (Notion):** https://app.notion.com/p/398ff0862f2c8073a2eaec2f6624a06a?v=398ff0862f2c8150b544000c14e1fc2a
 
-**Board del Sprint 4 (Notion):** **[PENDIENTE: URL del board del Sprint 4 en Notion]**
+El Sprint Backlog 4 está compuesto por **5 tarjetas**: 2 arrastradas del Sprint 3 (GIGU-83 y GIGU-84) y 3 nuevas (GIGU-85 a GIGU-87). El Sprint cierra al 100%.
 
 | Sprint # | Sprint 4 | | | | | | |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| **User Story / Work-Item** | **ID** | **Trabajo (Task)** | **Descripción** | **Responsable** | **Estimación** | **Estado** | |
-| Optimización de velocidad del frontend | GIGU-83 | *[PENDIENTE]* | Lazy-loading, code-splitting y debounce | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE: Hecho / En Curso]* | |
-| Tests basados en contratos | GIGU-84 | *[PENDIENTE]* | Contratos consumidor/productor entre microservicios | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE: Hecho / En Curso]* | |
+| **User Story / Epic** | | **Work-Item / Task** | | | | | |
+| **Id** | **Title** | **Id** | **Title** | **Description** | **Estimation (h)** | **Assigned To** | **Status** |
+| EP06 | Descubrimiento del Catálogo | GIGU-83 | SP13: Optimización de velocidad del frontend (lazy-loading, code-splitting, debounce) | Lazy-loading de las páginas de rutas mediante imports dinámicos en el router, dividiendo el bundle por página (code-splitting). | 4 | Mio Mejia, Andy | Done |
+| EP08 | Solicitud y Acuerdo de Contratación | GIGU-84 | SP10: Tests basados en contratos entre microservicios (Spring Cloud Contract) | Contratos productor/consumidor del webhook interno de notificaciones entre `pulls-service` y `chat-notification-service`. | 5 | Ybañez Esquerre, Miguel | Done |
+| EP05 | Publicación y Mantenimiento de Servicios | GIGU-85 | Frontend: refinamiento de tags y controles de precio del gig | Refinamiento de tags del gig y controles de precio; eliminación de defaults en la creación del gig y calculadora de precio. | 4 | Mio Mejia, Andy | Done |
+| EP09 | Gestión del Ciclo de Vida del Proyecto | GIGU-86 | Backend: tests de reglas de negocio de engagement (pulls-service) | Tests unitarios de las reglas de negocio de engagement en `pulls-service`. | 3 | Oblitas Davila, Mariano | Done |
+| — | Tareas adicionales del Sprint | GIGU-87 | Consolidación del despliegue cloud y documentación TF1 | Consolidación de la arquitectura de despliegue cloud (§5.4): evidencia de Cloud Run, Vercel y actualización del informe para TF1. | 4 | Oblitas Davila, Mariano | Done |
 
-> **[PENDIENTE: screenshots del backlog del Sprint 4 en Notion]** — colocar en `imgs/sprint4/` (p. ej. `sprint4-backlog-done-1.png`) y enlazarlos aquí, siguiendo el patrón de los Sprints anteriores.
+<img src="imgs/sprint4/sprint4-backlog-done-1.png" alt="Sprint Backlog 4 - Tarjetas finalizadas" title="Sprint Backlog 4 - Done"/>
 
 #### 5.3.4.2. Development Evidence for Sprint Review
 
-> **[PENDIENTE]** Describir el trabajo de desarrollo del Sprint 4. Actividad candidata detectada en los repos posterior al cierre del Sprint 3 (18–20 jun): backend `test(pulls): add engagement business rule tests` (26/06/2026) en `feature/pull-engagement-service`/`feature/main-app-logic`; frontend `feat(marketplace): refine gig tags and pricing controls` y `fix(marketplace): remove gig create defaults and add price calculator` (25/06/2026) en `feature/frontend-marketplace`/`feature/main-app`. **Confirmar y ampliar** con los commits que cierren GIGU-83 y GIGU-84.
+Durante el Sprint 4 el trabajo se concentró en dos frentes. En el backend, la calidad: los tests de reglas de negocio de engagement en `pulls-service` (GIGU-86) y los tests basados en contratos con **Spring Cloud Contract** (GIGU-84) — contratos del lado productor en `chat-notification-service` (webhook interno de notificaciones) y verificación del lado consumidor en `pulls-service`, junto con tests de dominio de la política de sugerencia de precios. En el frontend, el cierre funcional: refinamiento de tags y controles de precio del gig con calculadora de precio (GIGU-85) y la optimización de velocidad mediante lazy-loading de rutas con code-splitting (GIGU-83), acompañada de la conexión de los dashboards a datos reales del API de engagement y de las notificaciones en tiempo real en el layout.
 
-| Repositorio | Rama | Commit (SHA) | Mensaje | Descripción | Fecha |
+| Repository | Branch | Commit Id | Commit Message | Commit Message Body | Committed on |
 | --- | --- | --- | --- | --- | --- |
-| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE]* |
-| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE]* | *[PENDIENTE]* |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 9200064 | test(pulls): add engagement business rule tests | Tests unitarios de las reglas de negocio de engagement en pulls-service. | 25/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 1a725bb | merge: feature/pull-engagement-service into feature/main-app-logic | Integración a la rama de despliegue. | 25/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/backend-microservices | feature/main-app-logic | 2fbbf0c | test: add domain unit tests and contract tests for notification webhook (GIGU-84) | Contratos Spring Cloud Contract del webhook de notificaciones (productor en chat-notification-service, consumidor en pulls-service) y tests de dominio de la política de precios. | 05/07/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | 49f2107 | fix(marketplace): remove gig create defaults and add price calculator | Eliminación de defaults en la creación del gig y calculadora de precio. | 25/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | 08ba84b | feat(marketplace): refine gig tags and pricing controls | Refinamiento de tags del gig y controles de precio. | 25/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | f6a4b19 | merge: feature/frontend-marketplace into feature/main-app | Integración del marketplace a la rama de despliegue. | 25/06/2026 |
+| 1ASI0657-2610-7940-Final-Project/frontend | feature/main-app | d9565d1 | perf(router): lazy-load route pages for code-splitting (GIGU-83) | Lazy-loading de rutas (code-splitting), dashboards con datos reales del API de engagement y notificaciones en tiempo real en el layout. | 05/07/2026 |
 
 #### 5.3.4.3. Testing Suite Evidence for Sprint Review
 
-> **[PENDIENTE]** Evidencia de la suite de pruebas del Sprint 4. El foco esperado es cerrar `GIGU-84` (tests basados en contratos con **Spring Cloud Contract** — contratos productor/consumidor entre microservicios), que quedó *Planificado / En Curso* al cierre del Sprint 3 (README §5.3.3.3). Incluir la tabla de casos de prueba y los screenshots de ejecución (`imgs/sprint4/`).
+El Sprint 4 cierra el trabajo de calidad pendiente del Sprint 3: los **tests basados en contratos** (`SP10`, GIGU-84) quedaron implementados con **Spring Cloud Contract** en el commit `2fbbf0c`. Del lado **productor**, `chat-notification-service` define los contratos del webhook interno de notificaciones (creación con body válido, rechazo de body inválido y rechazo por token de servicio ausente), verificados contra el controlador real mediante la clase base del verificador. Del lado **consumidor**, `pulls-service` verifica que su cliente de notificaciones cumple el contrato publicado. Se añadieron además tests unitarios de dominio: la política determinística de sugerencia de precios y las reglas de negocio de engagement (GIGU-86).
 
-| Suite / Caso de prueba | Estado | Descripción | Work-item |
+| Archivo de prueba | Tipo | Descripción | Work-item |
 | --- | --- | --- | --- |
-| Contract tests (Spring Cloud Contract) | *[PENDIENTE: Hecho / En Curso]* | Contratos consumidor/productor entre microservicios | GIGU-84 / SP10 |
+| `shouldCreateInternalNotification.groovy`, `shouldRejectInvalidBody.groovy`, `shouldRejectMissingServiceToken.groovy` (`chat-notification-service`) | Contract test — productor (Spring Cloud Contract) | Contratos del webhook interno de notificaciones: creación exitosa con body válido y rechazo ante body inválido o token de servicio ausente. | GIGU-84 / SP10 |
+| `ContractVerifierBase` (`chat-notification-service`) | Contract test — base del verificador | Configura el contexto del controlador real sobre el que Spring Cloud Contract genera y ejecuta los tests del productor. | GIGU-84 / SP10 |
+| `NotificationClientContractTest` (`pulls-service`) | Contract test — consumidor | Verifica que el cliente de notificaciones de `pulls-service` cumple el contrato publicado por `chat-notification-service`. | GIGU-84 / SP10 |
+| `DeterministicPriceSuggestionPolicyTest` (`pulls-service`) | Unit Test (JUnit 5) | Verifica las reglas de la política determinística de sugerencia de precios del engagement. | GIGU-86 |
+| Engagement business rule tests (`pulls-service`, commit `9200064`) | Unit Test (JUnit 5) | Verifica las reglas de negocio del ciclo de engagement. | GIGU-86 |
 
 #### 5.3.4.4. Execution Evidence for Sprint Review
 
-> **[PENDIENTE]** Evidencia de la solución en ejecución tras el Sprint 4 (p. ej. mejora de tiempos de carga del frontend por GIGU-83). Añadir screenshots/GIFs en `imgs/sprint4/` y enlazarlos aquí.
+Tras el Sprint 4, la solución en producción presenta las siguientes mejoras visibles: (a) el frontend carga las páginas mediante **lazy-loading de rutas** (imports dinámicos en el router), de modo que el bundle inicial ya no incluye todas las vistas y cada página se descarga bajo demanda (GIGU-83); (b) los **dashboards de cliente y freelancer muestran datos reales** (proyectos activos, pendientes y completados) obtenidos del API de engagement, con notificaciones en tiempo real conectadas en el layout; y (c) el flujo de **creación del gig** ya no impone valores por defecto e incorpora una calculadora de precio con tags refinados (GIGU-85). La verificación se realizó sobre los despliegues de producción: frontend en Vercel y microservicios en Google Cloud Run (URLs en §5.4.2).
+
+> **[PENDIENTE: captura opcional]** — screenshot del dashboard con datos reales o del flujo de creación del gig con la calculadora de precio, en `imgs/sprint4/` (p. ej. `frontend-dashboard-real-data.png`).
 
 #### 5.3.4.5. Microservices Documentation Evidence for Sprint Review
 
-> **[PENDIENTE]** Documentación de microservicios actualizada en el Sprint 4 (Swagger UI `/swagger-ui/index.html` de cada despliegue en Google Cloud Run). Si el Sprint 4 no agrega ni modifica endpoints, indicarlo explícitamente y referenciar la documentación vigente de Sprints anteriores.
+El Sprint 4 **no agrega ni modifica endpoints públicos** de los microservicios: el trabajo backend consistió en pruebas (contratos y tests de dominio), que no alteran la superficie del API. Por lo tanto, la documentación OpenAPI/Swagger vigente es la reportada en los Sprints anteriores (§5.3.1.5, §5.3.2.5 y §5.3.3.5), accesible en la ruta `/swagger-ui/index.html` de cada servicio desplegado en Google Cloud Run (URLs en §5.4.2). Cabe destacar que los contratos de Spring Cloud Contract introducidos en este Sprint actúan como **documentación ejecutable** del webhook interno de notificaciones entre `pulls-service` y `chat-notification-service`.
 
 #### 5.3.4.6. Software Deployment Evidence for Sprint Review
 
-> **[PENDIENTE]** Evidencia de despliegue del Sprint 4 (redepliegue en Google Cloud Run de los servicios afectados y del frontend en Vercel). Para TF1, esta subsección se articula con la §5.4 (Cloud Architecture Diagram y Cloud Architecture Deployment). Incluir listado de servicios en Cloud Run, despliegue de producción en Vercel y los commits de despliegue.
+Los cambios desplegables del Sprint 4 se concentran en el **frontend**: los commits `49f2107`, `08ba84b` y `d9565d1` sobre `feature/main-app` se publicaron en producción mediante el despliegue automático de **Vercel** asociado a la rama. Los cambios del backend (GIGU-84 y GIGU-86) son exclusivamente de **pruebas** y no alteran el runtime de los servicios, por lo que **no requirieron redespliegue** en Google Cloud Run; los cuatro microservicios continúan operando con las revisiones desplegadas al cierre del Sprint 3. La consolidación de la arquitectura de despliegue cloud para TF1 (GIGU-87) se documenta en la §5.4 (Cloud Architecture Diagram y Cloud Architecture Deployment), que detalla los servicios en Cloud Run, sus URLs y el procedimiento de despliegue manual por workflow de GitHub Actions.
 
 #### 5.3.4.7. Team Collaboration Insights during Sprint
 
-> **[PENDIENTE]** Distribución del trabajo del Sprint 4 entre los tres integrantes y análisis de colaboración (GitHub *Insights → Contributors*, ventana del Sprint 4, excluyendo merge commits). Colocar los screenshots de Insights en `imgs/sprint4/`.
+El trabajo del Sprint 4 se distribuyó entre los tres integrantes del equipo: el aseguramiento de calidad del backend (tests de reglas de negocio y contratos entre microservicios), el cierre funcional del frontend (marketplace y optimización de velocidad) y la consolidación del despliegue cloud con la documentación de la entrega final (TF1).
 
 | Integrante | Usuario GitHub | Principales aportes en el Sprint 4 |
 | --- | --- | --- |
-| Oblitas Davila, Mariano Moises | *[PENDIENTE]* | *[PENDIENTE]* |
-| Ybañez Esquerre, Miguel Angel | *[PENDIENTE]* | *[PENDIENTE]* |
-| Mio Mejia, Andy Alejandro | *[PENDIENTE]* | *[PENDIENTE]* |
+| Oblitas Davila, Mariano Moises | `Sigilo-dev` / `vr700` | Tests de reglas de negocio de engagement en `pulls-service` (GIGU-86) y consolidación del despliegue cloud con la documentación TF1 (GIGU-87). |
+| Ybañez Esquerre, Miguel Angel | `Miguel080902` | Tests basados en contratos entre microservicios con Spring Cloud Contract — productor en chat, consumidor en pulls — y tests de dominio de la política de precios (GIGU-84). |
+| Mio Mejia, Andy Alejandro | `AndyMio17` / `AndyMio` | Refinamiento de tags y controles de precio del gig con calculadora de precio (GIGU-85) y optimización de velocidad del frontend con lazy-loading de rutas (GIGU-83). |
+
+**Análisis de colaboración y commits de GitHub (Sprint 4).** Las estadísticas de contribución (*Insights → Contributors*, rama principal de cada repositorio, ventana del Sprint 4 — 21 de junio al 8 de julio de 2026, excluyendo merge commits) son las siguientes:
+
+| Repositorio | Rama | Contribuidor (GitHub) | Commits |
+| --- | --- | --- | --- |
+| backend-microservices | `feature/main-app-logic` | `vr700` / `Sigilo-dev` (Oblitas Davila, Mariano) | 1 |
+| backend-microservices | `feature/main-app-logic` | `Miguel080902` (Ybañez Esquerre, Miguel) | 1 |
+| frontend | `feature/main-app` | `vr700` / `Sigilo-dev` (Oblitas Davila, Mariano) | 2 |
+| frontend | `feature/main-app` | `Miguel080902` (Ybañez Esquerre, Miguel) | 1 |
+
+Como en Sprints anteriores, parte del trabajo se integró a través de cuentas compartidas del equipo: los commits del marketplace (GIGU-85) ingresaron por `vr700` y el cierre de la optimización de velocidad (GIGU-83) por `Miguel080902`, aunque el desarrollo de ambas tarjetas correspondió a los responsables indicados en el board. La verificación funcional del Sprint se realizó sobre los despliegues de producción en Vercel y Google Cloud Run.
 
 #### 5.3.4.8. Kanban Board
 
-El tablero Kanban del Sprint 4 se gestiona en Notion (base de datos `sprint-4-backlog`), con las columnas **Por Hacer**, **En Curso** y **Hecho**.
+El tablero Kanban del Sprint 4 se gestiona en Notion (base de datos `sprint-4-backlog`), con las columnas **Por Hacer**, **En Curso** y **Hecho**. El tablero agrupa las 5 tarjetas del Sprint (2 arrastradas del Sprint 3 y 3 nuevas) y, al ser la iteración de cierre del proyecto, **cierra al 100%**: las dos tarjetas que quedaron *En Curso* al cierre del Sprint 3 (`GIGU-83` y `GIGU-84`) pasan a estado *Hecho*.
 
 | Estado | Cantidad | Tarjetas |
 | --- | --- | --- |
-| Hecho (Done) | *[PENDIENTE]* | *[PENDIENTE]* |
-| En Curso (In-Process) | *[PENDIENTE]* | *[PENDIENTE]* |
-| Por Hacer (To-do) | *[PENDIENTE]* | *[PENDIENTE]* |
+| Hecho (Done) | 5 | GIGU-83, GIGU-84, GIGU-85, GIGU-86, GIGU-87 |
+| En Curso (In-Process) | 0 | — |
+| Por Hacer (To-do) | 0 | — |
 
-> **[PENDIENTE: screenshot `imgs/sprint4/sprint4-kanban-board.png` y URL del board en Notion]**. Recordar exportar el `sprint-4-backlog.csv` a `migration/notion/` para mantener la trazabilidad de la migración Jira → Notion.
+Sumando las 73 tarjetas finalizadas en los Sprints 1 a 3, el proyecto cierra con **78 tarjetas en estado *Hecho*** y ningún work-item pendiente. El backlog del Sprint se exportó como `sprint-4-backlog.csv` a `migration/notion/` para mantener la trazabilidad de la migración Jira → Notion.
+
+<img src="imgs/sprint4/sprint4-kanban-board.png" alt="Kanban Board del Sprint 4 en Notion" title="Kanban Board Sprint 4"/>
+
+URL del tablero (Notion): https://app.notion.com/p/398ff0862f2c8073a2eaec2f6624a06a?v=398ff0862f2c8150b544000c14e1fc2a
 
 ## 5.4. Microservices Deployment
 
