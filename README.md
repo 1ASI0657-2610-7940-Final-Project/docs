@@ -7,17 +7,16 @@
 ## <p align="center">Universidad Peruana de Ciencias Aplicadas</p>
 
 <p align="center">Ingeniería de Software</p>
-<p align="center">Periodo 2610</p>
-<p align="center">1ASI0657 | Fundamentos de Arquitectura de Software - Virtual</p>
-<p align="center"><strong>Sección:</strong> 7940</p>
-<p align="center"><strong>Docente:</strong> Daniel Enrique Mori Yzaguirre</p>
+<p align="center">1ASI0657  Fundamentos de Arquitectura de Software 202610 </p>
+<p align="center"><strong>NRC:</strong> 7940</p>
+<p align="center"><strong>Profesor:</strong> Daniel Enrique Mori Yzaguirre</p>
 
-# <p align="center">Informe del Trabajo Final</p>
 
-<p align="center"><strong>Startup:</strong> GigU</p>
-<p align="center"><strong>Producto:</strong> GigU</p>
+# <p align="center">TRABAJO FINAL</p>
 
-### Integrantes
+<p align="center"><strong>Nombre del Producto: </strong> GigU</p>
+
+### Integrantes:
 
 | Código     | Nombres y Apellidos            |
 | ---------- | ------------------------------ |
